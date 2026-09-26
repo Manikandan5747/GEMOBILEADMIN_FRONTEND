@@ -1,0 +1,81 @@
+<div mat-dialog-title>
+    {{title}}
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<div class="col-md-12 row p-4">
+    <form [formGroup]="addEditForm">
+
+
+        
+        <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Corporate Partners</mat-label>
+            <mat-select formControlName="partnerid" disabled>
+                <mat-select-filter [array]="corporatepartnersList" (filteredReturn)="filteredRoleList=$event"
+                    [displayMember]="'corporatepartnername'">
+                </mat-select-filter>
+                <mat-option *ngFor="let item of corporatepartnersList" [value]="item.partnerid"
+                    [class.hide]="!isRoleFiltered(item)">
+                    {{item.corporatepartnername}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="addEditForm.controls['partnerid'].hasError('required') && isShowErrors">Corporate Partners is
+                required</mat-error>
+        </mat-form-field>
+
+        
+        <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Corporate Special Offer Desc</mat-label>
+            <input matInput required [errorStateMatcher]="matcher" formControlName="corporatespecialofferdesc"
+                type="text" />
+            <mat-error
+                *ngIf="addEditForm.controls['corporatespecialofferdesc'].hasError('required') && isShowErrors">Corporate
+                Special Offer Desc is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['corporatespecialofferdesc'].errors?.['whitespace']">
+                White space not allowed
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Corporate Promo Code</mat-label>
+            <input matInput formControlName="corporatepromocode" type="text" />
+            <mat-error *ngIf="addEditForm.controls['corporatepromocode'].hasError('required') && isShowErrors">Corporate
+                Promo Code is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['corporatepromocode'].errors?.['whitespace']">
+                White space not allowed
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="p-2" appearance="outline">
+            <mat-label>Expiry Date</mat-label>
+            <input readonly matInput [matDatepicker]="picker1" formControlName="offerexpirydate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error *ngIf="addEditForm.controls['offerexpirydate'].hasError('required') && isShowErrors">Expiry Date is
+              required</mat-error>
+          </mat-form-field>
+    
+
+
+
+
+
+        <mat-label class="p-2 pt-2 text-center">Status </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="status" class="inputField exammanage-radio-group"
+            mat-form-field>
+            <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-radio-button value='0'>In-Active</mat-radio-button>
+        </mat-radio-group>
+
+    </form>
+</div>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+        Save
+    </button>
+</div>

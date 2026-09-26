@@ -1,0 +1,29 @@
+.mat-filter-input {
+    width: calc(100% - 25px) !important;
+}
+
+.mat-filter::after {
+    content: "\e8b6";
+    font-family: material icons;
+    vertical-align: bottom;
+    font-size: 20px;
+    padding-left: 5px;
+}
+
+.mat-option.hide {
+    display: none;
+}
+
+.scrollable-nav-list {
+    height: 100%; /* Adjust this height as needed */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.sticky-search {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white; /* Ensures the search box has a background */
+}

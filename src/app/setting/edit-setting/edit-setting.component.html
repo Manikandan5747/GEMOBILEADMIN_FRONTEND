@@ -1,0 +1,18 @@
+<div mat-dialog-title>
+    Setting
+   <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<section mat-dialog-content>
+   <app-add-edit-setting-form [isShowErrors]="isShowErrors" [userrole]="this.data.userrole">
+
+   </app-add-edit-setting-form>
+</section>
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+   <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+       Cancel
+   </button>
+   <button mat-raised-button class="btnnn-prime-fn" (click)="update()">
+       Save
+   </button>
+</div>

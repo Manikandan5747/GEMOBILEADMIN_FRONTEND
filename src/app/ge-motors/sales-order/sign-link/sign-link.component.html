@@ -1,0 +1,79 @@
+<div mat-dialog-title>
+    Sign Link Details &nbsp; &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;
+    <span style="font-size: large;">{{salesorderrefno}}</span>
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<section mat-dialog-content class="p-3">
+
+
+
+    <div class="row font-weight-bold mb-2 border-bottom pb-2">
+        <div class="col-md-3 text-center">Sign Type</div>
+        <div class="col-md-3 text-center">Link</div>
+        <div class="col-md-3 text-center">Signature</div>
+        <div class="col-md-3 text-center">Email</div>
+    </div>
+
+    <div class="row mb-3 align-items-center">
+        <div class="col-md-3 text-center font-weight-bold">Buyer Sign</div>
+        <div class="col-md-3 text-center">
+            <button [disabled]="buyerSignPath || !data.privilegesMap.allowCopyLink" mat-button class="btn  btn-sm"
+                (click)="copyLink('Buyer Link')">
+                Copy Link
+            </button>
+        </div>
+        <div class="col-md-3 text-center">
+
+            <img width="100" *ngIf="buyerSignPath; else noSign" class="sign"
+                [src]="'https://geapps.germanexperts.ae:7007/' + (data.buyer_sign_path || '')" alt="Buyer Signature">
+            <ng-template #noSign>-</ng-template>
+
+
+
+
+
+        </div>
+
+        <div class="col-md-3 text-center">
+            <button [disabled]="buyerSignPath || !data.privilegesMap.allowSendEmail" mat-button class="btn  btn-sm"
+                matTooltip="{{buyer_email}}" (click)="sendmail(buyer_email,buyer_accountname,'Buyer Link')">
+                <mat-icon style="color:#BB001B;">email</mat-icon> &nbsp;Send Mail
+            </button>
+        </div>
+
+    </div>
+
+    <div class="row mb-3 align-items-center">
+        <div class="col-md-3 text-center font-weight-bold">Seller Sign</div>
+        <div class="col-md-3 text-center">
+            <button [disabled]="data?.customer_sign_path || !data.privilegesMap.allowCopyLink" mat-button
+                class="btn  btn-sm" (click)="copyLink('Seller Link')">
+                Copy Link
+            </button>
+        </div>
+        <div class="col-md-3 text-center">
+            <img *ngIf="data?.customer_sign_path; else noSign" width="100" class="sign"
+                [src]="'https://geapps.germanexperts.ae:7007/' + (data.customer_sign_path || '')"
+                alt="Seller Signature">
+            <ng-template #noSign>-</ng-template>
+        </div>
+
+
+        <div class="col-md-3 text-center">
+            <button [disabled]="data.customer_sign_path || !data.privilegesMap.allowSendEmail" mat-button
+                class="btn  btn-sm" matTooltip="{{seller_email}}"
+                (click)="sendmail(seller_email,seller_accountname,'Seller Link')">
+                <mat-icon style="color:#BB001B;">email</mat-icon> &nbsp;Send Mail
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+
+</div>

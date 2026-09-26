@@ -1,0 +1,86 @@
+/* filter-modal.component.css */
+
+.custom-filter-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.custom-filter-table th,
+.custom-filter-table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.custom-filter-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.custom-filter-table select,
+.custom-filter-table input {
+  box-sizing: border-box;
+  
+  font-size: 14px;
+}
+
+.filter-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-buttons {
+  gap: 8px; /* Space between buttons */
+  justify-content: center; /* Center the buttons horizontally */
+  align-items: center; /* Center the buttons vertically if needed */
+}
+
+.custom-filter-table button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.custom-filter-table mat-icon {
+  color: #fff;
+  background-color: rgba(17, 17, 17, .73) !important;
+  border-radius: 5px;
+  height: 35px;
+    width: 35px;
+    padding: 5px;
+}
+
+.custom-filter-table button[disabled] mat-icon {
+  color: rgba(17, 17, 17, .73) !important;
+  background-color: #ccc !important;
+  border-radius: 5px;
+}
+
+
+.mat-dialog-actions {
+  float: right !important;
+
+}
+mat-dialog-title {
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+button[mat-button] {
+  margin-right: 10px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+.error-message {
+  color: #d32f2f; /* Red color for error messages */
+  padding: 5px; /* Spacing around the text */
+  margin-bottom: 5px; /* Space below the error message */
+  font-weight: bold; /* Make text bold */
+  text-align: center;
+}

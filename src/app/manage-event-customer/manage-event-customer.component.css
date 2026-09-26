@@ -1,0 +1,25 @@
+
+
+.fixed-width {
+  width: 150px !important;
+  max-width: 150px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fixed-width-email {
+  width: 200px !important;
+  max-width: 200px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fixed-width-tooltip {
+  max-width: 200px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

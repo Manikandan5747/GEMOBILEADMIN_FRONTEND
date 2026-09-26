@@ -1,0 +1,251 @@
+<div class="col-md-12">
+    <div class="page-title"> Manage opportunity </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+
+
+            <mat-form-field class="col-md-3 pr-2" appearance="outline">
+                <mat-label>Search Opportunity Detail</mat-label>
+                <input matInput [(ngModel)]="search" (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3  pr-2" appearance="outline">
+                <mat-label class="">Account </mat-label>
+                <mat-select [(ngModel)]="accountname" (selectionChange)="selectionFilterChange($event)">
+                    <mat-select-filter [array]="accountTotalList" (filteredReturn)="accountFilterList=$event"
+                        [displayMember]="'accountname'">
+                    </mat-select-filter>
+                    <mat-option *ngFor="let item of accountTotalList" [value]="item.accountname"
+                        [class.hide]="!accountFiltered(item)">
+                        {{ item.accountname }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3  pr-2" appearance="outline">
+                <mat-label class="">Campaign </mat-label>
+                <mat-select [(ngModel)]="name" (selectionChange)="selectionFilterChange($event)">
+                    <mat-select-filter [array]="campaignList" (filteredReturn)="campaignFilterList=$event"
+                        [displayMember]="'name'">
+                    </mat-select-filter>
+                    <mat-option *ngFor="let item of campaignList" [value]="item.name"
+                        [class.hide]="!isCampaignFiltered(item)">
+                        <span>{{ item.name }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-3  pr-2" appearance="outline">
+                <mat-label class="">Stage </mat-label>
+                <mat-select [(ngModel)]="stagename" (selectionChange)="selectionFilterChange($event.value)">
+                    <mat-select-filter [array]="stageList" (filteredReturn)="stageFilterList=$event"
+                        [displayMember]="'stagename'">
+                    </mat-select-filter>
+                    <mat-option *ngFor="let item of stageList" [value]="item.stagename"
+                        [class.hide]="!isStageFiltered(item)">
+                        <span>{{ item.stagename }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-3  pr-2" appearance="outline">
+                <mat-label class="">Created Date</mat-label>
+                <input matInput (dateChange)="selectionFilterChange('')" [(ngModel)]="createdat" readonly
+                    datePickerFormat="YYYY/MM/DD" [matDatepicker]="dp1" placeholder="">
+                <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                <mat-datepicker #dp1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3  pr-2" appearance="outline">
+                <mat-label class="">Modified Date</mat-label>
+                <input matInput [(ngModel)]="modifiedat" (dateChange)="selectionFilterChange('')" readonly
+                    datePickerFormat="YYYY/MM/DD" [matDatepicker]="dp2" placeholder="">
+                <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                <mat-datepicker #dp2></mat-datepicker>
+            </mat-form-field>
+
+            <div class="pt-2 col-md-5">
+                <button mat-button class="btnnn-default-fn" (click)="clearSearch()">
+                    <mat-icon class="large-icon">clear</mat-icon> Clear
+                </button>&nbsp;&nbsp;
+                <button mat-raised-button class="btnnn-prime-fn" (click)="selectionFilterChange('')">
+                    <mat-icon class="large-icon">search</mat-icon> Filter
+                </button>
+            </div>
+
+            <div *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'" class="col-md-1"
+                style="text-align: end">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Opportunity"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="opportunityname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>opportunity </th>
+                <td mat-cell *matCellDef="let element"> {{element?.opportunityname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="firstname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact </th>
+                <td mat-cell *matCellDef="let element"> {{element.contactfirstname}}
+            </ng-container>
+
+            <ng-container matColumnDef="opportunityrefno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>opportunity refno </th>
+                <td mat-cell *matCellDef="let element"> {{element.opportunityrefno}}
+            </ng-container>
+
+            <ng-container matColumnDef="conversionstatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Conversion Status </th>
+                <td mat-cell *matCellDef="let element">
+                    <!-- Use ngIf to conditionally render icons -->
+                    <ng-container *ngIf="element?.conversionstatus === 0">
+                        <mat-icon color="warn">clear</mat-icon> <!-- Cross icon for conversionstatus 0 -->
+                    </ng-container>
+                    <ng-container *ngIf="element?.conversionstatus === 1">
+                        <mat-icon color="primary">done</mat-icon> <!-- Tick mark for conversionstatus 1 -->
+                    </ng-container>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="accountname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Account </th>
+                <td mat-cell *matCellDef="let element"> {{element?.accountname}} </td>
+            </ng-container>
+
+
+
+
+            <ng-container matColumnDef="stagename">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>stage </th>
+                <td mat-cell *matCellDef="let element"> {{element?.stagename}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Campaign </th>
+                <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <td mat-cell *matCellDef="let element"> {{element?.status == 1 ? "Active" : "InActive"}} </td>
+            </ng-container>
+            <ng-container matColumnDef="createdby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdat | date: DATE_FORMAT}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modifiedat | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef class="center-black-text">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element" class="d-flex ">
+
+                     <!-- Edit Opportunity -->
+                    <button matTooltip="Edit Opportunity" mat-icon-button (click)="editRecord(element)"
+                        [style.visibility]="(userPrivilegeObj?.editaccess == '1' && element?.so_dealstatusid != '2') ? 'visible' : 'hidden'">
+                        <mat-icon class="edit-mat-icon">edit</mat-icon>
+                    </button>
+
+                    <!-- View Opportunity -->
+                    <button matTooltip="View Opportunity" mat-icon-button (click)="viewRecord(element)"
+                        [style.visibility]="(userPrivilegeObj?.viewaccess == '1') ? 'visible' : 'hidden'">
+                        <mat-icon class="edit-mat-icon">visibility</mat-icon>
+                    </button>
+
+                      <button mat-icon-button   [style.visibility]="(userPrivilegeObj?.deleteaccess == '1') ? 'visible' : 'hidden'" 
+                        (click)="onDeleteStatusChange(element?.opportunityid)">
+                        <mat-icon class="delete-mat-icon large-icon">delete</mat-icon>
+                    </button>
+
+                     <!-- Generate Quotation -->
+                    <button matTooltip="Generate Quotation" class="mat-menu-item-custom" mat-icon-button (click)="convertOpportunity(element)"
+                        [style.visibility]="(userQuotePrivilegeObj?.createaccess == '1' && element?.conversionstatus === 0 && element?.dealstatusid != '2') ? 'visible' : 'hidden'">
+                        <mat-icon class="edit-mat-icon">autorenew</mat-icon>
+                    </button>
+
+                </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="submenu" stickyEnd class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Re. Module
+                </th>
+                <td mat-cell *matCellDef="let element">
+
+
+                    <button mat-icon-button [matMenuTriggerFor]="profile">
+                        <mat-icon class="edit-mat-icon large-icon">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #profile="matMenu" class="mymegamenu">
+                        <button mat-menu-item *ngIf="userQuotePrivilegeObj && userQuotePrivilegeObj?.viewaccess == '1' "
+                            (click)="redirectionQuotes(element)">
+                            <mat-icon class="large-icon">arrow_right_alt</mat-icon> View Quotes </button>
+
+                        <button mat-menu-item
+                            *ngIf="userSalesorderPrivilegeObj && userSalesorderPrivilegeObj?.viewaccess == '1' "
+                            (click)="redirectionSO(element)">
+                            <mat-icon class="large-icon">arrow_right_alt</mat-icon> View Sales Order </button>
+
+                        <button mat-menu-item *ngIf="testdriveprivilege?.create_access || testdriveprivilege?.edit_access"
+                            (click)="testdrive(element)">
+                            <mat-icon class="large-icon">drive_eta</mat-icon> Test Drive </button>
+
+                        <button mat-menu-item (click)="gotoactivity(element)"  *ngIf="privilege?.create_access || privilege?.edit_access">
+                            <mat-icon class="large-icon">local_activity</mat-icon> Activity
+                        </button>
+
+                    </mat-menu>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+    <tr *ngIf="totalItemCount == '0'">
+        <td class="no-data-cell">
+            No Records Found.
+        </td>
+    </tr>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" (page)="onPageChange($event)"
+        [length]="totalItemCount" showFirstLastButtons></mat-paginator>
+</div>

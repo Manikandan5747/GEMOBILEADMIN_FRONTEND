@@ -1,0 +1,52 @@
+<mat-card class="appraisal-card">
+  <div class="page-title"> Vehicle Appraisal Details </div>
+  <mat-card-content>
+    <!-- Customer Information page-sub-title-1-->
+    <mat-divider class="mb-5 pt-5"></mat-divider>
+    <div class="page-sub-title-1 pt-3 pb-3"> Customer Information </div>
+    <p><strong>Name:</strong> {{ vehicleDetails.full_name }}</p>
+    <p><strong>Phone:</strong> {{ vehicleDetails.phone_number }}</p>
+    <p><strong>Email:</strong> {{ vehicleDetails.email }}</p>
+    <p><strong>Communication Preference:</strong> {{ vehicleDetails.communication.join(', ') }}</p>
+    <p><strong>Trans ID:</strong> {{ vehicleDetails.transid }}</p>
+
+    <!-- Vehicle Details -->
+    <mat-divider class="mb-5 pt-5"></mat-divider>
+    <div class="page-sub-title-1 pt-3 pb-3"> Vehicle Information </div>
+    <p><strong>Appraisal ID:</strong> {{ vehicleDetails.vehicle_appraisal_id }}</p>
+    <p><strong>Reference No:</strong> {{ vehicleDetails.vehicleappraisalrefno }}</p>
+    <p><strong>Condition:</strong> {{ vehicleDetails.vehicle_condition }}</p>
+    <p><strong>Mileage:</strong> {{ vehicleDetails.vehicle_mileage }} KM</p>
+    <p><strong>Status:</strong> {{ vehicleDetails.status == 1 ? 'Active' : 'Inactive' }}</p>
+
+    <!-- Brand Logos -->
+    <mat-divider class="mb-5 pt-5"></mat-divider>
+
+    <div class="page-sub-title-1 pt-3 pb-3"> Brands </div>
+    <div class="brand-container">
+      <ng-container *ngFor="let brand of vehicleDetails.brandnames; let i = index">
+        <div class="brand-item">
+          <img [src]="CommonConstants1 + vehicleDetails.imagepaths[i]" alt="{{ brand }}" class="brand-logo">
+          <p>{{ brand }}</p>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Vehicle Pictures -->
+    <mat-divider class="mb-5 pt-5"></mat-divider>
+    <div class="page-sub-title-1 pt-3 pb-3"> Vehicle Images </div>
+    <div class="image-container pb-3">
+      <ng-container *ngFor="let img of vehicleDetails.vehicle_pictures">
+        <a [href]="img.replace('\\', '/')" target="_blank">
+          <img [src]="img.replace('\\', '/')" alt="Vehicle Image" class="vehicle-image">
+        </a>
+      </ng-container>
+    </div>
+
+
+    <!-- Remarks -->
+    <mat-divider class="mb-5 pt-5"></mat-divider>
+    <div class="page-sub-title-1 pt-3 pb-3"> Remarks </div>
+    <p>{{ vehicleDetails.remarks }}</p>
+  </mat-card-content>
+</mat-card>

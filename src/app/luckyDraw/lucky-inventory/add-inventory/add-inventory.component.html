@@ -1,0 +1,116 @@
+<div class="col-md-12">
+    <div class="page-title">{{ title }}</div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <form [formGroup]="addEditForm">
+        <div class="row">
+            <div class="text-left mt-3 mb-3 ac-formgroup-title">
+                <span>Inventory Information</span>
+            </div>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Gift Name</mat-label>
+                <input matInput formControlName="gift_name" type="text" />
+                <mat-error *ngIf="addEditForm.controls['gift_name'].hasError('required')">
+                    Gift Name is required
+                </mat-error>
+                <mat-error *ngIf="addEditForm.controls['gift_name'].hasError('invalidValue')">
+                    Only alphabets and spaces are allowed
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Category Type -->
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Category Type</mat-label>
+                <mat-select formControlName="category_type" placeholder="Select Category Type">
+                  <mat-option *ngFor="let type of categoryTypes" [value]="type.id">
+                    {{ type.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="addEditForm.controls['category_type'].hasError('required')">
+                  Category Type is required
+                </mat-error>
+              </mat-form-field>
+
+
+            <!-- Category Dropdown -->
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="category_id">
+                    <mat-option *ngFor="let category of categoryList" [value]="category.category_id">
+                        {{ category.category_name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="addEditForm.controls['category_id'].hasError('required')">
+                    Category is required
+                </mat-error>
+            </mat-form-field>
+
+
+            <!-- Quantity -->
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Quantity</mat-label>
+                <input matInput formControlName="qty" type="number" />
+                <mat-error *ngIf="addEditForm.controls['qty'].hasError('required')">
+                    Quantity is required
+                </mat-error>
+                <mat-error *ngIf="addEditForm.controls['qty'].hasError('min')">
+                    Quantity must be at least 1
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Status -->
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option value="1">Active</mat-option>
+                    <mat-option value="0">Inactive</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <!-- No Repeat -->
+            <div class="col-md-6 d-flex justify-content-left align-items-center">
+                <mat-checkbox formControlName="no_repeat">No Repeat</mat-checkbox>
+              </div>
+
+            <div class="col-md-6 field d-flex align-items-center">
+                <label for="file-upload1" class="custom-file-upload">
+                    <mat-icon>cloud_upload</mat-icon> Gift Image Attachment
+                </label>
+                <input id="file-upload1" (change)="onFileChangedBackEmirates($event)"
+                    accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file"
+                    name="file[]" />
+
+                <div class="preview-container ml-3" *ngIf="addEditForm.controls['gift_image'].value">
+
+                    <!-- For Image -->
+                    <a [href]="addEditForm.controls['gift_image'].value" target="_blank">
+
+                        <img class="preview-image"
+                            [src]="imageSrc1 ? imageSrc1 : addEditForm.controls['gift_image'].value" />
+                    </a>
+                </div>
+
+                <div *ngIf="addEditForm.controls['gift_image'].invalid && addEditForm.controls['gift_image'].touched"
+                    class="error-message  ml-3">
+                    Please upload a valid image .
+                </div>
+            </div>
+
+
+
+
+            <!-- Save / Cancel Buttons -->
+            <div style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+                <button mat-button class="btnnn-default-fn"
+                    [routerLink]="['/luckyDraw/listInventory']">Cancel</button>&nbsp;&nbsp;
+                <button *ngIf="isEdit !== 'VIEW'" mat-raised-button class="btnnn-prime-fn" (click)="save()">
+                    {{ buttonlabel }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

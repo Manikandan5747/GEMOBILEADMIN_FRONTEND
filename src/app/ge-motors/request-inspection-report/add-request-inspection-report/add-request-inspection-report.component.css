@@ -1,0 +1,29 @@
+/* Sticky search box at the top of the customer dropdown panel */
+.customer-search-box {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.customer-search-box input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Scrollable options area; triggers onCustomerScroll() to fetch the next page */
+.customer-options-scroll {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.outline {
+    /* margin-left: 11px; */
+        margin-bottom: 24px;
+}

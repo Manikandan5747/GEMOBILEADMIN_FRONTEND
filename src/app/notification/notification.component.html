@@ -1,0 +1,96 @@
+
+<div class="col-md-12">
+    <div class="page-title"> Notification </div>
+    <div class="spinner__loading" *ngIf="loading"> <mat-spinner></mat-spinner> </div>
+    <div class="col-md-12 row">
+      <div class="row" style="padding-left: 21px !important">
+           
+        <mat-form-field class="col-md-10 p-0 pr-2" appearance="outline" >
+          <mat-label>Search Notification Detail</mat-label>
+          <input matInput (keyup)="applyFilter($event)" [(ngModel)]="search" placeholder="" />
+        </mat-form-field>
+        <div class="col-md-2" style="text-align: end"  *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'">
+          <button style="cursor: pointer;" mat-mini-fab color="primary"   matTooltip="Create Notification" (click)="addRecord()"> + </button>
+        </div>
+      
+      </div>
+    </div>
+
+      <div class="mat-table-container" id="test1" #test1>
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">
+      <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+              No records found.
+          </mat-footer-cell>
+      </ng-container>
+     
+      <ng-container matColumnDef="notificationtitle" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> notification title </th>
+          <td mat-cell *matCellDef="let element"> {{element?.notificationtitle}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="notificationcontent">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> notification content </th>
+          <td mat-cell [matTooltip]="element?.notificationcontent" *matCellDef="let element"> {{element?.notificationcontent.slice(0,50)}}... </td>
+      </ng-container>
+
+      <ng-container matColumnDef="notifytype">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Notification Category </th>
+          <td mat-cell *matCellDef="let element"> {{element?.notifytype}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="messagestatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>message status  </th>
+        <td mat-cell *matCellDef="let element"> {{element?.messagestatus}} </td>
+    </ng-container>
+
+      <ng-container matColumnDef="fcmtoken">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>fcm token </th>
+        <td mat-cell [matTooltip]="element?.fcmtoken" *matCellDef="let element"> {{element && element.fcmtoken ? element.fcmtoken.slice(0, 25):"-"}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+      <td mat-cell *matCellDef="let element"> {{ element.status == 1 ? 'True' : 'False'}} </td>
+    </ng-container>
+
+      <ng-container matColumnDef="readreceipts">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> read receipts </th>
+          <td mat-cell *matCellDef="let element"> {{element.readreceipts == 0 ? "unread" : "read"}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+          <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+      </ng-container>
+      <!-- {{element && element.createdbyname ? element?.createdbyname : "CRM"}} -->
+      <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+          <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT  }} </td>
+      </ng-container>
+
+     
+
+  
+      <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+              Action
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button  matTooltip="Delete"  *ngIf="userPrivilegeObj && userPrivilegeObj?.deleteaccess == '1' && !element.readreceipts" 
+          (click)="deleteRecord(element)">
+          <mat-icon class="delete-mat-icon">delete</mat-icon>
+        </button>
+        
+          </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;" ></tr>
+  </table> 
+
+    </div>
+     <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" (page)="onPageChange($event)"
+        [length]="totalItemCount" showFirstLastButtons></mat-paginator>
+      <!-- <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator> -->
+    </div>

@@ -1,0 +1,19 @@
+<div class="mat-dialog-title" mat-dialog-title>
+    {{PageTitel}}
+    <button class="dialog-close-btn" mat-mini-fab color="" (click)="dialogRef.close()">X</button>
+</div>
+
+
+<section mat-dialog-content>
+    <app-add-edit-termsandconditions [isShowErrors]="isShowErrors" [action]="tc_pdf_url">
+
+    </app-add-edit-termsandconditions>
+</section>
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="update()">
+        Save
+    </button>
+ </div>

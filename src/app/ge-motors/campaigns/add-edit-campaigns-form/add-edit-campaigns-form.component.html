@@ -1,0 +1,121 @@
+<div class="">
+    <form [formGroup]="addEditForm" class="p-3 row">
+  
+      <mat-form-field class="col-md-6 readonly-input" appearance="fill">
+        <mat-label class="">Campaign Ref No</mat-label>
+        <input readonly matInput [errorStateMatcher]="matcher" formControlName="campaignrefno" type="text" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">Campaign Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="name" type="text" />
+        <mat-error *ngIf="addEditForm.controls['name'].hasError('required') && isShowErrors">Campaign name is
+          required</mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class=""> Start Date </mat-label>
+        <input (click)="picker.open()" readonly  [min]="minFromDate" matInput [matDatepicker]="picker" formControlName="startdate" (dateChange)="setEndDateMinValue()">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['startdate'].hasError('required') && isShowErrors">Start Date is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class=""> End Date </mat-label>
+        <input matInput (click)="picker1.open()" readonly [matDatepicker]="picker1" formControlName="enddate" [min]="addEditForm.controls['startdate'].value">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['enddate'].hasError('required') && isShowErrors">End Date is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type" >
+          <mat-select-filter [array]="typeDetailsList"   (filteredReturn)="typeFiltered=$event"
+            [displayMember]="'typename'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of typeDetailsList" [value]="item.typeid" [class.hide]="!typeFiltered(item)">
+            {{item.typename}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">tele status template</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="telestatustemplate" type="text" />
+        <mat-error *ngIf="addEditForm.controls['telestatustemplate'].hasError('required') && isShowErrors">telestatustemplate  is
+          required</mat-error>
+      </mat-form-field> -->
+
+    
+
+      <!-- <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">Campaign Status</mat-label>
+        <mat-select formControlName="campaignstatus">
+          <mat-option value="null">-</mat-option>
+          <mat-option value="active">Active</mat-option>
+          <mat-option value="inactive">IN-Active</mat-option>
+          <mat-option value="planning">Planning</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['campaignstatus'].hasError('required') && isShowErrors">Campaign Status is
+          required</mat-error>
+      </mat-form-field> -->
+
+
+      <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">description</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="description" type="text" />
+        <mat-error *ngIf="addEditForm.controls['description'].hasError('required') && isShowErrors">description is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">expected revenue</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="expectedrevenue" type="text" />
+        <mat-error *ngIf="addEditForm.controls['expectedrevenue'].hasError('pattern') && isShowErrors">
+          Invalid expected revenue format. Only numbers are allowed.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Budgeted Cost</mat-label>
+        <input matInput formControlName="budgetedcost" type="text" />
+        <mat-error *ngIf="addEditForm.controls['budgetedcost'].hasError('pattern') && isShowErrors">
+          Invalid budgeted cost format. Only numbers are allowed.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">actual cost</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="actualcost" type="text" />
+        <mat-error *ngIf="addEditForm.controls['actualcost'].hasError('pattern') && isShowErrors">
+          Invalid actual cost format. Only numbers are allowed.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">expected response</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="expectedresponse" type="text" />
+        <mat-error *ngIf="addEditForm.controls['expectedresponse'].hasError('pattern') && isShowErrors">
+          Invalid expected response format. Only numbers are allowed.
+        </mat-error>
+      </mat-form-field>
+
+    
+  
+      <div class=" pt-3 pb-3" *ngIf="campaignid">
+        <mat-label class="p-2 col-md-6 text-center">Status </mat-label>&nbsp;&nbsp;
+        <mat-radio-group (change)="radioChange($event)" aria-label="Is Status" formControlName="status" class="inputField exammanage-radio-group">
+          <mat-radio-button value="1">Active</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">Inactive</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <br>
+    </form>
+  </div>

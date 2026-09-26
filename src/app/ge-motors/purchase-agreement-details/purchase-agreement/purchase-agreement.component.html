@@ -1,0 +1,320 @@
+<!-- <div class="pdf-loading ">
+        <img src="../../../../assets/assets/logo_animation.gif" alt="">
+        <p>Copyright <span class="pdf-year"></span> © <a href="https://germanexperts.ae/" target="_blank">German Experts</a> car maintenance LLC. All Rights Reserved</p>
+    </div> -->
+<div style="display: flex;">
+    <div class="return-to-menu">
+        <a (click)="goback()"><span class="material-icons"> reply
+            </span> Return to back
+        </a>
+    </div>
+
+<div class="download-btn-wrapper">
+    <button class="pdf-download-btn" (click)="generatePDF()">Download PDF</button>
+</div>
+</div>
+<div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+
+<div class="pdf-box-wrapper">
+    <div class="pdf-main-wrapper" id="contentToConvert">
+
+        <div class="pdf-cover-page pdf-page pdf-page-break">
+            <img class="pdf-first-logo" src="../../../../assets/assets/ge motors.png" alt="">
+
+            <div class="pdf-title-container">
+                <p class="pdf-english-cover">PURCHASE</p>
+                <p class="pdf-english-cover">AGREEMENT</p>
+            </div>
+        </div>
+
+        <div class="pdf-other-pages pdf-page pdf-page-break">
+
+            <div class="date-container pt-2">
+                <p>The Road & Transport Authority</p>
+                <p class="date">{{showCarData?.purchasedate | date: DATE_ONLYFORMAT}}</p>
+            </div>
+
+            <p class="pdf-fs-14">An agreement has been reached between the parties</p>
+
+            <div class="pdf-mt-2"></div>
+
+            <p class="title pdf-mt-3">First Party: Seller</p>
+
+            <div class="cd-rows">
+
+                <div class="cd-each-row">
+                    <div>
+                        <p class="pdf-t-bld">Name</p>
+                        <p>:</p>
+                        <p class="buyer-name">{{showCarData?.buyer_accountname}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">ID No.</p>
+                        <p>:</p>
+                        <p class="buyer-id">{{showCarData?.buyer_emiratesid}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Traffic file No.</p>
+                        <p>:</p>
+                        <p class="buyer-traffic-file">{{showCarData?.buyer_trafficfileno}}</p>
+                    </div>
+                </div>
+
+                <div class="cd-each-row">
+                    <div>
+                        <p class="pdf-t-bld">Nationality</p>
+                        <p>:</p>
+                        <p class="buyer-nationality">{{showCarData?.buyer_nationality}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Contact no</p>
+                        <p>:</p>
+                        <p class="buyer-contact">{{showCarData?.buyer_phonenumber}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Address</p>
+                        <p>:</p>
+                        <p class="buyer-address address">
+                            <span *ngIf="showCarData?.buyer_country">
+                                {{showCarData?.buyer_country}}
+                            </span>
+                            <span *ngIf="showCarData?.buyer_state">
+                                - {{showCarData?.buyer_state}}
+                            </span>
+                            <span *ngIf="showCarData?.buyer_city">
+                                - {{showCarData?.buyer_city}}
+                            </span>
+                            <span *ngIf="showCarData?.buyer_pincode">
+                                - {{showCarData?.buyer_pincode}}
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="pdf-mt-2"></div>
+
+            <p class="title pdf-mt-3">Second Party: Buyer</p>
+
+
+            <div class="cd-rows">
+
+                <div class="cd-each-row">
+                    <div>
+                        <p class="pdf-t-bld">Name</p>
+                        <p>:</p>
+                        <p class="owner-name">{{showCarData?.seller_accountname}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">ID No.</p>
+                        <p>:</p>
+                        <p class="owner-id">{{showCarData?.seller_emiratesid}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Traffic file No.</p>
+                        <p>:</p>
+                        <p class="owner-traffic-file">{{showCarData?.seller_trafficfileno}}</p>
+                    </div>
+                </div>
+
+                <div class="cd-each-row">
+                    <div>
+                        <p class="pdf-t-bld">Nationality</p>
+                        <p>:</p>
+                        <p class="owner-nationality">{{showCarData?.seller_nationality}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Contact no</p>
+                        <p>:</p>
+                        <p class="owner-contact">{{showCarData?.seller_phonenumber}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Address</p>
+                        <p>:</p>
+                        <p class="owner-address address">
+                            <span *ngIf="showCarData?.seller_country">
+                                {{showCarData?.seller_country}}
+                            </span>
+                            <span *ngIf="showCarData?.seller_state">
+                                - {{showCarData?.seller_state}}
+                            </span>
+                            <span *ngIf="showCarData?.seller_city">
+                                - {{showCarData?.seller_city}}
+                            </span>
+                            <span *ngIf="showCarData?.seller_pincode">
+                                - {{showCarData?.seller_pincode}}
+                            </span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="pdf-mt-2"></div>
+
+            <p class="title pdf-mt-3">Vehicle Details</p>
+
+            <div class="cd-rows">
+
+                <div class="cd-each-row">
+                    <div>
+                        <p class="pdf-t-bld">Vehicle Make</p>
+                        <p>:</p>
+                        <p class="vehicle-name">{{showCarData?.brandname}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Vehicle Type</p>
+                        <p>:</p>
+                        <p class="vehicle-type">{{showCarData?.bodytype}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Vehicle Year</p>
+                        <p>:</p>
+                        <p class="vehicle-year">{{showCarData?.modelyear}}</p>
+                    </div>
+
+                    <div>
+                        <p class="pdf-t-bld">VIN NUMBER</p>
+                        <p>:</p>
+                        <p class="vehicle-vin">{{showCarData?.chasisno ?? ''}}</p>
+                    </div>
+                    <!-- <div *ngFor="let item of items; let i = index">
+                            <p class="pdf-t-bld"><span>{{i+1}}.</span>VIN NUMBER</p>
+                            <p>:</p>
+                            <p class="vehicle-vin">{{item}}</p>
+                        </div> -->
+                </div>
+
+                <div class="cd-each-row">
+                    <div>
+                        <p class="pdf-t-bld">Vehicle Color</p>
+                        <p>:</p>
+                        <p class="vehicle-color">{{showCarData?.carcolor}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">Vehicle Plate</p>
+                        <p>:</p>
+                        <p class="vehicle-plate">{{showCarData?.platenumber}}</p>
+                    </div>
+                    <div>
+                        <p class="pdf-t-bld">No. of Cylinders</p>
+                        <p>:</p>
+                        <p class="vehicle-cylinder">{{showCarData?.noofcylinder}}</p>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="pdf-mt-2"></div>
+
+            <p class="title pdf-mt-2 sc-p">Agreed Price: &nbsp; {{showCarData?.purchaseprice}}</p>
+
+            <div class="pdf-footer pt-1">
+                <div class="pdf-footer-line"></div>
+                <div class="pdf-upper-footer">
+                    <p>Feel free to contact us if you have any questions</p>
+                    <img class="pdf-footer-experts-800" src="../../../../assets/assets/800 EXPERTS.png" alt="">
+                    <img class="pdf-footer-email" src="../../../../assets/assets/Email.png" alt="">
+                </div>
+
+                <div class="pdf-lower-footer">
+                    <img class="pdf-footer-experts-in" src="../../../../assets/assets/Experts in Every Turn.png" alt="">
+                    <img class="pdf-footer-esma" src="../../../../assets/assets/ESMA.png" alt="">
+                    <img class="pdf-footer-iso" src="../../../../assets/assets/ISO.png" alt="">
+                    <img class="pdf-footer-carbon" src="../../../../assets/assets/Carbon Logo.png" alt="">
+                    <p class="pdf-footer-page-no">1</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pdf-other-pages pdf-page pdf-page-break">
+
+            <p class="title pdf-mt-2">Terms & Condtions</p>
+
+            <div class="terms pdf-mt-1">
+                <ol type="1">
+                    <li>
+                        The buyer acknowledges that they have inspected the car before purchasing it and accepts it in
+                        its current condition, with no right to return it for any reason.
+                    </li>
+                    <li>
+                        The buyer must pay the full value of the car before vehicle registration.
+                    </li>
+                    <li>
+                        The seller must transfer ownership of the car to the buyer within 5 days from the date of this
+                        agreement.
+                    </li>
+                    <li>
+                        The sold car cannot be returned or exchanged, and the deposit paid is non-refundable.
+                    </li>
+                    <li>
+                        External sale is the responsibility of both parties financially and legally.
+                    </li>
+                    <li>
+                        The vehicle model is determined based on official documents.
+                    </li>
+                    <li>
+                        The deposit is only refunded upon mutual agreement, explicitly stated in the purchase notes.
+                    </li>
+                    <li>
+                        Any scratching, alteration, modification, deletion, or change to the content of the sales
+                        contract after signing and approval renders it void, ensuring verification of the provided
+                        information.
+                    </li>
+                    <li>
+                        This sales contract is issued in three copies, one for each contracting party, for enforcement,
+                        and one copy for the Roads and Transport Authority for preservation, documentation, and
+                        auditing.
+                    </li>
+                </ol>
+            </div>
+
+            <div class="signature-container pdf-mt-4">
+                <div>
+                    <p>Buyer Signature</p>
+                    <img width="100" *ngIf="showCarData && showCarData.buyer_sign_path" class="sign" [src]="'data:image/png;base64,' + (showCarData.buyer_sign_path_base64 || '')" alt="Buyer Signature">
+                    <div class="sign-line buyer-sign"></div>
+                </div>
+                <div>
+                    <p>Seller Signature</p>
+                    <img width="150" *ngIf="showCarData && showCarData.seller_sign_path" class="sign" [src]="'data:image/png;base64,' + (showCarData.seller_sign_path_base64 || '')" alt="Seller Signature">
+                    <div class="sign-line seller-sign"></div>
+                </div>
+                <div>
+                    <p>CEO Signature</p>
+                    <img width="150" *ngIf="showroomSign" class="sign" [src]="'data:image/png;base64,' + (showroomSign || '')" alt="CEO Signature">
+
+                    <div class="sign-line showroom-sign"></div>
+                </div>
+            </div>
+
+            <div class="pdf-footer pdf-pt-1">
+                <div class="pdf-footer-line"></div>
+                <div class="pdf-upper-footer">
+                    <p>Feel free to contact us if you have any questions</p>
+                    <img class="pdf-footer-experts-800" src="../../../../assets/assets/800 EXPERTS.png" alt="">
+                    <img class="pdf-footer-email" src="../../../../assets/assets/Email.png" alt="">
+                </div>
+
+                <div class="pdf-lower-footer">
+                    <img class="pdf-footer-experts-in" src="../../../../assets/assets/Experts in Every Turn.png" alt="">
+                    <img class="pdf-footer-esma" src="../../../../assets/assets/ESMA.png" alt="">
+                    <img class="pdf-footer-iso" src="../../../../assets/assets/ISO.png" alt="">
+                    <img class="pdf-footer-carbon" src="../../../../assets/assets/Carbon Logo.png" alt="">
+                    <p class="pdf-footer-page-no">2</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

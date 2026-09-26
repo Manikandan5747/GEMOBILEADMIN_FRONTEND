@@ -1,0 +1,128 @@
+<div class="col-md-12">
+    <div class="page-title"> Setting </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Setting Detail</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="" />
+            </mat-form-field>
+    
+            <div class="col-md-1" style="text-align:end ;">
+                <img *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'"  width="45" matTooltip="Sold" (click)="issolddate3days()" style="cursor:pointer;border-radius: 35px ;"
+                    src="assets/images/soldout_icon.png" class="button-icon"
+                    alt="Sold car icon" mat-responsive />
+            </div>
+    
+            <div class="col-md-1" style="text-align: end" *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Setting"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+    
+
+            <ng-container matColumnDef="appsetcategory">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Setting category </th>
+                <td mat-cell *matCellDef="let element"> {{element?.appsetcategory}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="appsetparameter">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Setting parameter </th>
+                <td mat-cell *matCellDef="let element"> {{element?.appsetparameter}} </td>
+            </ng-container>
+
+          
+
+            <ng-container matColumnDef="appsetparametervalue">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Setting parameter value</th>
+                <td mat-cell *matCellDef="let element"  style="cursor: pointer !important;"> 
+                  <span (click)="copyToClipboard(element?.appsetparametervalue)" style="cursor: pointer !important;" matTooltip="Click to copy">
+                    {{ element?.appsetparametervalue?.length > 40 ? (element?.appsetparametervalue | slice:0:40) + '...' : element?.appsetparametervalue }}
+
+                  </span>
+                </td>
+              </ng-container>
+
+            
+            <ng-container matColumnDef="settingdate_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> setting date at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.settingdate_at | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="settingexpirydate_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> setting expiry date at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.settingexpirydate_at | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <td mat-cell *matCellDef="let element"> {{element?.status == 1 ? "Active" : "InActive"}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_by" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_at | date: DATE_FORMAT}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef> Image </th>
+                <td mat-cell *matCellDef="let element">
+                    <a *ngIf="element.image; else noImage" [href]="url + element.image" target="_blank">
+                        <img class="spclofferpath" [src]="url + element.image" alt="Image" />
+                    </a>
+                    <ng-template #noImage>
+                       -
+                    </ng-template>
+                </td>
+            </ng-container>
+            
+            
+            
+
+
+            <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Edit"  (click)="editRecord(element)"  *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'">
+                        <mat-icon class="edit-mat-icon">edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

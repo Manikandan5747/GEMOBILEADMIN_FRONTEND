@@ -1,0 +1,51 @@
+
+<div mat-dialog-title>
+    {{title}}
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<div class=" p-4">
+   
+
+
+    <form [formGroup]="addEditForm">
+
+        <div class="row">
+
+
+
+            <mat-form-field class="pt-2 col-md-6 field" appearance="outline"> <mat-label class="">Leave Start Date</mat-label>
+                <input   matInput readonly [disabled]="isReadOnlyUser" datePickerFormat="YYYY/MM/DD" [matDatepicker]="dp2"
+                  placeholder="" formControlName="leavestartdate">
+                <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                <mat-datepicker #dp2></mat-datepicker>
+                <mat-error *ngIf="addEditForm.controls['leavestartdate'].hasError('required') && isShowErrors"> Start Date is
+                  Required</mat-error>
+              </mat-form-field>
+        
+              <mat-form-field class="pt-2 col-md-6 field" appearance="outline"> <mat-label class="">Leave End Date</mat-label>
+                <input matInput readonly [disabled]="isReadOnlyUser" datePickerFormat="YYYY/MM/DD" [matDatepicker]="dp1"
+                  placeholder=""  [min]="addEditForm.controls['leavestartdate'].value" 
+                  formControlName="leaveenddate">
+                <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                <mat-datepicker #dp1></mat-datepicker>
+                <mat-error *ngIf="addEditForm.controls['leaveenddate'].hasError('required') && isShowErrors"> End Date is
+                  Required</mat-error>
+              </mat-form-field>
+        
+            
+              
+
+            
+    </div>
+    </form>
+</div>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+        Save
+    </button>
+</div>

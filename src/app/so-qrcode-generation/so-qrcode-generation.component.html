@@ -1,0 +1,82 @@
+<!-- <app-header></app-header> -->
+<div class="col-md-12">
+    <div class="page-title"> Special Offer QR Generation </div>
+
+    <!-- {{startTime | date: "dd-MMM-yyyy hh:mm:ssa.SSS"  }} -- {{endTime  | date: "dd-MMM-yyyy hh:mm:ssa.SSS" }}
+    --{{loadTime  | date: "dd-MMM-yyyy hh:mm:ssa.SSS" }} -->
+    <div class="spinner__loading" *ngIf="loading"> <mat-spinner></mat-spinner> </div>
+    <div class="col-md-12 row">
+      <div class="row" style="padding-left: 10px !important">
+           
+     
+        <mat-form-field class="col-md-10 pr-2" appearance="outline">
+          <mat-label>Search SO QR Detail</mat-label>
+          <input matInput [(ngModel)]="search"  (keyup)="applyFilter($event)" placeholder="" />
+          <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear"
+          (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+      </button>
+   </mat-form-field>
+        
+      
+      </div>
+    </div>
+
+      <div class="mat-table-container" id="test1" #test1>
+    
+    <table mat-table [dataSource]="dataSource" matSort >
+      <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+              No records found.
+          </mat-footer-cell>
+      </ng-container>
+     
+      <ng-container matColumnDef="qr_codeid" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> qr codeid </th>
+          <td mat-cell *matCellDef="let element"> {{element?.qr_codeid}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="specialofferid">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>specialoffer id</th>
+          <td mat-cell *matCellDef="let element"> {{element?.specialofferid}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="unique_code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>unique code </th>
+          <td mat-cell *matCellDef="let element"> {{element?.unique_code}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fcm_token">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>fcm token </th>
+        <td mat-cell *matCellDef="let element"> {{element?.fcm_token}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="qr_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>qr  expiry date </th>
+        <td mat-cell *matCellDef="let element"> {{element?.qr_date | date: DATE_FORMAT }} </td>
+    </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+        <td mat-cell *matCellDef="let element"> {{ element.status == 1 ? 'True' : 'False'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by" sticky>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+          <td mat-cell *matCellDef="let element"> Mobile User</td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+          <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT  }} </td>
+      </ng-container>
+  
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;" ></tr>
+  </table> 
+
+    </div>
+    
+      <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+    </div>

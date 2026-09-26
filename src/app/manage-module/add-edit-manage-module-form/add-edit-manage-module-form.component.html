@@ -1,0 +1,179 @@
+<div class="col-md-12">
+  <form [formGroup]="addEditForm" class="p-3">
+
+    <div class="row">
+      <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">Module Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="modulename" type="text" />
+        <mat-error *ngIf="addEditForm.controls['modulename'].hasError('required') && isShowErrors">Module name is
+          required</mat-error>
+      </mat-form-field>
+
+
+       <mat-form-field class="col-md-6 " appearance="outline">
+        <mat-label class="">Privilege Key</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="privilegekey" type="text" />
+        <mat-error *ngIf="addEditForm.controls['privilegekey'].hasError('required') && isShowErrors">Privilege Key is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label class="">Route Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="routename" type="text" />
+        <mat-error *ngIf="addEditForm.controls['routename'].hasError('required') && isShowErrors">Route Name is required
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div class="row">
+
+      <div class="outline col-md-6 pt-3 pb-3" style="height: 61px;">
+        <mat-label class="p-2 col-md-6 text-center">is Parent </mat-label>&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Status" formControlName="isparent" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value="1">Yes</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" *ngIf="this.addEditForm.get('isparent')?.value != '1'">
+          <mat-label class="">Parent module</mat-label>
+          <mat-select formControlName="parentmodid">
+            <mat-option value="null">Null </mat-option>
+            <mat-option *ngFor="let ele of moduleList" [value]="ele.module_id">
+              {{ele.modulename}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div class="row">
+
+
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label class="">Icon Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="iconname" type="text" />
+        <mat-error *ngIf="addEditForm.controls['iconname'].hasError('required') && isShowErrors">Icon Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label class="">Menu Order</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="menuorder" type="text" />
+        <mat-error *ngIf="addEditForm.controls['menuorder'].hasError('required') && isShowErrors">Menu Order is required
+        </mat-error>
+      </mat-form-field>
+
+
+    </div>
+
+
+
+    <div class="row">
+      <div class="outline pt-3 pb-3 col-md-6">
+        <mat-label class="p-2 col-md-6 text-center">Status </mat-label>&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Status" formControlName="status" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value="1">Yes</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+
+      <div class="outline pt-3 pb-3 col-md-6">
+        <mat-label class="p-2 col-md-6 text-center"> is System Menu</mat-label>&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Status" formControlName="issystemmenu" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value="1">Yes</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="outline pt-3 pb-3 col-md-6">
+        <mat-label class="p-2 col-md-6 text-center"> is Report</mat-label>&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Status" formControlName="isreport" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value="1">Yes</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+
+      <div class="outline pt-3 pb-3 col-md-6" *ngIf="addEditForm.get('app')">
+        <div class="row">
+          <!-- Label (left side) -->
+          <div class="col-2">
+            <label class="form-label">Privileges</label>
+          </div>
+
+          <!-- Checkboxes (right side) -->
+          <div class="col-10" formGroupName="app">
+            <mat-checkbox formControlName="gemobileadmin" class="me-3">GE Mobile Admin</mat-checkbox>
+            <mat-checkbox formControlName="gemotorsadmin">GE Motors Admin</mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <br>
+
+    <div class="row">
+
+      <div class="outline pt-3 pb-3 col-md-6">
+        <mat-label class="p-2 col-md-6 text-center"> is Misc</mat-label>&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Status" formControlName="ismisc" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value="1">Yes</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <br>
+
+    <!-- List of Misc Name inputs -->
+    <div class="col-md-6" *ngIf="addEditForm.get('ismisc')?.value === '1'">
+      <label class="fw-bold mb-2">Misc Names</label>
+
+      <div formArrayName="miscItems">
+        <div *ngFor="let item of miscItems.controls; let i = index" [formGroupName]="i"
+          class="d-flex align-items-center gap-2 mb-2">
+
+
+          <mat-form-field appearance="outline" class="flex-grow-1">
+            <input matInput formControlName="misc_name" placeholder="Enter misc name" />
+            <mat-error
+              *ngIf="item.get('misc_name')?.hasError('required') && item.get('misc_name')?.touched && addEditForm.get('ismisc')?.value === '1'">
+              Misc name is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-checkbox class="custom-checkbox" formControlName="status"></mat-checkbox>
+
+          <button mat-icon-button color="warn" (click)="removeMiscItem(i)" *ngIf="miscItems.length > 1">
+            <mat-icon class="custom-icon icon-button">delete</mat-icon>
+          </button>
+
+          <button mat-icon-button color="primary" (click)="addMiscItem()" *ngIf="i === miscItems.length - 1">
+            <mat-icon class="custom-icon icon-button">add</mat-icon>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </form>
+</div>

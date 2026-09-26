@@ -1,0 +1,38 @@
+<div mat-dialog-title>
+    {{title}}
+      <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+    </div>
+    
+    <div class="col-md-12 row p-4">
+        <form [formGroup]="addEditForm">
+      
+         <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">User Name</mat-label>
+            <input matInput required  [errorStateMatcher]="matcher" formControlName="username" type="text"   />
+            <mat-error *ngIf="addEditForm.controls['username'].hasError('required') && isShowErrors" >User Name is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['username'].errors?.['whitespace']">
+              White space not allowed
+          </mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Password</mat-label>
+            <input matInput  formControlName="password" type="text"   />
+            <mat-error *ngIf="addEditForm.controls['password'].hasError('required') && isShowErrors" >Password is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['password'].errors?.['whitespace']">
+              White space not allowed
+          </mat-error>
+          </mat-form-field>
+        
+    </form>
+    </div>
+    
+    <div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+      <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+          Cancel
+      </button>
+      <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          Save
+      </button>
+    </div>
+    

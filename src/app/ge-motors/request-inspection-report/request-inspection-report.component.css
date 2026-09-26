@@ -1,0 +1,32 @@
+/* Approve button */
+button[mattooltip="Approve Record"] .large-icon,
+.approve-btn .large-icon {
+  color: #2e7d32; /* green */
+}
+
+/* Reject button */
+button[mattooltip="Reject Record"] .large-icon,
+.reject-btn .large-icon {
+  color: #c62828; /* red */
+}
+
+.large-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+/* Optional: subtle hover feedback */
+.approve-btn:hover .large-icon {
+  color: #1b5e20;
+}
+
+.reject-btn:hover .large-icon {
+  color: #b71c1c;
+}
+
+/* ::ng-deep .multiline-tooltip {
+  white-space: pre-line;
+  font-size: 12px;
+  text-align: center;
+} */

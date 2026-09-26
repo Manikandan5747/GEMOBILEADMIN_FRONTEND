@@ -1,0 +1,56 @@
+<div mat-dialog-title>
+  Generate Test Drive
+  <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<section mat-dialog-content class="p-2" [formGroup]="testDriveForm">
+
+  <mat-form-field class="col-md-12 readonly-input" appearance="fill">
+    <mat-label class="">test drive Ref No </mat-label>
+    <input readonly matInput formControlName="testdriverefno" type="text" />
+  </mat-form-field>
+
+
+  <mat-form-field class="car-col" appearance="outline">
+    <mat-label>Showroom Cars</mat-label>
+    <mat-select formControlName="carshowroom_id">
+      <mat-option *ngFor="let item of opportunity_details" [value]="item.carshowroom_id">
+        <small>{{ item?.brandname }} - {{ item?.chasisno }} - {{ item?.modelname }}</small>
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="testDriveForm.get('carshowroom_id')!.hasError('required') && testDriveForm.get('carshowroom_id')!.touched">
+      Showroom Car is required.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="col-md-12" appearance="outline">
+    <mat-label>Date Of Test Drive</mat-label> 
+    <input (click)="picker.open()" [min]="minDate" readonly matInput [matDatepicker]="picker" formControlName="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="testDriveForm.get('date')!.hasError('required') && testDriveForm.get('date')!.touched">
+      Date Of Test Drive is required.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="col-md-12 Time-TD" appearance="outline">
+    <mat-label>Time Of Test Drive</mat-label>
+    <input matInput type="time" formControlName="time" />
+    <mat-error *ngIf="testDriveForm.get('time')!.hasError('required') && testDriveForm.get('time')!.touched">
+      Time Of Test Drive is required.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="col-md-12" appearance="outline">
+    <mat-label>Accompanying Test Drive</mat-label>
+    <input matInput type="text" formControlName="customer" />
+    <mat-error *ngIf="testDriveForm.get('customer')!.hasError('required') && testDriveForm.get('customer')!.touched">
+      Accompanying Test Drive is required.
+    </mat-error>
+  </mat-form-field>
+</section>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+  <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">Cancel</button>
+  <button mat-raised-button class="btnnn-prime-fn" (click)="submit()">Save</button>
+</div>

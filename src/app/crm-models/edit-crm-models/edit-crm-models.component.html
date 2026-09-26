@@ -1,0 +1,186 @@
+<div mat-dialog-title class="dialog-title">
+    <span>{{ title }}</span>
+
+    <button
+        type="button"
+        class="dialog-close-btn"
+        (click)="dialogRef.close()">
+        X
+    </button>
+</div>
+
+
+<section mat-dialog-content class="dialog-content">
+
+    <form [formGroup]="addEditForm">
+
+    
+        <div class="form-section">
+
+            <div class="section-header">
+                <span class="section-title">Vehicle Details</span>
+            </div>
+
+            <div class="row">
+
+                <mat-form-field
+                    class="pt-2 col-md-6"
+                    appearance="outline">
+
+                    <mat-label>Vehicle Make</mat-label>
+
+                    <input
+                        matInput
+                        formControlName="crm_makename"
+                        type="text"
+                        readonly />
+
+                </mat-form-field>
+
+
+                <mat-form-field
+                    class="pt-2 col-md-6"
+                    appearance="outline">
+
+                    <mat-label>Vehicle Model</mat-label>
+
+                    <input
+                        matInput
+                        formControlName="crm_modelname"
+                        type="text"
+                        readonly />
+
+                </mat-form-field>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section status-section">
+
+           
+
+            <div class="status-outline">
+
+                <span class="status-outline-label">
+                    Status
+                </span>
+
+                <mat-radio-group
+                    aria-label="Is Active"
+                    formControlName="status"
+                    class="inputField exammanage-radio-group">
+
+                    <mat-radio-button value="1">
+                        YES
+                    </mat-radio-button>
+
+                    <mat-radio-button value="0">
+                        NO
+                    </mat-radio-button>
+
+                </mat-radio-group>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-section image-section">
+
+            <div class="section-header">
+                <span class="section-title">
+                    Vehicle Model Image
+                </span>
+            </div>
+
+
+            <div class="image-section-card">
+
+           
+                <div class="image-upload-row">
+
+                    <div class="upload-area">
+
+                        <label
+                            for="file-upload-trade"
+                            class="upload-label">
+
+                            Choose Image
+                        </label>
+
+                        <input
+                            id="file-upload-trade"
+                            type="file"
+                            name="file[]"
+                            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                            (change)="onFileChanged($event)" />
+
+                       
+                    </div>
+
+
+                    <div class="avatar-preview">
+
+                        <a
+                            [href]="imageBase64"
+                            target="_blank">
+
+                            <img
+                                [src]="imageBase64"
+                                alt="Vehicle Model Image" />
+
+                        </a>
+
+                        <button
+                            type="button"
+                            class="remove-badge"
+                            *ngIf="imageBase64 !== 'assets/images/iconupload.png'"
+                            (click)="clearImage(); $event.stopPropagation()"
+                            title="Remove image">
+
+                            <mat-icon>close</mat-icon>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</section>
+
+
+<div
+    mat-dialog-actions
+    class="dialog-actions pull-right pr-2">
+
+    <button
+        mat-button
+        class="btnnn-default-fn"
+        [disabled]="loading"
+        (click)="dialogRef.close()">
+
+        Cancel
+
+    </button>
+
+
+    <button
+        mat-raised-button
+        class="btnnn-prime-fn"
+        [disabled]="loading"
+        (click)="save()">
+
+        {{ loading ? 'Saving...' : 'Save' }}
+
+    </button>
+
+</div>

@@ -1,0 +1,13 @@
+.mat-row{
+    text-transform: capitalize;
+}
+/* mat-icon{
+    cursor: pointer !important; font-size: 24px !important;
+  } */
+
+  mat-label,mat-option {
+    text-transform: capitalize ; 
+  }
+  
+
+  

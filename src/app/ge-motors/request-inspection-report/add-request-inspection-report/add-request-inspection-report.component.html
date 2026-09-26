@@ -1,0 +1,124 @@
+<div mat-dialog-title>
+    Request Inspection Report
+   <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+<div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+</div>
+<section mat-dialog-content>
+
+<div class="col-md-12 row p-2">
+  <form [formGroup]="addEditForm">
+    <div class="row">
+
+
+       <mat-form-field class="pt-2 col-md-6 readonly-input" appearance="fill">
+        <mat-label class="">Request Ref No </mat-label>
+        <input readonly matInput formControlName="request_ref_no" type="text" />
+        <mat-error *ngIf="addEditForm.controls['request_ref_no'].hasError('required') && isShowErrors">Request
+          Ref No is required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['request_ref_no'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label>Showroom Cars</mat-label>
+        <mat-select formControlName="carshowroom_id"
+        [disabled]="isrelated_module">
+          <mat-select-filter [array]="cartotalList" [displayMember]="'carshowroomrefno'"></mat-select-filter>
+          <mat-option *ngFor="let item of cartotalList" [value]="item.carshowroom_id"
+            [class.hide]="!isShowroomCarFiltered(item)">
+            {{ item.carshowroomrefno?.trim() || 'N/A' }} -
+            {{ item.chasisno?.trim() || 'No Chassis' }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['carshowroom_id'].hasError('required') && isShowErrors">
+          Showroom Car is required
+        </mat-error>
+      </mat-form-field>
+
+     
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label>Customer</mat-label>
+        <mat-select formControlName="reg_id" panelClass="customer-select-panel">
+          <div class="customer-search-box">
+            <input matInput
+                   type="text"
+                   placeholder="Search customer by name / reg id..."
+                   [formControl]="customerSearchCtrl"
+                   (keydown)="$event.stopPropagation()" />
+          </div>
+          <div class="customer-options-scroll" (scroll)="onCustomerScroll($event)">
+            <mat-option *ngFor="let item of customerList" [value]="item.reg_id">
+              {{ item.customername }}  ({{ item.reg_id }})
+            </mat-option>
+            <mat-option *ngIf="customerLoading" disabled>Loading...</mat-option>
+            <mat-option *ngIf="!customerLoading && customerList.length === 0" disabled>
+              No customers found
+            </mat-option>
+          </div>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['reg_id'].hasError('required') && isShowErrors">
+          Customer is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label>Request Mode</mat-label>
+        <mat-select formControlName="request_mode" disabled>
+          <mat-option value="PORTAL_APP">Portal</mat-option>
+          <mat-option value="MOBILE_APP">Mobile App</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+        <!-- Request Status -->
+    <mat-form-field class="col-md-6 pt-2"  appearance="outline">
+      <mat-label>Request Status</mat-label>
+      <mat-select formControlName="request_status" >
+        <mat-option value="PENDING">Pending</mat-option>
+        <mat-option value="APPROVED">Approved</mat-option>
+        <mat-option value="REJECTED">Rejected</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+      <!-- <div class="col-md-6 outline pt-2 pb-2" *ngIf="role_id == 1">
+        <mat-label class="pr-2 pt-5 text-center">Status </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="status" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button value='0'>In Active</mat-radio-button>
+        </mat-radio-group>
+      </div> -->
+
+
+       <!-- <div class="row p-3"> -->
+      <div class="outline col-md-6 pt-3 pb-3" style="float: right;margin-top: 10px" *ngIf="role_id == 1"> &nbsp;&nbsp; 
+        <mat-label class="pr-2 pt-5  text-center">Status </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="status" 
+          class="inputField exammanage-radio-group" mat-form-field>
+          <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button value='0'>In Active</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-12" appearance="outline">
+        <mat-label>Narration/Note</mat-label>
+        <textarea matInput formControlName="remark" type="text"></textarea>
+      </mat-form-field>
+
+    </div>
+  </form>
+</div>
+
+</section>
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+   <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+       {{ isViewMode ? 'Close' : 'Cancel' }}
+   </button>
+   <button mat-raised-button class="btnnn-prime-fn" (click)="save()" *ngIf="!isViewMode">
+       Save
+   </button>
+</div>

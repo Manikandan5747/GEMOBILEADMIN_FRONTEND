@@ -1,0 +1,71 @@
+<div mat-dialog-title>
+  Create Notification
+      <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+    </div>
+    
+    <div class="col-md-12 row p-4">
+        <form [formGroup]="addEditForm">
+      
+      
+          <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Notification Title</mat-label>
+            <input matInput  formControlName="notificationtitle" type="text"   />
+            <mat-error *ngIf="addEditForm.controls['notificationtitle'].hasError('required') && isShowErrors" >Notification Title is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['notificationtitle'].errors?.['whitespace']">
+              White space not allowed
+          </mat-error>
+          </mat-form-field>
+
+
+          <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Notification Content</mat-label>
+            <input matInput  formControlName="notificationcontent" type="text"   />
+            <mat-error *ngIf="addEditForm.controls['notificationcontent'].hasError('required') && isShowErrors" >Notification Content is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['notificationcontent'].errors?.['whitespace']">
+              White space not allowed
+          </mat-error>
+          </mat-form-field>
+
+
+
+          <mat-form-field class="pt-2" appearance="outline">
+            <mat-label>Notification Category</mat-label>
+            <mat-select  aria-label="Category" formControlName="notifytype"  required>
+               <mat-option *ngFor="let item of categoryList" value="{{ item }}">{{  item }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="addEditForm.controls['notifytype'].hasError('required') && isShowErrors" >Notification Category is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="pt-2" appearance="outline" *ngIf="this.addEditForm.get('notifytype')?.value == 'Specific Notification'">
+            <mat-label>Users</mat-label>
+            <mat-select formControlName="user_id" >
+              <mat-select-filter [array]="approvedCustomerList" (filteredReturn)="userDetailsList=$event"
+                [displayMember]="'customername'">
+              </mat-select-filter>
+              <mat-option *ngFor="let item of approvedCustomerList" [value]="item.reg_id" [class.hide]="!userFiltered(item)">
+                {{item.customername}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <!-- <mat-form-field class="pt-2" appearance="outline">
+            <mat-label>FCM token</mat-label>
+            <mat-select  aria-label="country" formControlName="fcmtoken"  required>
+               <mat-option *ngFor="let item of customerList" value="{{ item.fcmtoken }}">{{  item.fcmtoken }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="addEditForm.controls['fcmtoken'].hasError('required') && isShowErrors" >Notification Content is required</mat-error>
+          </mat-form-field> -->
+        
+    </form>
+    </div>
+    
+    <div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+      <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+          Cancel
+      </button>
+      <button *ngIf="!data" mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          Save
+      </button>
+    </div>
+    

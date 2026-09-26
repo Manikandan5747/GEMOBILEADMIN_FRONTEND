@@ -1,0 +1,70 @@
+<div mat-dialog-title>
+{{title}}
+  <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<div class="col-md-12 row p-4">
+    <form [formGroup]="addEditForm">
+  
+
+      <div class="">
+        <h1>Image Upload 
+            <small>with preview</small>
+        </h1>
+        <div class="avatar-upload">
+            <div class="avatar-edit">     
+                <input (change)="onFileChanged($event)" type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                <label for="imageUpload">
+                  <mat-icon class="edit-mat-icon avatar-edit">edit</mat-icon>
+                </label>
+            </div>
+            <div class="avatar-preview" for="imageUpload">
+               <img id="imagePreview" height="200" src={{imageBase64}}>
+            </div>
+        </div>
+    </div>
+
+    <!-- <mat-form-field class="pt-2" appearance="outline">
+      <mat-label class="">Company</mat-label>
+      <input matInput  formControlName="company" type="text"   />
+      <mat-error *ngIf="addEditForm.controls['company'].hasError('required') && isShowErrors" >Special Offer URL is required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['company'].errors?.['whitespace']">
+        White space not allowed
+    </mat-error>
+    </mat-form-field> -->
+
+    <mat-form-field class="pt-2" appearance="outline">
+      <mat-label class="">Company</mat-label>
+      <mat-select  placeholder="Select Company"  formControlName="cmp_id">
+        <mat-option *ngFor="let ele of companyList" [value]="ele.cmp_id">
+          {{ele.cmp_name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['cmp_id'].hasError('required') && isShowErrors">Company is
+        required</mat-error>
+    </mat-form-field>
+
+
+    
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Special Offer URL</mat-label>
+        <input matInput  formControlName="spclofferurl" type="text"   />
+        <mat-error *ngIf="addEditForm.controls['spclofferurl'].hasError('required') && isShowErrors" >Special Offer URL is required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['spclofferurl'].errors?.['whitespace']">
+          White space not allowed
+      </mat-error>
+      </mat-form-field>
+
+   
+    
+</form>
+</div>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+  <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+      Cancel
+  </button>
+  <button *ngIf="!data" mat-raised-button class="btnnn-prime-fn" (click)="save()">
+      Save
+  </button>
+</div>

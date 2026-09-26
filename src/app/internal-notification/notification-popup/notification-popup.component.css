@@ -1,0 +1,21 @@
+
+.mat-dialog-title {
+  padding: 3px !important;
+  margin: 0px !important;
+  background: #ececec;
+}
+
+p {
+  margin-top: 0 !important;
+  margin-bottom: 0rem !important;
+}
+
+.custom-class:hover {
+  background-color: #f0f0f0; /* Change this to the color you prefer */
+}
+/* .hov{
+  display: none !important;
+}
+.content :hover ~ .hov{
+  display: inline !important;
+} */

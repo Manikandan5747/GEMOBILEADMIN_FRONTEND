@@ -1,0 +1,42 @@
+<div class="col-md-12">
+  <form [formGroup]="addEditForm" class="p-3">
+
+
+     <mat-form-field appearance="outline" class="col-md-12">
+  <mat-label>Event Module Name</mat-label>
+  <input
+    type="text"
+    matInput
+    [formControl]="addEditForm.controls['table_name']"
+    [matAutocomplete]="auto"
+    placeholder="Search module..."
+  />
+
+  <mat-autocomplete #auto="matAutocomplete" >
+    <mat-option *ngFor="let option of filteredTableList | async" [value]="option.sModuleName">
+      {{ option.sModuleName }}
+    </mat-option>
+  </mat-autocomplete>
+
+  <mat-error *ngIf="f['table_name'].hasError('required') && isShowErrors">
+    Event Module Name is required
+  </mat-error>
+  <mat-error *ngIf="f['table_name'].hasError('invalid')">
+    Please select a valid module
+  </mat-error>
+</mat-form-field>
+
+
+
+
+    <div class="outline pt-3 pb-3">
+      <mat-label class="p-2 col-md-12 text-center">Status</mat-label>&nbsp;&nbsp;
+      <mat-radio-group aria-label="Is Status" formControlName="status" class="inputField exammanage-radio-group">
+        <mat-radio-button value="1">Active</mat-radio-button> &nbsp;
+        <mat-radio-button value="0">Inactive</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <br>
+
+  </form>
+</div>

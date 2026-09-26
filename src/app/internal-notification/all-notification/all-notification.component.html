@@ -1,0 +1,82 @@
+
+
+<div class="col-md-12">
+  <div class="page-title"> All Notification </div>
+  <div class="spinner__loading" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="col-md-12">
+    <div class="row align-items-center">
+      
+      <div class="col-md-11">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Search Notification Detail</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Type to search..." />
+        </mat-form-field>
+      </div>
+  
+      <div class="col-md-1 text-right">
+        <button  style="background-color: #fa5738;color: white;" class="btn btn-sm  w-100" (click)="markAllAsRead()">
+          Read All
+        </button>
+      </div>
+  
+    </div>
+  </div>
+  
+
+
+
+    <div class="mat-table-container">
+    <table mat-table [dataSource]="dataSource" matSortDirection="desc" class="lessons-table mat-elevation-z8 col-lg-12"
+      matSort matTableResponsive>
+     
+      <!-- username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="field-title">  Sender </th>
+        <td mat-cell *matCellDef="let row"> {{ row.username }} </td>
+      </ng-container>
+
+        <!-- Subject Column -->
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="field-title">  Subject </th>
+          <td mat-cell *matCellDef="let row"> {{ row.subject }} </td>
+        </ng-container>
+
+
+        <!-- Message Body Column -->
+        <ng-container matColumnDef="messagebody">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="field-title">  Message </th>
+          <td mat-cell *matCellDef="let row"> {{ row.messagebody }} </td>
+        </ng-container>
+
+            <!-- isreaded Body Column -->
+            <ng-container matColumnDef="isreaded">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="field-title"> Status </th>
+              <td mat-cell *matCellDef="let row"> 
+                
+                <div *ngIf="row.isreaded === false" style="color: #f51111; cursor: pointer"
+               (click)="markAsRead(row.notificationid)" >
+               Mark as Read
+              </div>
+              <div *ngIf="row.isreaded === true" style="color: #f51111;">
+               Read
+            </div>
+          </td>
+            </ng-container>
+     
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="field-title"> Date </th>
+        <td mat-cell *matCellDef="let row"> {{ row.created_at | date: DATE_FORMAT }} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr   [ngClass]= "{'isInternalNotify': row.isreaded && row.isreaded == true}"
+       (click)="ViewNotificationPopup(row)" mat-row *matRowDef="let row; columns: displayedColumns" ></tr>
+    </table>
+    </div>
+
+    <mat-paginator [pageSize]="PAGE_SIZE"  [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+  
+  
+</div>

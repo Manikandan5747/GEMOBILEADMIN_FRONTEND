@@ -1,0 +1,135 @@
+<!-- <app-header></app-header> -->
+
+
+<!-- <button (click)="apicall()">Api Call</button> -->
+
+
+
+<div class="col-md-12">
+    <div class="page-title">Manage Digital Signature  </div>
+
+    <!-- {{startTime | date: "dd-MMM-yyyy hh:mm:ssa.SSS"  }} -- {{endTime  | date: "dd-MMM-yyyy hh:mm:ssa.SSS" }}
+    --{{loadTime  | date: "dd-MMM-yyyy hh:mm:ssa.SSS" }} -->
+    <div class="spinner__loading" *ngIf="loading"> <mat-spinner></mat-spinner> </div>
+    <div class="col-md-12 row">
+      <div class="row" style="padding-left: 10px !important">
+           
+     
+        <mat-form-field class="col-md-10 pr-2" appearance="outline">
+          <mat-label>Search Digital Signature Detail</mat-label>
+          <input matInput [(ngModel)]="search"  (keyup)="applyFilter($event)" placeholder="" />
+          <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear"
+          (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+      </button>
+   </mat-form-field>
+        
+      
+      </div>
+    </div>
+
+      <div class="mat-table-container" id="test1" #test1>
+    
+    <table mat-table [dataSource]="dataSource" matSort >
+      <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+              No records found.
+          </mat-footer-cell>
+      </ng-container>
+     
+      <ng-container matColumnDef="title" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> title </th>
+          <td mat-cell *matCellDef="let element"> {{element?.title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="customer_code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>customer code</th>
+          <td mat-cell *matCellDef="let element"> {{element?.customer_code}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="crm_module_ref_num">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CRM module ref num </th>
+          <td mat-cell *matCellDef="let element"> {{element?.crm_module_ref_num}} </td>
+      </ng-container>
+
+
+
+    <ng-container matColumnDef="customer_signature_img">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right"> Signature </th>
+      <td mat-cell *matCellDef="let element">
+        <!-- <a [href]="element.customer_signature_img" target="_blank"> -->
+         <img class="customer_signature_img" target="_blank" [src]="element.customer_signature_img" /> 
+        <!-- </a> -->
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="contract_number">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Number </th>
+      <td mat-cell *matCellDef="let element"> {{element?.contract_number}} </td>
+  </ng-container>
+
+    
+
+    <ng-container matColumnDef="contract_type_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>contract type  </th>
+        <td mat-cell *matCellDef="let element"> {{element?.contract_type_name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="contract_pdf_url">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>contract pdf url </th>
+        <td mat-cell *matCellDef="let element"> {{element?.contract_pdf_url}} </td>
+    </ng-container>
+    
+
+    <ng-container matColumnDef="CRM_module_ref_type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CRM module ref type </th>
+        <td mat-cell *matCellDef="let element"> {{element?.CRM_module_ref_type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acceptance_of_tc">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> acceptance of tc </th>
+        <td mat-cell *matCellDef="let element"> {{ element.acceptance_of_tc == 1 ? 'Checked' : 'False'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+        <td mat-cell *matCellDef="let element"> {{ element.status == 1 ? 'Active ' : 'In-Active'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by" sticky>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+          <td mat-cell *matCellDef="let element"> {{element?.createdbyname}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+          <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT  }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions" stickyEnd class="mat-col-levelDefault ">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+           Signed PDF
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <a [href]="element.contract_with_pdf_url" target="_blank" *ngIf="element.contract_with_pdf_url != null">
+            <img class="pdf" target="_blank"  src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="element.contract_with_pdf_url == null || element.contract_with_pdf_url =='null'">
+            <img class="pdf1" style="cursor:pointer" (click)="GenerateSignedPDF(element)" src="https://cdn-gbgfp.nitrocdn.com/SAyMxGsBrANOyQRDXrvWgzrScaSIjQPK/assets/static/optimized/rev-091a0e8/wp-content/uploads/2018/05/icona-pdf1.png" />
+          </a>
+
+          <a *ngIf="element.contract_type_name == 'USED CAR WARRANTY' && element?.createdbyname =='WEBAPP'">
+            <img class="pdf1" style="cursor:pointer" (click)="GenerateSignedPDF2(element)" src="https://thumbs.dreamstime.com/b/pdf-icon-vector-illustration-template-318878812.jpg" />
+          </a>
+
+         </td>
+    </ng-container>
+
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;" ></tr>
+  </table> 
+
+    </div>
+    
+      <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+    </div>

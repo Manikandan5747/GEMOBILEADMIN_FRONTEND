@@ -1,0 +1,75 @@
+<div class="col-md-12">
+    <div class="page-title"> Manage Showroom Category </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="row">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Showroom Category Detail</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="" />
+            </mat-form-field>
+            <div class="col-md-2" style="text-align: end"  *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'" >
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Showroom-Category"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+  
+    <div class="mat-table-container" id="test1" #test1>
+  
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="srcategoryname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Showroom Category  </th>
+                <td mat-cell *matCellDef="let element"> {{element?.srcategoryname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <td mat-cell *matCellDef="let element"> {{element?.status == 1 ? "Active" : "InActive"}} </td>
+            </ng-container>
+              <ng-container matColumnDef="created_by" >
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                  <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+              </ng-container>
+    
+              <ng-container matColumnDef="created_at">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                  <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT}} </td>
+              </ng-container>
+    
+              <ng-container matColumnDef="modified_by">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                  <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+              </ng-container>
+    
+              <ng-container matColumnDef="modified_at">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element?.modified_at | date: DATE_FORMAT }} </td>
+              </ng-container>
+  
+            <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Edit"  (click)="editRecord(element)"   *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'" > 
+                        <mat-icon class="edit-mat-icon">edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+  
+    </div>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+  </div>

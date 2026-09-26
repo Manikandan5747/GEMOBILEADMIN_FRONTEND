@@ -1,0 +1,125 @@
+<!-- <section id="sample-table" class="mat-elevation-z8 bg-white"> -->
+
+    <div class="page-title">Manage Terms and Conditions</div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner strokewidth="4"></mat-spinner>
+    </div>
+    <br>
+
+<div class="row">
+  <div class="col-md-10" >
+<mat-form-field appearance="outline" class="col-md-12">
+<mat-label>Search</mat-label>
+<input matInput (keyup)="addFilter($event)" placeholder="">
+</mat-form-field>
+</div>
+
+<div class="col-md-2" style="text-align: end">
+  <button style="cursor: pointer;" mat-mini-fab color="primary"
+      *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'" matTooltip="Create Terms and Conditions"
+      (click)="addRecord()"> + </button>
+</div>
+   </div>
+
+
+   
+
+
+   <div class="mat-table-container">
+ 
+  
+   <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+    
+    
+        <ng-container matColumnDef="contract_type_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Type </th>
+          <td mat-cell *matCellDef="let row"> {{row.contract_type_name}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="application_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Application ID </th>
+          <td mat-cell *matCellDef="let row"> {{row.application_id}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="tc_title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title </th>
+          <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.tc_title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="pdf_page_count">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>No Of Pages </th>
+          <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.pdf_page_count}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="tc_effective_date">
+            <th cdkDrag mat-header-cell *matHeaderCellDef mat-sort-header> Effective Date </th>
+            <td mat-cell *matCellDef="let element"> {{element?.tc_effective_date | date:'dd-MMM-yyyy'}} </td>
+          </ng-container>
+  
+    
+        <ng-container  matColumnDef="tc_pdf_url">
+          <th mat-header-cell *matHeaderCellDef> PDF URL </th>
+          <td mat-cell *matCellDef="let element">
+            <a [href]="element.tc_pdf_url" target="_blank">
+              <img target="_blank"  src="assets/images/pdf_icon.png" />
+            </a>
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.status}} </td>
+        </ng-container>
+  
+  
+  
+  
+  
+          
+        <ng-container matColumnDef="created_by">
+          <th cdkDrag mat-header-cell *matHeaderCellDef mat-sort-header> Created by </th>
+          <td mat-cell *matCellDef="let element"> {{element?.created_by}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="created_at">
+          <th cdkDrag mat-header-cell *matHeaderCellDef mat-sort-header>  Created On </th>
+          <td mat-cell *matCellDef="let element"> {{element?.created_at | date:DATE_FORMAT }} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="modified_by">
+          <th cdkDrag mat-header-cell *matHeaderCellDef mat-sort-header> Modified by </th>
+          <td mat-cell *matCellDef="let element"> {{element?.modified_by}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="modified_at">
+          <th cdkDrag mat-header-cell *matHeaderCellDef mat-sort-header> Modified On </th>
+          <td mat-cell *matCellDef="let element"> {{element?.modified_at | date:DATE_FORMAT }} </td>
+        </ng-container>
+
+  
+        <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+          <th cdkDrag mat-header-cell *matHeaderCellDef mat-sort-header >
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button matTooltip="In-Active" 
+            (click)="editRecord(element)">
+            <!-- *ngIf="userPrivilegeObj && userPrivilegeObj?.modifyaccess == '1'" -->
+              <mat-icon color= "accent" class="delete-mat-icon">delete</mat-icon>
+            </button>
+  
+          </td>
+        </ng-container>
+  
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" [ngClass]= "{'user-table-color': element.user_type_name && element.user_type_name == 'Admin'}"></tr>
+      </table>
+      </div>
+      <div class="no_records" *ngIf="dataSource?.data?.length === 0">No records found</div>
+    
+  
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  
+  <!-- </section> -->

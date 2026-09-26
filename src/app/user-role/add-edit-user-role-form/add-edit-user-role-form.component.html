@@ -1,0 +1,45 @@
+<div class="col-md-12 row p-4">
+
+    <form [formGroup]="addEditForm">
+      
+
+      <mat-form-field class="p-2 col-md-12" appearance="outline">
+        <mat-label class="">Role name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="rolename" type="text" />
+        <mat-error *ngIf="addEditForm.controls['rolename'].hasError('required') && isShowErrors">Role Name is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['rolename'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="p-2 col-md-12" appearance="outline">
+        <mat-label class="">Dashboard Redirection Url</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="dashboardurl" type="text" />
+        <mat-error *ngIf="addEditForm.controls['dashboardurl'].hasError('required') && isShowErrors">Dashboard Redirection Url is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['dashboardurl'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      
+
+    <br>
+
+
+      <mat-label  class="p-2 pt-2 text-center">Status </mat-label>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-group  aria-label="Is Active" formControlName="status"
+        class="inputField exammanage-radio-group" mat-form-field>
+        <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value='2'>In Active</mat-radio-button>
+      </mat-radio-group>
+
+      <br>
+     
+  
+    </form>
+  </div>

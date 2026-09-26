@@ -1,0 +1,14 @@
+<div class="row" style="background-color:rgba(17,17,17,.73)!important;height: 45px;color: white;">
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <div class="col-md-6 pt-2 font-nn">
+    <a style="text-decoration: none;" class="font-nn" target="_blank"
+      [href]="webversiondata?.weburl">{{webversiondata?.company_name}}</a>
+
+    © {{today.getFullYear()}} &nbsp; {{webversiondata?.webversion}}
+  </div>
+
+  <div class="col-md-5 pt-2 font-nn" style="text-align: end;">
+    Powered by <a style="text-decoration: none;" class="font-nn" target="_blank"
+      [href]="webversiondata?.weburl">{{webversiondata?.powered_by}}</a>
+  </div>
+</div>

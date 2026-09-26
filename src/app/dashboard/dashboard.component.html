@@ -1,0 +1,488 @@
+<div class="container-fluid">
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+
+  <div class="row">
+    <div class="col-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #22202082;" (click)="onHeaderSelect('Registration','INDIVIDUAL')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Total Mobile App Registration </b></h6>
+          <div>
+            <mat-card-title>{{individualUsercount}}</mat-card-title>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #fa5738;" (click)="onHeaderSelect('Pending','INDIVIDUAL')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Mobile App Approval Pending</b></h6>
+          <div>
+            <mat-card-title>{{pendingCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelect('Approved','INDIVIDUAL')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Mobile App Approval </b></h6>
+          <div>
+            <mat-card-title>{{individualApprovedCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelect('Cancel','INDIVIDUAL')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Mobile App Registration Reject </b></h6>
+          <div>
+            <mat-card-title >{{registrationCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #fff;" (click)="onHeaderSelect('OnHold','INDIVIDUAL')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Mobile App Registration On Hold </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{registrationOnHoldCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <div class="row">
+    <div class="col-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #22202082;" (click)="onHeaderSelect('Registration','CORPORATE')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Total Corporate Registration </b></h6>
+          <div>
+            <mat-card-title>{{corporateUsercount}}</mat-card-title>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #fa5738;" (click)="onHeaderSelect('Pending','CORPORATE')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Corporate Approval Pending</b></h6>
+          <div>
+            <mat-card-title>{{corporatePendingCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelect('Approved','CORPORATE')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Corporate Approval </b></h6>
+          <div>
+            <mat-card-title>{{corporateApprovedCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelect('Cancel','CORPORATE')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Corporate Registration Reject </b></h6>
+          <div>
+            <mat-card-title >{{corporateCancelCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3 pt-2" style="cursor: pointer !important;padding-left: 10px;">
+      <div class="card" style="background-color: #fff;" (click)="onHeaderSelect('OnHold','CORPORATE')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Corporate Registration On Hold </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{corporateOnholdCount}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+
+  <div class="row">
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #22202082;" (click)="onHeaderSelectCar('Total Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Total Car </b></h6>
+          <div>
+            <mat-card-title>{{CarCountList && CarCountList[0].value}}</mat-card-title>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #fa5738;" (click)="onHeaderSelectCar('Approved Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Approved Car</b></h6>
+          <div>
+            <mat-card-title>{{CarCountList && CarCountList[1].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelectCar('Pending Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Pending/Cancel Car </b></h6>
+          <div>
+            <mat-card-title >{{CarCountList && CarCountList[2].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #fff;" (click)="onHeaderSelectCar('Sold Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Sold Car </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{CarCountList && CarCountList[3].value}}</mat-card-title>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #22202082;" (click)="onHeaderSelectShowroom()">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Active Showroom </b></h6>
+          <div>
+            <mat-card-title>{{secondCarCountList[0] && secondCarCountList[0].value}}</mat-card-title>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #fa5738;" (click)="onHeaderSelectPortal('Active')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Active PortalUser</b></h6>
+          <div>
+            <mat-card-title>{{secondCarCountList[0] && secondCarCountList[1].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelectPortal('Pending')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Pending PortalUser </b></h6>
+          <div>
+            <mat-card-title >{{secondCarCountList[0] &&
+              secondCarCountList[2].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #fff;" (click)="onHeaderSelectPortal('Cancel')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Cancel PortalUser </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{secondCarCountList[0] &&
+              secondCarCountList[3].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+
+  <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+    <div class="card" style="background-color: #22202082;" (click)="onHeaderSelectRequest('TOTAL')">
+      <div class="card-body pt-2">
+        <h6 class="" style="font-size: 18px !important;"><b>Total Inspection Report Request</b></h6>
+        <div>
+          <mat-card-title>{{dashboardRequestStatusCount?.TOTAL || 0}}</mat-card-title>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+    <div class="card" style="background-color: #fa5738;" (click)="onHeaderSelectRequest('APPROVED')">
+      <div class="card-body pt-2">
+        <h6 class="" style="font-size: 18px !important;"><b>Approved Inspection Report Request</b></h6>
+        <div>
+          <mat-card-title>{{dashboardRequestStatusCount?.APPROVED || 0}}</mat-card-title>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+    <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelectRequest('PENDING')">
+      <div class="card-body pt-2">
+        <h6 class="" style="font-size: 18px !important;"><b>Pending Inspection Report Request</b></h6>
+        <div>
+          <mat-card-title>{{dashboardRequestStatusCount?.PENDING || 0}}</mat-card-title>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+    <div class="card" style="background-color: #fff;" (click)="onHeaderSelectRequest('REJECTED')">
+      <div class="card-body pt-2">
+        <h6 class="" style="font-size: 18px !important;"><b>Rejected Inspection Report Request</b></h6>
+        <div>
+          <mat-card-title style="color:#86888a;">{{dashboardRequestStatusCount?.REJECTED || 0}}</mat-card-title>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <div class="row mt-3">
+
+
+    <div class="col-6 pt-2" style="text-align: end;cursor: pointer !important;padding-right: 10px;">
+      <mat-icon matTooltip="See different chart" style="cursor: pointer !important;font-size: 32px !important;"
+        [matMenuTriggerFor]="userMenu" class="pl-4 edit-mat-icon">dashboard</mat-icon>
+
+
+
+      <!-- <div class="" style="float: right;cursor: pointer;" (click)="clear()" matTooltip="Clear Notification"> Clear
+      Notification</div> -->
+    </div>
+
+    <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
+      <a mat-menu-item (click)="pieChart()">
+        Pie Chart
+      </a>
+
+      <a mat-menu-item (click)="barChart()">
+        Bar Chart
+      </a>
+      <a mat-menu-item (click)="gauge()">
+        Gauge Chart
+      </a>
+    </mat-menu>
+
+    <div class="row mt-4 ">
+      <div class="col-md-6">
+
+        <!-- (select)="onPieSliceSelect($event)" -->
+        <div class="row">
+          <div class="col-12 " *ngIf="viewBarChart">
+            <div class="card">
+              <div class="card-header"> Mobile App Registration Status </div>
+              <mat-card-content>
+                <ngx-charts-bar-vertical *ngIf="data && data.length > 0" [view]="[750, 400]" [results]="data"
+                  [gradient]="gradient" [xAxis]="showXAxis" [showGridLines]="false" [barPadding]="barPadding"
+                  [legend]="legend" [showDataLabel]="showDataLabel" [xAxisLabel]="xAxisLabel" [scheme]="colorScheme"
+                  [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+              </mat-card-content>
+            </div>
+          </div>
+
+
+          <div class="col-12" *ngIf="viewPieChart">
+            <div class="card">
+              <div class="card-header"> Mobile App Registration Status </div>
+              <mat-card-content>
+                <ngx-charts-pie-chart *ngIf="data && data.length > 0" [view]="[750, 400]" [results]="data"
+                  [doughnut]="false" [gradient]="gradient" [legend]="legend" [labels]="showLabels"
+                  [scheme]="colorScheme" (select)="onSelect($event)" (activate)="onActivate($event)"
+                  (deactivate)="onDeactivate($event)">
+                </ngx-charts-pie-chart>
+              </mat-card-content>
+            </div>
+          </div>
+          <!-- [legendPosition]="legendPosition" -->
+          <div class="col-12" *ngIf="viewgGuge">
+            <div class="card">
+              <div class="card-header">Mobile App Registration Status </div>
+              <mat-card-content>
+                <ngx-charts-gauge *ngIf="data && data.length > 0" [legend]="legend" [view]="[750, 400]"
+                  [scheme]="colorScheme" [results]="data" [legend]="legend" [units]="'GE'" [min]="0" [max]="500"
+                  (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                </ngx-charts-gauge>
+              </mat-card-content>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="col-md-6">
+
+        <!-- (select)="onPieSliceSelect($event)" -->
+        <div class="row">
+          <div class="col-12 " *ngIf="viewBarChart">
+            <div class="card">
+              <div class="card-header"> Corporate Registration Status </div>
+              <mat-card-content>
+                <ngx-charts-bar-vertical *ngIf="corporatedata && corporatedata.length > 0" [view]="[750, 400]" [results]="corporatedata"
+                  [gradient]="gradient" [xAxis]="showXAxis" [showGridLines]="false" [barPadding]="barPadding"
+                  [legend]="legend" [showDataLabel]="showDataLabel" [xAxisLabel]="xAxisLabel" [scheme]="colorScheme"
+                  [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+              </mat-card-content>
+            </div>
+          </div>
+
+
+          <div class="col-12" *ngIf="viewPieChart">
+            <div class="card">
+              <div class="card-header"> Corporate Registration Status </div>
+              <mat-card-content>
+                <ngx-charts-pie-chart *ngIf="corporatedata && corporatedata.length > 0" [view]="[750, 400]" [results]="corporatedata"
+                  [doughnut]="false" [gradient]="gradient" [legend]="legend" [labels]="showLabels"
+                  [scheme]="colorScheme" (select)="onSelect($event)" (activate)="onActivate($event)"
+                  (deactivate)="onDeactivate($event)">
+                </ngx-charts-pie-chart>
+              </mat-card-content>
+            </div>
+          </div>
+          <!-- [legendPosition]="legendPosition" -->
+          <div class="col-12" *ngIf="viewgGuge">
+            <div class="card">
+              <div class="card-header">Corporate Registration Status </div>
+              <mat-card-content>
+                <ngx-charts-gauge *ngIf="corporatedata && corporatedata.length > 0" [legend]="legend" [view]="[750, 400]"
+                  [scheme]="colorScheme" [results]="corporatedata" [legend]="legend" [units]="'GE'" [min]="0" [max]="500"
+                  (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                </ngx-charts-gauge>
+              </mat-card-content>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+      <div class="col-md-6 mt-3">
+
+        <div class="row ">
+          <div class="col-12 " *ngIf="viewBarChart">
+            <div class="card">
+              <div class="card-header"> Car Availability Status </div>
+              <mat-card-content>
+                <ngx-charts-bar-vertical (select)="onHeaderSelectCar($event)"
+                  *ngIf="CarCountList && CarCountList.length > 0" [view]="[750, 400]" [results]="CarCountList"
+                  [gradient]="gradient" [xAxis]="showXAxis" [showGridLines]="false" [barPadding]="barPadding"
+                  [legend]="legend" [showDataLabel]="showDataLabel" [xAxisLabel]="xAxisLabel" [scheme]="colorScheme"
+                  [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+              </mat-card-content>
+            </div>
+          </div>
+          <div class="col-12" *ngIf="viewPieChart">
+            <div class="card">
+              <div class="card-header"> Car Availability Status </div>
+              <mat-card-content>
+                <ngx-charts-pie-chart (select)="onHeaderSelectCar($event)"
+                  *ngIf="CarCountList && CarCountList.length > 0" [view]="[750, 400]" [doughnut]="false"
+                  [results]="CarCountList" [gradient]="gradient" [legend]="legend" [labels]="showLabels"
+                  [scheme]="colorScheme" (select)="onSelect($event)" (activate)="onActivate($event)"
+                  (deactivate)="onDeactivate($event)">
+                </ngx-charts-pie-chart>
+              </mat-card-content>
+            </div>
+          </div>
+          <!-- [legendPosition]="legendPosition" -->
+          <div class="col-12" *ngIf="viewgGuge">
+            <div class="card">
+              <div class="card-header"> Car Availability Status </div>
+              <mat-card-content>
+                <ngx-charts-gauge (select)="onHeaderSelectCar($event)" *ngIf="CarCountList && CarCountList.length > 0"
+                  [legend]="legend" [view]="[750, 400]" [scheme]="colorScheme" [results]="CarCountList"
+                  [legend]="legend" [units]="'GE'" [min]="0" [max]="2000" (select)="onSelect($event)"
+                  (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                </ngx-charts-gauge>
+              </mat-card-content>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="col-md-6 mt-3">
+        <div class="card"
+          style="padding-left: 10px;overflow: hidden !important;height: 100% !important;border-radius: 10px;">
+          <div class="card-header"> Car Availability Status </div>
+          <mat-card-content>
+            <ngx-charts-advanced-pie-chart (select)="onHeaderSelectCar($event)"
+              *ngIf="CarCountList && CarCountList.length > 0" [view]="[600, 400]" [results]="CarCountList"
+              [gradient]="gradient" [xAxis]="showXAxis" [doughnut]="false" [showGridLines]="false"
+              [barPadding]="barPadding" [legend]="legend" [showDataLabel]="showDataLabel" [xAxisLabel]="xAxisLabel"
+              [scheme]="colorScheme" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+            </ngx-charts-advanced-pie-chart>
+          </mat-card-content>
+        </div>
+      </div>
+
+      <div class="col-md-6 mt-3">
+        <div class="card" style="height: 100% !important;border-radius: 10px;">
+          <div class="card-header"> Last Approved / Rejected Customer Details</div>
+          <div class="card-body pt-2"
+            style="text-transform: capitalize; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <div style="margin-bottom: 10px;">
+              <i class="material-icons" style="font-size: 20px; color: #007bff;">person</i>
+              <b style="font-size: 18px; margin-left: 5px;">NAME:</b> <span
+                style="margin-left: 10px;">{{lastApproval?.customername}}</span>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <i class="material-icons" style="font-size: 20px; color: #28a745;">phone</i>
+              <b style="font-size: 18px; margin-left: 5px;">MOBILE NUMBER:</b> <span
+                style="margin-left: 10px;">{{lastApproval?.mobilenumber}}</span>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <i class="material-icons" style="font-size: 20px; color: #ffc107;">check_circle</i>
+              <b style="font-size: 18px; margin-left: 5px;">STATUS:</b> <span
+                style="margin-left: 10px;">{{lastApproval?.customerstatus ? lastApproval?.customerstatus : "-"}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

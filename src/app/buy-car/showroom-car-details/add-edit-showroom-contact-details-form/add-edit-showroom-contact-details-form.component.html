@@ -1,0 +1,107 @@
+<div class="row p-2">
+  <form [formGroup]="addEditForm">
+
+    <mat-form-field class="p-2 col-md-6 readonly-input" appearance="fill">
+      <mat-label class="">Showroom Reference No</mat-label>
+      <input matInput readonly type="text" [value]="showroomdetailsno" />
+    </mat-form-field>
+
+
+    <mat-form-field class="p-2 col-md-6" appearance="outline">
+      <mat-label class="">Showroom Contact name</mat-label>
+      <input (change)="onSearchChange($event)" matInput [errorStateMatcher]="matcher" formControlName="showroomconname" type="text" />
+      <mat-error *ngIf="addEditForm.controls['showroomconname'].hasError('required') && isShowErrors">Showroom Contact
+        Name is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['showroomconname'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="p-2 col-md-6" appearance="outline">
+      <mat-label class="">Showroom Contact Number</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="showroomconno" type="number" />
+      <mat-error *ngIf="addEditForm.controls['showroomconno'].hasError('required') && isShowErrors">Showroom Contact
+        Number is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['showroomconno'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+      <mat-error *ngIf="addEditForm.controls['showroomconno']?.errors?.pattern">
+        Enter valid Number
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="p-2 col-md-6" appearance="outline">
+      <mat-label class="">Contact Email </mat-label>
+      <input (change)="onEmailChange($event)" matInput formControlName="showroomconemail" type="email" />
+        <mat-error *ngIf="addEditForm.controls['showroomconemail'].hasError('required')" >Email is required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['showroomconemail']?.errors?.pattern">
+              Enter valid email
+            </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="p-2 col-md-6" appearance="outline">
+      <mat-label>Portal Status</mat-label>
+      <mat-select formControlName="isportaluser" >
+        <mat-option *ngIf="portalstatus != 'APPROVE'" value="0">NO REQUEST</mat-option>
+         <mat-option *ngFor="let item of portalUsersStatusList" value="{{ item.portalstatusid }}"
+         [disabled]="item.portalstatusid != '1'">{{  item.portalstatus }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+   
+    <!-- <div class="row p-3"> -->
+      <div class="outline col-md-6 pt-3 pb-3" style="float: right;margin-top: 10px"> &nbsp;&nbsp;
+        <mat-label class="pr-2 pt-5  text-center">Status </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="status" (change)="radioChange($event)"
+          class="inputField exammanage-radio-group" mat-form-field>
+          <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button value='0'>In Active</mat-radio-button>
+        </mat-radio-group>
+      </div>
+     
+      <!-- &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+      <!-- <div class="outline col-md-6 pt-3 pb-3">
+        <mat-label class="pr-2 pt-5  text-center">isPortal User </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="isportaluser" 
+          class="inputField exammanage-radio-group" mat-form-field>
+          <mat-radio-button value='1'>Yes</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button value='0'>No</mat-radio-button>
+        </mat-radio-group>
+      </div> -->
+    <!-- </div> -->
+
+  </form>
+</div>
+
+
+
+ <!-- <mat-form-field class="p-2 col-md-6" appearance="outline">
+        <mat-label class="">Contact Email </mat-label>
+        <input matInput formControlName="showroomconaltemail" type="text" />
+      </mat-form-field> -->
+
+    <!-- <mat-form-field class="p-2 col-md-6" appearance="outline">
+        <mat-label class="">Showroom Contact User Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="showroomconusername" type="text" />
+        <mat-error *ngIf="addEditForm.controls['showroomconusername'].hasError('required') && isShowErrors">Showroom Contact User Name is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['showroomconusername'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="p-2 col-md-6" appearance="outline">
+        <mat-label class="">Showroom Contact Password</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="showroomconpassword" type="text" />
+        <mat-error *ngIf="addEditForm.controls['showroomconpassword'].hasError('required') && isShowErrors">Showroom Contact Password is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['showroomconpassword'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field> -->

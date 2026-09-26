@@ -1,0 +1,66 @@
+<div class="col-md-12 row p-2">
+  <form [formGroup]="addEditForm">
+
+    <div class="row">
+
+    
+
+      <mat-form-field class="pt-2 col-md-6 field" appearance="outline">
+        <mat-label class="">Web Category</mat-label>
+        <mat-select  formControlName="webcategory">
+          <mat-option value="Mobile Admin">Mobile Admin</mat-option>
+          <mat-option value="Showroomcar-Portal">Showroomcar-Portal</mat-option>
+          <mat-option value="Customer Portal">Customer Portal</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['webcategory'].hasError('required') && isShowErrors">Web Category is
+          required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-6 field" appearance="outline">
+        <mat-label class="">Web Version</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="webversion" type="text" />
+        <mat-error *ngIf="addEditForm.controls['webversion'].hasError('required') && isShowErrors">Web Version is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['webversion'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6 field" appearance="outline">
+        <mat-label class="">Web URL</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="weburl" type="text" />
+        <mat-error *ngIf="addEditForm.controls['weburl'].hasError('required') && isShowErrors">Web URL is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['weburl'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6 field" appearance="outline">
+        <mat-label class="">Powered By</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="powered_by" type="text" />
+        <mat-error *ngIf="addEditForm.controls['powered_by'].hasError('required') && isShowErrors">Powered By is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['powered_by'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6 field" appearance="outline">
+        <mat-label class="">Company Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="company_name" type="text" />
+        <mat-error *ngIf="addEditForm.controls['company_name'].hasError('required') && isShowErrors">Company name is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['company_name'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+    
+
+    </div>
+
+  </form>
+</div>

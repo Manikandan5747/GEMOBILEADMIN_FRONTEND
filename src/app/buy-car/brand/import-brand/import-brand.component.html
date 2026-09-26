@@ -1,0 +1,84 @@
+<div class="col-md-12">
+    <div class="page-title"> Bulk Upload </div>
+    <div class="col-md-12 p-0">
+        <a  (click)="back()" style="cursor:pointer;"><span class="material-icons"> reply </span> {{backlinkName}}
+        </a>
+      </div>
+
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-form-field class="col-md-8" appearance="outline">
+        <mat-label>Search Detail</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" />
+    </mat-form-field>
+
+    <div class="col-lg-4 col-sm-4 col-md-12 box pull-left">
+        <div class="row">
+            <div class="col-md-6">
+                <div style="text-align: center">
+                    <img src="../../../../assets/images/upload_icon.png"
+                        class="rounded-circle z-depth-1-half avatar-pic" alt="upload image" mat-responsive />
+                </div>
+            </div>
+            <div class="col-md-6" style="margin-top: 50px">
+                <form method="post">
+                    <div class="upload-btn-wrapper">
+                        <button class="btn">Choose Excel File</button>
+                        <input (change)="fileChange($event)" type="file"  name="myfile" />
+                    </div>
+                    <p>
+                        <b>{{ lableName }}</b>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="dataSource && dataSource.data.length > 0" class="pt-2 mat-table-container" id="test1" #test1>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matTableResponsive>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+            <div *ngFor="let displayCol of displayedColumns; let i = index" matColumnDef="{{ displayCol }}">
+                <th mat-header-cell class="field-title" *matHeaderCellDef mat-sort-header> {{
+                    displayedLabelColumns[i] }} </th>
+                <ng-container *matCellDef="let element" [ngSwitch]="displayCol">
+
+                    <td mat-cell *ngSwitchCase="'created_at'">
+                        {{ element[displayCol] }}
+                    </td>
+
+                    <td mat-cell *ngSwitchCase="'imported'">
+                      <span *ngIf="element[displayCol] =='Already Exists'" style="color:red">
+                        Already Exists
+                      </span>
+                      <span *ngIf="element[displayCol] =='Imported'" style="color:green">
+                        Imported
+                      </span>
+                    </td>
+
+                    <td mat-cell *ngSwitchCase="'modified_at'">
+                        {{ element[displayCol] }}
+                    </td>
+                                  
+                    <td mat-cell *ngSwitchDefault>
+                        <div *ngIf="!element[displayCol]">-</div>
+                        <div *ngIf="element[displayCol]">{{ element[displayCol] }}</div>
+                    </td>
+                </ng-container>
+            </div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"   [ngClass]="{'formFieldAdded': row.imported && row.imported == 'Already Exists'}"></tr>
+            <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0">
+            </tr>
+        </table>
+    </div>
+    <mat-paginator *ngIf="dataSource && dataSource.data.length > 0" [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons>
+    </mat-paginator>
+
+</div>

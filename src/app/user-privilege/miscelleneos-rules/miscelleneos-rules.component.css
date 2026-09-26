@@ -1,0 +1,15 @@
+.permission-card {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.permission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+mat-checkbox {
+  font-size: 14px;
+}

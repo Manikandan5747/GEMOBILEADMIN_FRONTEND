@@ -1,0 +1,14 @@
+@import '../../../style.scss';
+
+.pdf-cover-page {
+    background-image: url('../../../../src/assets/assets/bg-g-2.jpg');
+}
+
+
+.return-to-menu>a {
+    color: #007bff;
+}
+
+.return-to-menu {
+    margin-bottom: 5px !important;
+}

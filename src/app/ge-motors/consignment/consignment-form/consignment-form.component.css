@@ -1,0 +1,37 @@
+/* Hide the actual file input element */
+input[type="file"] {
+    display: none;
+  }
+  
+  /* Style the custom label */
+  .custom-file-upload {
+    display: inline-block;
+    background-color: #C0C0C0;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  /* Adjust the size of mat-icon */
+  .custom-file-upload mat-icon {
+    font-size: 22px !important; /* Adjust this value as needed */
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  
+  .mat-filter::after {
+    content: "\e8b6";
+    font-family: material icons;
+    vertical-align: bottom;
+    font-size: 20px;
+    padding-left: 5px;
+  }
+  mat-label,mat-option {
+    text-transform: capitalize ; 
+  }
+  
+  .mat-option.hide {
+    display: none;
+  }
+  

@@ -1,0 +1,15 @@
+.mat-row {
+  text-transform: capitalize;
+}
+
+
+
+mat-label,
+mat-option {
+  text-transform: capitalize;
+}
+
+.large-icon {
+  font-size: 24px !important;
+  /* Adjust the size as needed */
+}

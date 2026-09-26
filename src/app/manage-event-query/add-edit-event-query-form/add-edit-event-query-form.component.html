@@ -1,0 +1,111 @@
+<div class="col-md-12">
+  <form [formGroup]="addEditForm" class="p-3 query-form">
+
+    <div class="page-title text-black">Create Event Query</div>
+
+    <div class="row">
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Event Query Details</span>
+      </div>
+
+      <!-- Query Name -->
+      <mat-form-field class="col-md-6 mb-3" appearance="outline">
+        <mat-label>Query Name <span class="text-danger">*</span></mat-label>
+        <input matInput formControlName="query_name" placeholder="Enter query name" />
+      </mat-form-field>
+
+
+      <!-- Table Select -->
+      <mat-form-field class="col-md-6 mb-3 no-bg" appearance="outline">
+        <mat-label>Select Table <span class="text-danger">*</span></mat-label>
+        <mat-select formControlName="table_name"
+                    (selectionChange)="onTableSelectionChange($event.value)"
+                    panelClass="custom-select-panel">
+
+          <mat-option>
+            <input matInput placeholder="Search table..."
+                   [(ngModel)]="tableFilter"
+                   (ngModelChange)="filterTables()"
+                   [ngModelOptions]="{standalone:true}"
+                   (click)="$event.stopPropagation()"
+                   (keydown)="$event.stopPropagation()" />
+          </mat-option>
+          <mat-divider></mat-divider>
+
+          <mat-option (click)="openCreateTableDialog()" class="create-event-query-link">
+            <span class="link-text">Create New Table</span>
+          </mat-option>
+          <mat-divider></mat-divider>
+
+          <mat-option *ngFor="let table of filteredTableList" [value]="table.table_name">
+            {{ table.table_name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+     <div class="col-md-6 mb-3">
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>Select Fields <span class="text-danger">*</span></mat-label>
+    <mat-select formControlName="field_name"
+                multiple
+                (selectionChange)="updateQueryText()"
+                panelClass="custom-select-panel">
+
+      <mat-option class="no-checkbox">
+        <input matInput placeholder="Search field..."
+               [(ngModel)]="fieldFilter"
+               (ngModelChange)="filterFields()"
+               [ngModelOptions]="{standalone:true}"
+               (click)="$event.stopPropagation()"
+               (keydown)="$event.stopPropagation()" />
+      </mat-option>
+      <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
+
+      <mat-option *ngFor="let field of filteredFields" [value]="field">
+        {{ field.COLUMN_NAME }}
+      </mat-option>
+
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="col-md-6 mb-3">
+  <div class="outline d-flex flex-column justify-content-center p-3">
+    <mat-label>Status<span class="text-danger">*</span></mat-label>
+    <mat-radio-group
+      aria-label="Status"
+      formControlName="status"
+      class="d-flex gap-3 mt-2"
+    >
+      <mat-radio-button value="1">Active</mat-radio-button>
+      <mat-radio-button value="0">Inactive</mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+
+      <!-- Query Text -->
+      <div class="col-md-12 mt-3">
+        <div class="text-left mb-2 ac-formgroup-title">
+          <span>Query Text</span>
+        </div>
+        <div class="query-text-display">
+          {{ generatedQuery || 'SELECT * FROM ' + (selectedTable?.table_name || 'tablename') }}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Buttons -->
+    <div class="pt-4 text-end">
+      <button mat-stroked-button class="btn-cancel"   type="button" (click)="onCancel()">Cancel</button>
+      &nbsp;&nbsp;
+      <button mat-raised-button class="btnnn-prime-fn" type="button" (click)="saveQuery()">Save</button>
+    </div>
+
+
+
+
+  </form>
+</div>

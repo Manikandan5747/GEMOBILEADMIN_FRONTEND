@@ -1,0 +1,34 @@
+.btn-cancel{
+  background-color: red;
+  color:white
+  
+}
+
+.btn-save{
+  background-color: #F4D35F;
+  color:white
+  
+}
+
+.page-title {
+  background-color: #F4D35F; 
+  color: black; 
+  padding: 12px 16px;
+  border-radius: 5px 5px 0 0; 
+  margin-bottom: 20px;
+}
+
+.query-preview textarea {
+  background-color: #f0f0f0; 
+  color: #333;
+  font-family: monospace;
+}
+
+.button-group button:first-child {
+  margin-right: 10px;
+}
+
+
+
+
+

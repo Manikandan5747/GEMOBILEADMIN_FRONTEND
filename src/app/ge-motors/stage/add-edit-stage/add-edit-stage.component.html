@@ -1,0 +1,136 @@
+<div class="col-md-12">
+  <div class="page-title"> {{title}} </div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+
+  <form [formGroup]="addEditForm">
+    <div class="row">
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Stage Details</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Stage Name </mat-label>
+        <input matInput formControlName="stagename" type="text" />
+        <mat-error *ngIf="addEditForm.controls['stagename'].hasError('required') && isShowErrors">Stage Name
+          No is required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Stage Probability </mat-label>
+        <input matInput formControlName="stageprobability" type="number" />
+        <mat-error *ngIf="addEditForm.controls['stageprobability'].hasError('required') && isShowErrors">stageprobability is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['stageprobability'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="pt-2 col-md-4" appearance="outline">
+            <mat-label class="">Deal status</mat-label>
+            <mat-select formControlName="dealstatusid">
+              <mat-option value="Yes">Yes</mat-option>
+              <mat-option value="No">No</mat-option>
+              <mat-option value="Does not apply">Does not apply</mat-option>
+            </mat-select>
+            <mat-error *ngIf="addEditForm.controls['dealstatusid'].hasError('required') && isShowErrors">dealstatusid is
+              required</mat-error>
+          </mat-form-field> -->
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Weight Age </mat-label>
+        <input matInput formControlName="weightage" type="number" />
+        <mat-error *ngIf="addEditForm.controls['weightage'].hasError('required') && isShowErrors">Weight Age is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['weightage'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+    
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Forecast </mat-label>
+        <mat-select formControlName="forecast">
+          <mat-option value="null">-</mat-option>
+          <mat-option value="Pipeline">Pipeline</mat-option>
+          <mat-option value="Best Case">Best Case</mat-option>
+          <mat-option value="Commit">Commit</mat-option>
+           <mat-option value="Closed">Closed</mat-option>
+           <mat-option value="Omitted">Omitted</mat-option>
+           
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['forecast'].hasError('required') && isShowErrors">forecast is
+          required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Deal status</mat-label>
+        <mat-select formControlName="dealstatusid">
+          <!-- <mat-option value="null">-</mat-option> -->
+          <!-- <mat-option value="1">Abandoned</mat-option> -->
+          <mat-option value="2">Success</mat-option>
+          <mat-option value="3">Lost</mat-option>
+          <mat-option value="4">Not Interested</mat-option>
+          <mat-option value="5">Progress</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['dealstatusid'].hasError('required') && isShowErrors">dealstatusid is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Min Age </mat-label>
+        <input matInput formControlName="minage" type="number" />
+        <mat-error *ngIf="addEditForm.controls['minage'].hasError('required') && isShowErrors">Min Age is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['minage'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Max Age </mat-label>
+        <input matInput formControlName="maxage" type="number" />
+        <mat-error *ngIf="addEditForm.controls['maxage'].hasError('required') && isShowErrors">Max Age is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['maxage'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-6" appearance="outline">
+        <mat-label class="">Description </mat-label>
+        <textarea matInput formControlName="description" type="text">
+                            </textarea>
+      </mat-form-field>
+
+
+      <div class="pt-5 col-md-4">
+        <mat-label class="p-2 pt-2 text-center">Status </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="status" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button value='0'>In-Active</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+
+      <div style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+        <button mat-button class="btnnn-default-fn" [routerLink]="['/stage']">
+          Cancel
+        </button>&nbsp;&nbsp;
+        <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          Save
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>

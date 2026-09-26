@@ -1,0 +1,41 @@
+.mat-row {
+    text-transform: capitalize;
+  }
+  
+  mat-icon {
+    cursor: pointer !important;
+    font-size: 24px !important;
+  }
+  
+  .large-icon {
+    font-size: 24px !important;
+    /* Adjust the size as needed */
+  }
+  
+  img {
+    width: 40px !important;
+    height: 50px !important;
+  }
+  mat-label,mat-option {
+    text-transform: capitalize ; 
+  }
+  
+  .doc-icon {
+    width: 40px;
+  }
+  
+  .mat-filter::after {
+    content: "\e8b6";
+    font-family: material icons;
+    vertical-align: bottom;
+    font-size: 20px;
+    padding-left: 5px;
+  }
+  
+  .mat-option.hide {
+    display: none;
+  }  
+  .mat-column-campaign_id, 
+  .mat-column-prize_received   {
+  text-align: center;
+}

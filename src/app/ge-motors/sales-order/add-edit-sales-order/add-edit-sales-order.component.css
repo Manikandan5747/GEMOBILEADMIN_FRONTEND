@@ -1,0 +1,119 @@
+.mat-filter::after {
+  content: "\e8b6";
+  font-family: material icons;
+  vertical-align: bottom;
+  font-size: 20px;
+  padding-left: 5px;
+}
+
+.mat-option.hide {
+  display: none;
+}
+
+mat-label,mat-option {
+  text-transform: capitalize ; 
+}
+
+.large-icon{
+  font-size: 24px !important;
+}
+
+.car-col {
+  width: 350px !important;
+}
+
+/* Table */
+table {
+  background: #f3f4f7 !important;
+  width: 100%;
+  overflow: auto;
+}
+
+tr {
+  height: 50px;
+}
+
+/* Table Header */
+th {
+  /* flex-direction: column; */
+  /* justify-content: left; */
+  background: #f4d35f;
+  text-align: center;
+  font-weight: bolder;
+  text-transform: uppercase !important;
+  font-size: 14px !important;
+}
+
+/* Table Data */
+td {
+  border-top: 1px solid lightgrey;
+  vertical-align: middle;
+  align-items: initial;
+  padding: 5px 6px !important;
+}
+
+/* Alternate Row Color */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover Effect */
+tr:hover {
+  background-color: #dddddd;
+}
+
+
+.table-wrapper {
+  overflow: auto;
+}
+
+
+.quantity-col {
+  width: 60px;
+}
+.tax-col {
+  width: 60px;
+}
+
+.col{
+  width: 110px;
+}
+
+
+
+/* Hide the actual file input element */
+input[type="file"] {
+  display: none;
+}
+
+/* Style the custom label */
+.custom-file-upload {
+  display: inline-block;
+  background-color: #C0C0C0;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.custom-file-upload1 {
+  display: inline-block;
+  background-color: #C0C0C0;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Adjust the size of mat-icon */
+.custom-file-upload mat-icon {
+  font-size: 22px !important; /* Adjust this value as needed */
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.custom-file-upload1 mat-icon {
+  font-size: 22px !important; /* Adjust this value as needed */
+  margin-right: 5px;
+  vertical-align: middle;
+}

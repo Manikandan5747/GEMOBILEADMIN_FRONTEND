@@ -1,0 +1,146 @@
+<div class="col-md-12 row p-2">
+  <form [formGroup]="addEditForm">
+    <div class="row">
+
+      <mat-form-field class="col-md-6 pt-2 readonly-input" appearance="fill">
+        <mat-label class="">Advance Ref No</mat-label>
+        <input readonly matInput [errorStateMatcher]="matcher" formControlName="advancerefno" type="text" />
+      </mat-form-field>
+
+        <mat-form-field class="col-md-6 pt-2 " appearance="outline">
+        <mat-label>Showroom Cars</mat-label>
+        <mat-select formControlName="carshowroom_id"
+        [disabled]="this.addEditForm.get('isrelated_module')?.value">
+          <mat-select-filter [array]="cartotalList" [displayMember]="'carshowroomrefno'"></mat-select-filter>
+          <mat-option *ngFor="let item of cartotalList" [value]="item.carshowroom_id"
+            [class.hide]="!isShowroomCarFiltered(item)">
+            {{ item.carshowroomrefno?.trim() || 'N/A' }} -
+            {{ item.chasisno?.trim() || 'No Chassis' }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <!-- (selectionChange)="onAccountOptionSelected($event.value)" -->
+      <mat-form-field class="pt-2 col-md-6" appearance="outline">
+        <mat-label class="">Account </mat-label>
+        <mat-select formControlName="accountid">
+          <mat-select-filter [array]="accountList" (filteredReturn)="accountFilteredList=$event" [displayMember]="'accountname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of accountList" [value]="item.accountid" [class.hide]="!accountidFiltered(item)">
+            {{ item.accountname
+            }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['accountid'].hasError('required') && isShowErrors"> Account is
+          required</mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="pt-2 col-md-6" appearance="outline">
+          <mat-label class="">Contact </mat-label>
+          <mat-select formControlName="contactid">
+            <mat-select-filter [array]="contactList" (filteredReturn)="contactFilterList=$event"
+              [displayMember]="'firstname'">
+            </mat-select-filter>
+            <mat-option *ngFor="let item of contactList" [value]="item.contactid" [class.hide]="!isContactFiltered(item)">
+              <span>{{ item.firstname }}</span>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['contactid'].hasError('required') && isShowErrors">Contact is
+            required</mat-error>
+          </mat-form-field> -->
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class=""> Date </mat-label>
+        <input (click)="picker.open()" readonly matInput [min]="minFromDate" [matDatepicker]="picker"
+          formControlName="duedate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['duedate'].hasError('required') && isShowErrors"> Date is
+          required</mat-error>
+      </mat-form-field>
+
+
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Advance Amount </mat-label>
+        <input matInput type="number" formControlName="advanceamount">
+        <mat-error *ngIf="addEditForm.controls['advanceamount'].hasError('required') && isShowErrors">Advance Amount is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['advanceamount'].hasError('min') && isShowErrors">
+          Advance Amount should not be 0
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Mode Of Payment</mat-label>
+        <mat-select formControlName="modeofpayment">
+          <mat-option value="cash">Cash</mat-option>
+          <mat-option value="cheque">Cheque</mat-option>
+          <mat-option value="banktransfer">Bank Transfer</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['modeofpayment'].hasError('required') && isShowErrors">Mode Of Payment is
+          Required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Recieved By</mat-label>
+        <input matInput type="text" formControlName="recievedby">
+        <mat-error *ngIf="addEditForm.controls['recievedby'].hasError('required') && isShowErrors">Recieved By is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class=""> For Payment </mat-label>
+        <input matInput type="text" formControlName="forpaymentof">
+        <mat-error *ngIf="addEditForm.controls['forpaymentof'].hasError('required') && isShowErrors">For Payment is
+          required</mat-error>
+      </mat-form-field>
+
+      <div class="col-md-6 pt-2" *ngIf="role_id == 1">
+        <mat-label class="pr-2 pt-5 text-center">Status </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="status" class="inputField exammanage-radio-group"
+          mat-form-field>
+          <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button value='0'>In Active</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+
+
+      <mat-form-field class="pt-2 col-md-12" appearance="outline">
+        <mat-label class="">Narration/Note </mat-label>
+        <textarea matInput formControlName="narrationnote" type="text">
+                            </textarea>
+      </mat-form-field>
+
+      <br>
+
+
+      <div class="col-md-4 field">
+        <label for="file-upload" class="custom-file-upload">
+          <mat-icon>cloud_upload</mat-icon> Advance Receipt
+        </label><br>
+        <input id="file-upload" (change)="onFileChanged($event)"
+          accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+        <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['advancedoc'].value">
+          <div class="avatar-preview" for="imageUpload">
+            <a *ngIf="isPDF(addEditForm.controls['advancedoc'].value.name ? addEditForm.controls['advancedoc'].value.name : addEditForm.controls['advancedoc'].value)"
+              [href]="addEditForm.controls['advancedoc'].value" target="_blank">
+              <img style="width: 52px;"
+                src="assets/images/pdf_icon.png" />
+            </a>
+            <a *ngIf="isIMG(addEditForm.controls['advancedoc'].value.name ? addEditForm.controls['advancedoc'].value.name : addEditForm.controls['advancedoc'].value)"
+              [href]="addEditForm.controls['advancedoc'].value" target="_blank">
+              <img style="width: 52px;" [src]="imageSrc ? imageSrc : addEditForm.controls['advancedoc'].value" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>

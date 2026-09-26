@@ -1,0 +1,245 @@
+<div class="col-md-12">
+    <div class="page-title"> Rent Cars </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row" >
+             
+          <mat-form-field class="col-md-7  pr-2" appearance="outline" >
+            <mat-label>Search Rent a Car Detail</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="" />
+          </mat-form-field>
+       
+      
+         <mat-form-field class="col-md-3  pr-2" appearance="outline" >
+          <mat-select (selectionChange)="selectionFilterChange($event,'Status')"  [(ngModel)]="filterStatus" placeholder="Status">
+            <mat-option value="None">All</mat-option>
+             <mat-option value="Open">Open</mat-option>
+            <mat-option value="InActive">In Active</mat-option>
+          </mat-select>
+         </mat-form-field>
+
+
+         <!-- <mat-form-field class="col-md-3  pr-2" appearance="outline" >
+            <mat-select (selectionChange)="selectionFilterChange($event)"  [(ngModel)]="filterSold" placeholder="Sold Status">
+              <mat-option value="None">All</mat-option>
+               <mat-option value="Sold">Sold</mat-option>
+              <mat-option value="Available">Available</mat-option>
+            </mat-select>
+           </mat-form-field> -->
+
+         <div class="col-md-2" style="text-align: end"  *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'">
+            <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Showroom Car"
+                (click)="addRecord()"> + </button>
+        </div>
+        
+        </div>
+      </div>
+
+    <!-- <div class="col-md-12">
+        <div class="row">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Showroom Car Detail</mat-label>
+                <input matInput [(ngModel)]="search"  (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear"
+                (click)="clearSearch()">
+                <mat-icon>close</mat-icon>
+            </button>
+         </mat-form-field>
+            
+            <div class="col-md-2" style="text-align: end"  *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Showroom Car"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- <div class="col-md-12 outline">
+        <div class="row pt-2 pl-2" style="padding-left:20px;">
+          <div class="p-0 col-10 pl-3" >
+            <form [formGroup]="filterForm">
+              <mat-form-field class="col-md-3" appearance="outline">
+                <mat-label>Brand Name</mat-label>
+                <mat-select formControlName="brandid" >
+                  <mat-option *ngFor="let item of brandlist" [value]="item.brandid">{{item.brandname}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="col-md-3" appearance="outline">
+                <mat-label>Model Name</mat-label>
+                <mat-select formControlName="modelid" >
+                  <mat-option *ngFor="let item of modelList" [value]="item.modelid">{{item.modelname}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="col-md-3" appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status" >
+                  <mat-option value="Active">Active</mat-option>
+                  <mat-option value="InActive">In Active</mat-option>
+                
+    
+                </mat-select>
+              </mat-form-field>
+             
+            </form>
+          </div>
+          <div class="col-md-1 mt-2 p-0 pl-4">
+            <button type="submit" (click)="submitData()" mat-button class="btnnn-prime-fn">Submit</button>
+          </div>
+          <div class="col-md-1 mt-2 p-0 pl-1">
+            <button type="submit" (click)="clearForm()" mat-button class="btnnn-prime-fn">Clear</button>
+          </div>
+        </div>
+      </div> -->
+
+    <div class="mt-2 mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="brandname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> brand name </th>
+                <td mat-cell *matCellDef="let element"> {{element?.brandname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="showroomname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> showroom name </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <a (click)="goToShowroom(element)" style="cursor: pointer;" class="shoname">
+                        {{element?.showroomname}}
+                    </a>
+                 </td>
+            </ng-container>
+            
+            
+            <ng-container matColumnDef="modelname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> model name </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modelname}} </td>
+            </ng-container>
+            
+           
+            <ng-container matColumnDef="rentcarshowroomrefno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> car ref no </th>
+                <td mat-cell *matCellDef="let element"> {{element?.rentcarshowroomrefno}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modelyear">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Model Year</th>
+                <td mat-cell *matCellDef="let element"> {{element?.modelyear}} </td>
+            </ng-container>
+
+          
+
+
+            <ng-container matColumnDef="cityname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> cityname</th>
+                <td mat-cell *matCellDef="let element"> {{element?.cityname == 'null'?null:element.cityname}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="viewcount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> view count</th>
+              <td mat-cell *matCellDef="let element"> {{element?.viewcount}} </td>
+          </ng-container>
+
+            <ng-container matColumnDef="noofseats">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> noofseats</th>
+                <td mat-cell *matCellDef="let element"> {{element?.noofseats == 'null'?null:element.noofseats}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <td mat-cell *matCellDef="let element"> {{element?.status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_by" >
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_by}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at }} </td>
+            </ng-container>
+
+
+          
+
+            <ng-container matColumnDef="img">
+                <th mat-header-cell *matHeaderCellDef> Image </th>
+                <td mat-cell *matCellDef="let element">
+                 <img style="cursor: pointer" *ngIf="element.carimgpath && element.carimgpath.length > 0" target="_blank" [src]="element.carimgpath[0]" (click)="viewCarImg(element.carimgpath)"/> 
+                 <div style="cursor:not-allowed !important;width: 100px !important" *ngIf="element.carimgpath && element.carimgpath.length == 0"> <img src="../../../assets/images/No-Image-Icon.png" >
+                 </div>
+                  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="carvideopath">
+                <th mat-header-cell *matHeaderCellDef> Video </th>
+                <td mat-cell *matCellDef="let element">
+
+                       <a *ngIf="element.carvideopath" [href]="element.carvideopath" target="_blank">
+                        <img *ngIf="element.carvideopath" target="_blank" src="../../../assets/images/video-icon.png" /> 
+                       </a>
+                       <div *ngIf="!element.carvideopath" style="cursor:not-allowed !important"> <img src="../../../assets/images/no-video.jpg" >
+              </div>
+                  </td>
+               
+              </ng-container>
+
+              
+
+            <ng-container matColumnDef="modified_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_by}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_at }} </td>
+            </ng-container>
+
+            <ng-container [ngClass]="'w-75'" stickyEnd matColumnDef="docuploadpath" >
+                <th [ngClass]="'w-75'" mat-header-cell *matHeaderCellDef mat-sort-header> Report</th>
+                <td [ngClass]="'w-75'" mat-cell *matCellDef="let element">
+                    <a style="font-size: 24px !important;" [href]="element?.docuploadpath" target="_blank" matTooltip="Download Inspection Report" *ngIf="element.docuploadpath != '-'"  >
+                        <mat-icon class="edit-mat-icon">download</mat-icon>
+                    </a>
+
+                    <div *ngIf="element.docuploadpath =='-'">
+                       -
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Edit" (click)="editRecord(element)"  *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'">
+                        <mat-icon class="edit-mat-icon">edit</mat-icon>
+                    </button>
+                    <!-- <button  style="cursor:none !important ;"   mat-icon-button matTooltip="Waiting Request Approval"   *ngIf="element.isapprovedstatus == '1'">
+                        <img style="width:100%" height="50" src="../../../assets/images/Waiting-Request Approval.png">
+                    </button>
+                    <button mat-icon-button   style="cursor:none !important ;" matTooltip="Request Approved"  *ngIf="element.isapprovedstatus != '1'">
+                        <img style="width:100%;" height="50" src="../../../assets/images/Request Approved.png">
+                    </button> -->
+                   
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

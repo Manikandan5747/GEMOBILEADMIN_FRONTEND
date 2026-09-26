@@ -1,0 +1,74 @@
+<div class="col-md-12 row p-2">
+    <form [formGroup]="addEditForm">
+  
+      <div class="row">
+  
+
+        <mat-form-field class="pt-2 col-md-6 field" appearance="outline">
+          <mat-label class="">Title</mat-label>
+          <input matInput formControlName="tc_title" type="text" />
+          <mat-error *ngIf="addEditForm.controls['tc_title'].hasError('required') && isShowErrors">Terms and Conditions title is
+            required</mat-error>
+          <mat-error *ngIf="addEditForm.controls['tc_title'].errors?.['whitespace']">
+            White space not allowed
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="col-md-6 pt-2 " appearance="outline">
+          <mat-label class="">Contact Type</mat-label>
+          <mat-select formControlName="tc_type">
+            <mat-option *ngFor="let ele of contractTypeList" [value]="ele.contract_type_id">
+              {{ele.contract_type_name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['tc_type'].hasError('required') && isShowErrors">Contact Type is
+            required</mat-error>
+        </mat-form-field>
+
+      
+  
+  
+        <mat-form-field class="pt-2 col-md-6 field" appearance="outline">  <mat-label class="">Effective date</mat-label>
+            <input matInput readonly [disabled]="isReadOnlyUser" [matDatepicker]="dp1" placeholder="" formControlName="tc_effective_date" >
+            <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+            <mat-datepicker #dp1></mat-datepicker>
+            <mat-error *ngIf="addEditForm.controls['tc_effective_date'].hasError('required') && isShowErrors"> Effective Date is
+              Required</mat-error>
+          </mat-form-field>
+  
+
+  
+        <mat-form-field class="pt-2 col-md-6" appearance="outline">
+          <mat-label class="pt-2">Status</mat-label>
+          <mat-select formControlName="status" placeholder="">
+            <mat-option value="1"> Active</mat-option>
+            <mat-option value="0"> Inactive</mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+  
+        <!-- <div class="row pb-3 pt-2"> -->
+          <div class="col-md-12  field">
+            <label for="file-upload" class="custom-file-upload">
+              <i class="fa fa-cloud-upload"></i> PDF File Upload
+            </label><br>
+            <input id="file-upload" (change)="onFileChanged($event)"  accept="application/pdf" type="file" name="file[]" />
+          </div>
+    <br>
+          <div class="col-md-6 field pl-2" *ngIf="action">
+            <div class="avatar-preview" for="imageUpload" style="width: 202px;">
+                  <a [href]="action" target="_blank">
+                    <img target="_blank"  src="assets/images/pdf_icon.png" />
+                  </a>
+            </div>
+          </div>
+
+         
+    
+        <!-- </div> -->
+
+        
+      </div>
+    </form>
+  </div>

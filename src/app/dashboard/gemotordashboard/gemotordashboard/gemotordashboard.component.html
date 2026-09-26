@@ -1,0 +1,399 @@
+<div class="container-fluid">
+   
+
+     <div class="row">
+        <div class="col-2">
+            <p-card (click)="activeCars()">
+                <div style="cursor: pointer;" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">Active Cars</h3>
+                        <p style="font-size: 18px!important;color: green; ">{{ responseData?.totalCar }}</p>
+                    </div>
+
+                    <img src="../../../../assets/images/car_new.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+        <div class="col-2">
+            <p-card (click)="carownertypeCar('GEMOTORS')">
+                <div style="cursor: pointer;" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important; ">GE Motors Cars</h3>
+                        <p style="font-size: 18px!important; color: green; ">{{responseData?.gemotoractivecars}}</p>
+                    </div>
+                    <img src="../../../../assets/images/GE_logo.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+        <div class="col-2">
+            <p-card (click)="carownertypeCar('CONSIGNMEN')">
+                <div style="cursor: pointer;" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important; ">Consignment Cars</h3>
+                        <p style="font-size: 18px!important; color: green; ">{{responseData?.consignmentActiveCars}}</p>
+                    </div>
+                    <img src="../../../../assets/images/consignment.png" alt="Car Icon"
+                        style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+        <div class="col-2">
+            <p-card (click)="carownertypeCar('SHARE')">
+                <div style="cursor: pointer;" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important; "> Share Cars </h3>
+                        <p style="font-size: 18px!important; color: green; ">{{ responseData?.shareActiveCars }}</p>
+                    </div>
+                    <img src="../../../../assets/images/activecar.png" alt="Car Icon"
+                        style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+        <div class="col-2">
+            <p-card (click)="soldCars()">
+                <div style="cursor: pointer;" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important; ">Sold Cars</h3>
+                        <p style="font-size: 18px!important; color: green; ">{{ responseData?.soldCar }}</p>
+                    </div>
+                    <img src="../../../../assets/images/sold_new.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+
+         <div class="col-2">
+            <p-card (click)="vehicleappraisal()">
+                <div style="cursor: pointer;" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important; ">Vehicle Appraisal</h3>
+                        <p style="font-size: 18px!important; color: green; ">{{ responseData?.totalvehicleappraisal }}</p>
+                    </div>
+                    <img src="../../../../assets/images/vehicle_appraisal.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+
+
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-5 d-flex flex-column">
+            <p-card (click)="carsDaysPassed()" class="h-100">
+                <div style="cursor: pointer;" class="d-flex justify-content-between align-items-center h-100">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">
+                            Count Of Cars 70+ Days Holding Period in Showroom
+                        </h3>
+                        <p style="font-size: 18px!important;color: green; margin-bottom: 0px;">
+                            {{ responseData?.cars_70_days_passed }}
+                        </p>
+                    </div>
+                    <img src="../../../../assets/images/70_plus.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+    
+        <div class="col-5 d-flex flex-column">
+            <p-card  (click)="getExpiredConsignmentsInShowroom()
+" class="h-100">
+                <div  class="d-flex justify-content-between align-items-center h-100">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">
+                            Count Of Expired Consignments Remaining in Showroom
+                        </h3>
+                        <p style="font-size: 18px!important;color: green; margin-bottom: 0px;">
+                            {{ responseData?.expiredconsignmentstillinshowroomcars }}
+                        </p>
+                    </div>
+                    <img src="../../../../assets/images/consignment_remaining.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+    
+        <div class="col-5 d-flex flex-column">
+            <p-card (click)="getExpiredConsignmentsOutShowroom()" class="h-100">
+                <div  class="d-flex justify-content-between align-items-center h-100">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">
+                            Count Of Expired Consignments Out of Showroom
+                        </h3>
+                        <p style="font-size: 18px!important;color: green; margin-bottom: 0px;">
+                            {{ responseData?.expiredconsignmentoutfromshowroomcars }}
+                        </p>
+                    </div>
+                    <img src="../../../../assets/images/consignment_out_of.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+    
+        <div class="col-5 d-flex flex-column">
+            <p-card (click)="getPendingPaymentSalesorder()" class="h-100">
+                <div  class="d-flex justify-content-between align-items-center h-100">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">
+                            Count Of Pending Payment In The Sales Order
+                        </h3>
+                        <p style="font-size: 18px!important;color: green; margin-bottom: 0px;">
+                            {{ responseData?.pendingpaymentinsalesorder }}
+                        </p>
+                    </div>
+                    <img src="../../../../assets/images/pending_payment.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+    
+        <div class="col-5 d-flex flex-column">
+            <p-card (click)="getPendingCashRequest()" class="h-100">
+                <div  class="d-flex justify-content-between align-items-center h-100">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">
+                            Count Of Pending Cash Request
+                        </h3><p class="pb-2"></p>
+                        <p style="font-size: 18px!important;color: green; margin-bottom: 0px;">
+                            {{ responseData?.pendingcashrequestcount }}
+                        </p>
+                    </div>
+                    <img src="../../../../assets/images/pending_cash.png" alt="Car Icon" style="width: 75px; height: 75px;">
+                </div>
+            </p-card>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <p-card>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">Total Leads</h3>
+                        <p style="font-size: 18px !important;color: green;">{{ totalLeadsData?.leadstotalcount }}</p>
+                    </div>
+                    <img src="../../../../assets/images/lead.png" alt="Leads Icon" style="width: 75px; height: 75px;">
+                </div>
+                <div>
+                    <span class="text-green-500 font-medium" style="font-size: 20px; color: green;">{{
+                        totalLeadsData?.count }}+ </span>
+                    <span>New Leads</span>
+                </div>
+                <div>
+                    <strong>Last Created At:</strong> <span>{{ totalLeadsData?.lastcreatedat?.createdat | date:
+                        DATE_FORMAT }}</span> <br>
+                    <strong>Name:</strong> <span>
+                        {{ totalLeadsData?.lastcreatedat?.accountname || totalLeadsData?.lastcreatedat?.firstname }}
+
+                    </span> <br>
+
+                </div>
+            </p-card>
+        </div>
+        <div class="col-md-3">
+            <p-card>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">Total Opportunities</h3>
+                        <p style="font-size: 18px !important;color: green;">{{
+                            totalOpportunitiesData?.opportunitytotalCount }}</p>
+                    </div>
+                    <img src="../../../../assets/images/opportunity.png" alt="Opportunity Icon"
+                        style="width: 75px; height: 75px;">
+                </div>
+                <div>
+                    <span class="text-green-500 font-medium" style="font-size: 20px; color: green;">{{
+                        totalOpportunitiesData?.count }}+ </span>
+                    <span>New Opportunities</span>
+                </div>
+                <div>
+                    <strong>Last Created At: </strong><span>{{ totalOpportunitiesData?.lastcreatedat?.createdat | date:
+                        DATE_FORMAT }}</span> <br>
+                    <strong>Opportunity RefNo: </strong><span> {{
+                        totalOpportunitiesData?.lastcreatedat?.opportunityrefno }}</span>
+                </div>
+            </p-card>
+        </div>
+        <div class="col-md-3">
+            <p-card>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">Total Quotes</h3>
+                        <p style="font-size: 18px !important;color: green;">{{ totalQuotesData?.quotetotalCount }}</p>
+                    </div>
+                    <img src="../../../../assets/images/quote.png" alt="Quote Icon" style="width: 75px; height: 75px;">
+                </div>
+                <div>
+                    <span class="text-green-500 font-medium" style="font-size: 20px; color: green;">{{
+                        totalQuotesData?.count }}+ </span>
+                    <span>New Quotes</span>
+                </div>
+                <div>
+                    <strong>Last Created At:</strong><span>{{ totalQuotesData?.lastcreatedat?.createdat | date:
+                        DATE_FORMAT }}</span> <br>
+                    <strong>Quote RefNo: </strong><span>{{ totalQuotesData?.lastcreatedat?.quoterefno }}</span>
+                </div>
+            </p-card>
+        </div>
+        <div class="col-md-3">
+            <p-card>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 style="font-weight: bold; font-size: 18px !important;">Total Sales Orders</h3>
+                        <p style="font-size: 18px !important;color: green;">{{
+                            totalSalesOrdersData?.salesOrdertotalCount }}</p>
+                    </div>
+                    <img src="../../../../assets/images/salesorder.png" alt="Sales Order Icon"
+                        style="width: 75px; height: 75px;">
+                </div>
+                <div>
+                    <span class="text-green-500 font-medium" style="font-size: 20px; color: green;">{{
+                        totalSalesOrdersData?.count }}+ </span>
+                    <span>New Sales Orders</span>
+                </div>
+                <div>
+                    <strong>Last Created At:</strong><span> {{ totalSalesOrdersData?.lastcreatedat?.createdat | date:
+                        DATE_FORMAT }}</span><br>
+                    <strong>Sales Order RefNo:</strong><span> {{ totalSalesOrdersData?.lastcreatedat?.salesorderrefno
+                        }}</span>
+                </div>
+            </p-card>
+        </div>
+    </div>
+
+     <div class="mt-4 row justify-content-end">
+        <div class="col-md-3">
+            <mat-form-field>
+                <mat-label>Select Date Range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Start date" [(ngModel)]="startDate"
+                        (dateChange)="fetchDashboardData()">
+                    <input matEndDate placeholder="End date" [(ngModel)]="endDate" (dateChange)="fetchDashboardData()">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+    </div>
+   
+
+    <div class="col-md-12 mt-2">
+        <div class="card">
+            <h5 class="card-header">No Of Cars Against Brand Monthly</h5>
+            <div class="card-body">
+                <p-chart type="line" [data]="lineChartData" [options]="lineChartOptions"></p-chart>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Monthly Showroom Car Count</h5>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="monthWiseCarCountChartData" [options]="monthWiseCarCountChartOptions"></p-chart>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Owner Type Wise Active Cars</h5>
+                <div class="card-body">
+                    <ng-container *ngIf="!showNoDataMessage; else noData">
+                        <p-chart type="doughnut" [options]="doughnutChartOptions" [data]="doughnutChartData"></p-chart>
+                    </ng-container>
+                    <ng-template #noData>
+                        <p>No data available.</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Sales Orders by Deal Status</h5>
+                <div class="card-body">
+                    <p-chart type="pie" [data]="pieChartDataSalesorder" [options]="pieChartOptions"></p-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">Sales Orders by Deal Status</h5>
+            <div class="card-body">
+                <ng-container *ngIf="!showNoDataMessage; else noData">
+                    <p-chart type="doughnut" [options]="doughnutChartOptions" [data]="doughnutChartDataSalesorder"></p-chart>
+                </ng-container>
+                <ng-template #noData>
+                    <p>No data available.</p>
+                </ng-template>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Brand Wise Opportunity</h5>
+                <div class="card-body">
+                    <p-chart type="pie" [data]="pieChartData" [options]="pieChartOptions"></p-chart>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Opportunity Stage Wise Funnel Report</h5>
+                <div class="card-body">
+                    <div class="chart-container" #funnelChart style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Brand Wise Active Showroom Cars Count</h5>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="brandWiseBarData" [options]="brandWiseBarOptions"
+                        [style]="{height: '400px'}"></p-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Leads to Sales Order Conversion Summary</h5>
+                <div class="card-body">
+                    <p-chart type="polarArea" [data]="totalTileDataArray" [options]="pieChartOptions"></p-chart>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="card-header">Body Type Brandwise Active Car</h5>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="bodyTypeBarChartdata" [options]="bodyTypeBarChartOptions"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="card-header">Regional Spec & Brandwise Sold Car
+                </h5>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="regionalspecandbrandwisesoldcarChartData"
+                        [options]="bodyTypeBarChartOptions"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

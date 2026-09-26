@@ -1,0 +1,39 @@
+<div mat-dialog-title>
+    {{title}}
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<section mat-dialog-content class="p-5">
+    <mat-dialog-content>
+        <mat-form-field class="example-full-width">
+            <mat-label>{{title}}</mat-label>
+            <!-- <textarea matInput  [(ngModel)]="text" rows="5" cols="30"></textarea>
+              -->
+              <textarea
+          matInput
+          name="customerCode"
+          [(ngModel)]="text"
+          #ctrl="ngModel"
+          required
+          [ngModel]="text"
+          (ngModelChange)="validateCustomerCode(ctrl)"
+          rows="5"
+          cols="30"
+        ></textarea>
+
+        <mat-error *ngIf="ctrl.errors?.prefix">
+          Customer Code must start with 'CST'.
+        </mat-error>
+          </mat-form-field>
+    </mat-dialog-content>
+</section>
+
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn"  (click)="save()" cdkFocusInitial>
+        Save
+    </button>
+</div>

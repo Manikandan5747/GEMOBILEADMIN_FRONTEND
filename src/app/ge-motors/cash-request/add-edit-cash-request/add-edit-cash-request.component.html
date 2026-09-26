@@ -1,0 +1,223 @@
+<div class="col-md-12">
+  <div class="page-title"> {{title}} </div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+
+  <form [formGroup]="addEditForm">
+    <div class="row">
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Cash Request Information</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4 readonly-input" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Cash Request Ref No </mat-label>
+        <input readonly matInput formControlName="cashrequesrefno" type="text" />
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class=""> Cash Request Type</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="cashrequesttype">
+          <mat-option value="carpurchase">Car Purchase</mat-option>
+          <mat-option value="pettycash">Petty Cash</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['cashrequesttype'].hasError('required') && isShowErrors">Cash Request
+          Type is
+          Required</mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+          <mat-label class="">Mode of Payment</mat-label>
+          <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="modeofpayment"  >
+            <mat-option value="cash">Cash</mat-option>
+            <mat-option value="cheque">Cheque</mat-option>
+            <mat-option value="wiretransfer">Wire Transfer</mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['modeofpayment'].hasError('required') && isShowErrors">Mode of Payment is
+            Required</mat-error>
+        </mat-form-field> -->
+      <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Mode of Payment</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="modeofpaymentid">
+          <mat-select-filter [array]="modeofpaymentList" (filteredReturn)="modeofpaymentfilteredList=$event"
+            [displayMember]="'modeofpayment'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of modeofpaymentList" [value]="item.modeofpaymentid"
+            [class.hide]="!isModeFiltered(item)">
+            {{item.modeofpayment }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['modeofpaymentid'].hasError('required') && isShowErrors">Mode of Payment
+          is
+          Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4 " appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Request Date </mat-label>
+        <input (click)="picker.open()" readonly matInput [min]="minFromDate" [matDatepicker]="picker"
+          formControlName="requestdate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['requestdate'].hasError('required') && isShowErrors">Request Date is
+          required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Amount </mat-label>
+        <input matInput formControlName="amount" type="text" appPriceInput />
+        <mat-error *ngIf="addEditForm.controls['amount'].hasError('required') && isShowErrors">Amount is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['amount'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['amount'].hasError('isNegativeValue')">Negative value is not
+          allowed</mat-error>
+        <mat-error *ngIf="addEditForm.controls['amount'].hasError('invalidDecimalValue')">Please enter a valid decimal
+          number with up to two decimal places</mat-error>
+        <mat-error *ngIf="addEditForm.controls['amount'].hasError('min') && isShowErrors">
+          Amount should not be 0
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Payment Status</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="paymentstatus"
+          [disabled]="paymentstatus == 'paid'">
+          <mat-option value="request">Request</mat-option>
+          <mat-option value="pending">Pending</mat-option>
+          <mat-option *ngIf="isSettingUser || paymentstatus == 'paid'" value="paid">Paid</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['paymentstatus'].hasError('required') && isShowErrors">Payment Status is
+          Required</mat-error>
+      </mat-form-field>
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title"
+        *ngIf="addEditForm.controls['cashrequesttype'].value == 'carpurchase'">
+        <span>Car and Seller Information</span>
+      </div>
+
+      <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}"
+        *ngIf="addEditForm.controls['cashrequesttype'].value == 'carpurchase'">
+        <mat-label>Brand Name</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="brandid"
+          (selectionChange)="getModelList($event.value,'')">
+          <mat-select-filter [array]="brandList" (filteredReturn)="filteredList=$event" [displayMember]="'brandname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of brandList" [value]="item.brandid" [class.hide]="!isBrandFiltered(item)">
+            {{item.brandname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['brandid'].hasError('required') && isShowErrors">Brand Name is
+          Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}"
+        *ngIf="addEditForm.controls['cashrequesttype'].value == 'carpurchase'">
+        <mat-label>Model Name</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="modelid">
+          <mat-select-filter [array]="modelList" (filteredReturn)="filteredModelList=$event"
+            [displayMember]="'modelname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of modelList" [value]="item.modelid" [class.hide]="!isModelFiltered(item)">
+            {{item.modelname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['modelid'].hasError('required') && isShowErrors">Model Name is
+          Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}"
+        *ngIf="addEditForm.controls['cashrequesttype'].value == 'carpurchase'">
+        <mat-label class="">Seller </mat-label>
+        <mat-select formControlName="accountid">
+          <mat-select-filter [array]="accountList" (filteredReturn)="accountFilteredList=$event"
+            [displayMember]="'accountname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of accountList" [value]="item.accountid" [class.hide]="!accountidFiltered(item)">
+            {{ item.accountname
+            }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['accountid'].hasError('required') && isShowErrors"> Account is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Car Details Description </mat-label>
+        <textarea matInput formControlName="cardetailsdes" type="text">
+                              </textarea>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Buyer Details Description </mat-label>
+        <textarea matInput formControlName="buydetailsdes" type="text">
+                                </textarea>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Finance Remark</mat-label>
+        <textarea matInput formControlName="financeremark" type="text">
+          </textarea>
+      </mat-form-field>
+
+      <br>
+      <div class="col-md-4"></div>
+      <div class="col-md-4 field pt-4">
+        <label for="file-upload" class="custom-file-upload">
+          <mat-icon>cloud_upload</mat-icon> Purchase Document Attachment
+        </label><br>
+        <input id="file-upload" (change)="onFileChanged($event)"
+          accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+        <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['purchasedoc'].value">
+          <div class="avatar-preview" for="imageUpload">
+            <a *ngIf="isPDF(addEditForm.controls['purchasedoc'].value.name ? addEditForm.controls['purchasedoc'].value.name : addEditForm.controls['purchasedoc'].value)"
+              [href]="addEditForm.controls['purchasedoc'].value" target="_blank">
+              <img style="width: 52px;"
+                src="assets/images/pdf_icon.png" />
+            </a>
+            <a *ngIf="isIMG(addEditForm.controls['purchasedoc'].value.name ? addEditForm.controls['purchasedoc'].value.name : addEditForm.controls['purchasedoc'].value)"
+              [href]="addEditForm.controls['purchasedoc'].value" target="_blank">
+              <img style="width: 52px;" [src]="imageSrc ? imageSrc : addEditForm.controls['purchasedoc'].value" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 field pt-4">
+        <label for="file-upload1" class="custom-file-upload">
+          <mat-icon>cloud_upload</mat-icon> Cheque Copy Document Attachment
+        </label><br>
+        <input id="file-upload1" (change)="onFileChanged1($event)"
+          accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+        <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['chequecopydoc'].value">
+          <div class="avatar-preview" for="imageUpload1">
+            <a *ngIf="isPDF(addEditForm.controls['chequecopydoc'].value.name ? addEditForm.controls['chequecopydoc'].value.name : addEditForm.controls['chequecopydoc'].value)"
+              [href]="addEditForm.controls['chequecopydoc'].value" target="_blank">
+              <img style="width: 52px;"
+                src="assets/images/pdf_icon.png" />
+            </a>
+            <a *ngIf="isIMG(addEditForm.controls['chequecopydoc'].value.name ? addEditForm.controls['chequecopydoc'].value.name : addEditForm.controls['chequecopydoc'].value)"
+              [href]="addEditForm.controls['chequecopydoc'].value" target="_blank">
+              <img style="width: 52px;" [src]="imageSrc1 ? imageSrc1 : addEditForm.controls['chequecopydoc'].value" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+        <button mat-button class="btnnn-default-fn" [routerLink]="['/cash-request']">
+          Cancel
+        </button>&nbsp;&nbsp;
+        <button *ngIf="isEdit !='VIEW'" mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          {{buttonlabel}}
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>

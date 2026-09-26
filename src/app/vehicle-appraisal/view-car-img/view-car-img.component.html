@@ -1,0 +1,19 @@
+<div mat-dialog-title>
+  View Vehicle Images
+  <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<div class="pt-4">
+  <ng-image-slider #nav
+    [images]="imageObject"
+    [infinite]="false"
+    [autoSlide]="1"
+    [imageSize]="{width: '25%', height: 200}"
+    slideImage="1"></ng-image-slider>
+</div>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+  <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+      Cancel
+  </button>
+</div>

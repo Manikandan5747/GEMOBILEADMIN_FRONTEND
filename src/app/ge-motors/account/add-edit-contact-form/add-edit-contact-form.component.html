@@ -1,0 +1,388 @@
+<div class="">
+  <form [formGroup]="addEditForm " class="p-3 row">
+
+    <div class="text-left mt-3 mb-3 ac-formgroup-title" >
+      <span>Account Details</span>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field class="col-md-2" appearance="outline">
+        <mat-label class="">Salutation</mat-label>
+        <mat-select formControlName="salutation">
+          <!-- <mat-option value="null">-</mat-option> -->
+          <mat-option value="Mrs">Mrs</mat-option>
+          <mat-option value="Mr">Mr</mat-option>
+          <mat-option value="Miss">Miss</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['salutation'].hasError('required') && isShowErrors">Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-10" appearance="outline">
+        <mat-label class="">Account Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="accountname" type="text" />
+        <mat-error *ngIf="addEditForm.controls['accountname'].hasError('required') && isShowErrors">Account Name is
+          required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="col-md-4 readonly-input" appearance="fill">
+      <mat-label class="">Account Code</mat-label>
+      <input readonly matInput [errorStateMatcher]="matcher" formControlName="accountcode" type="text" />
+      <mat-error *ngIf="addEditForm.controls['accountcode'].hasError('required') && isShowErrors">Account Code is
+        required</mat-error>
+    </mat-form-field>
+    <!-- [disabled]="hiddenleadtype || carownertypeid" -->
+    <mat-form-field class="col-md-4" appearance="outline"  *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Account Category Type</mat-label>
+      <mat-select formControlName="leadtype"  (selectionChange)="leadtypeChange($event)">
+        <mat-option value="individual">Individual</mat-option>
+        <mat-option value="company">Company</mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['leadtype'].hasError('required') && isShowErrors">Account Category Type is
+        required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>Account Type</mat-label>
+      <mat-select formControlName="typeid" multiple [disabled]="accountCategoryType || purchasedetails || carownertypeid || (addEditForm.controls['typeid'].value.includes(4) && addhidedetails)">
+        <mat-select-filter [array]="typeDetailsList" (filteredReturn)="typeFiltered=$event"
+          [displayMember]="'typename'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of typeDetailsList" [value]="item.accounttypeid"
+          [class.hide]="!typeFiltered(item)">
+          {{item.typename}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['typeid'].hasError('required') && isShowErrors">Account Type is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Mobile</mat-label> <span matPrefix>+971</span>
+      <input matInput maxlength="9" [errorStateMatcher]="matcher" formControlName="mobile" type="text" />
+      <!-- <mat-error *ngIf="addEditForm.controls['mobile'].hasError('required') && isShowErrors">Mobile is
+        required</mat-error> -->
+      <mat-error *ngIf="addEditForm.controls['mobile'].hasError('invalidPhoneNumber')">
+        Mobile is required and a valid mobile number must be entered.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label>Email</mat-label>
+      <input matInput [formControl]="addEditForm.controls['email']" type="email" />
+      <mat-error *ngIf="addEditForm.controls['email'].hasError('required') && isShowErrors">Email is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['email'].hasError('email') && isShowErrors">Invalid email</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4" appearance="outline"  *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Emirates ID</mat-label>
+      <input matInput maxlength="15" [formControl]="addEditForm.controls['emiratesid']" type="text" />
+      <mat-error *ngIf="addEditForm.controls['emiratesid'].hasError('required') && isShowErrors">Emirates ID is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['emiratesid'].hasError('pattern') && isShowErrors">Emirates ID must be 15
+        digits</mat-error>
+      <!-- <mat-error *ngIf="isShowErrors && addEditForm.controls['contactneeded'].value">Emirates ID must be 15
+        digits</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Traffic File No</mat-label>
+      <input matInput [formControl]="addEditForm.controls['trafficfileno']" type="text" />
+      <mat-error *ngIf="addEditForm.controls['trafficfileno'].hasError('required') && isShowErrors">Traffic File No is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['trafficfileno'].hasError('pattern') && isShowErrors">Traffic File No must
+        be 15 digits</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4" appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">TRN Number</mat-label>
+      <input matInput [formControl]="addEditForm.controls['trnnumber']" type="text" />
+      <mat-error *ngIf="addEditForm.controls['trnnumber'].hasError('required') && isShowErrors">TRN Number is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Trade Licence No</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="tradelicenno" type="text" />
+      <mat-error *ngIf="addEditForm.controls['tradelicenno'].hasError('required') && isShowErrors">Trade Licence No is
+        required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4" appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Passport Number</mat-label>
+      <input matInput [formControl]="addEditForm.controls['passportnumber']" type="text" />
+      <mat-error *ngIf="addEditForm.controls['passportnumber'].hasError('required') && isShowErrors">Passport Number is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['passportnumber'].hasError('pattern') && isShowErrors">Passport Number must
+        be 15
+        digits</mat-error>
+    </mat-form-field>
+
+
+
+
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>Phone Number</mat-label>
+      <input matInput maxlength="12" [errorStateMatcher]="matcher" formControlName="phonenumber" type="text" />
+      <mat-error
+        *ngIf="(addEditForm.controls['phonenumber'].hasError('required') || addEditForm.controls['phonenumber'].hasError('numeric')) && isShowErrors">
+        <ng-container *ngIf="addEditForm.controls['phonenumber'].hasError('required')">
+          Phone number is required.
+        </ng-container>
+        <ng-container *ngIf="addEditForm.controls['phonenumber'].hasError('numeric')">
+          Phone number must be numeric.
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+
+
+
+    <mat-form-field class="col-md-4" appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label>Nationality</mat-label>
+      <mat-select formControlName="nationality">
+        <mat-select-filter [array]="nationalityList" (filteredReturn)="nationalityFilteredList=$event"
+          [displayMember]="'nationalityname'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of nationalityList" [value]="item.nationalityname"
+          [class.hide]="!nationalityFiltered(item)">
+          {{item.nationalityname}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['nationality'].hasError('required') && isShowErrors">Nationality is
+        required</mat-error>
+    </mat-form-field>
+
+
+ 
+
+
+
+    <div class="text-left mt-3 mb-3 ac-formgroup-title" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <span>Bank Details</span>
+    </div>
+
+    <mat-form-field class="col-md-4" appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Account Holder Name</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="accountholdername" type="text" />
+      <mat-error *ngIf="addEditForm.controls['accountholdername'].hasError('required') && isShowErrors">Account Holder
+        Name is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline"  *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Account Number / IBAN Number</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="accountnumber" type="text" />
+      <mat-error *ngIf="addEditForm.controls['accountnumber'].hasError('required') && isShowErrors">Account Number is
+        required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['accountnumber'].hasError('pattern') && addEditForm.controls['accountnumber'].touched">
+          Account Number must be alphanumeric
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline"  *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">IFSC Code</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="ifsccode" type="text" />
+      <mat-error *ngIf="addEditForm.controls['ifsccode'].hasError('required') && isShowErrors">IFSC Code is
+        required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['ifsccode'].hasError('pattern') && addEditForm.controls['ifsccode'].touched">
+          IFSC Code must be alphanumeric
+        </mat-error>
+    </mat-form-field>
+
+
+
+    <div class="text-left mt-3 mb-3 ac-formgroup-title" >
+      <span>Address Details</span>
+    </div>
+
+
+
+
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Address</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="address" type="text" />
+      <mat-error *ngIf="addEditForm.controls['address'].hasError('required') && isShowErrors">Address is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <mat-label class="">Biling Street</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="billingstreet" type="text" />
+      <mat-error *ngIf="addEditForm.controls['billingstreet'].hasError('required') && isShowErrors">Biling Street is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Website</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="website" type="text" />
+      <mat-error *ngIf="addEditForm.controls['website'].hasError('required') && isShowErrors">website is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Fax</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="fax" type="text" />
+      <mat-error *ngIf="addEditForm.controls['fax'].hasError('required') && isShowErrors">Fax is
+        required</mat-error>
+    </mat-form-field>
+
+
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>Country</mat-label>
+      <mat-select formControlName="countryid" (selectionChange)="countryFilterChange($event)">
+        <mat-select-filter [array]="countryList" (filteredReturn)="countryDetailsList=$event"
+          [displayMember]="'countryname'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of countryList" [value]="item.countryid" [class.hide]="!countryFiltered(item)">
+          {{item.countryname}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="stateid" (selectionChange)="stateFilterChange($event)">
+        <mat-select-filter [array]="stateList" (filteredReturn)="stateDetailsList=$event" [displayMember]="'statename'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of stateList" [value]="item.stateid" [class.hide]="!stateFiltered(item)">
+          {{item.statename}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>City</mat-label>
+      <mat-select formControlName="cityid">
+        <mat-select-filter [array]="CarCityList" (filteredReturn)="cityDetailsList=$event" [displayMember]="'cityname'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of CarCityList" [value]="item.cityid" [class.hide]="!cityFiltered(item)">
+          {{item.cityname}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Pincode</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="pincode" type="text" />
+      <mat-error *ngIf="addEditForm.controls['pincode'].hasError('required') && isShowErrors">Pincode is
+        required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label class="">Description</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="description" type="text" />
+      <mat-error *ngIf="addEditForm.controls['description'].hasError('required') && isShowErrors">Description is
+        required</mat-error>
+    </mat-form-field>
+  
+    <div class=" pt-3 pb-3 col-md-4" *ngIf="!accountid && !addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2" >
+      <mat-checkbox color='primary' (change)="handleChange($event)" formControlName="contactneeded"> Create Contact
+      </mat-checkbox>
+    </div>
+
+  
+    <div class="text-left mt-3 mb-3 ac-formgroup-title" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <span>Attachments</span>
+    </div>
+
+
+    <div class="col-md-4 field" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <label for="file-upload" class="custom-file-upload">
+         <mat-icon>cloud_upload</mat-icon> Front Emirates Id Attachment
+      </label><br>
+      <input id="file-upload" (change)="onFileChanged($event)"
+        accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+      <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['emiratesdoc'].value">
+        <div class="avatar-preview" for="imageUpload">
+          <a *ngIf="isPDF(addEditForm.controls['emiratesdoc'].value.name ? addEditForm.controls['emiratesdoc'].value.name : addEditForm.controls['emiratesdoc'].value)"
+            [href]="addEditForm.controls['emiratesdoc'].value" target="_blank">
+            <img style="width: 52px;"
+              src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="isIMG(addEditForm.controls['emiratesdoc'].value.name ? addEditForm.controls['emiratesdoc'].value.name : addEditForm.controls['emiratesdoc'].value)"
+            [href]="addEditForm.controls['emiratesdoc'].value" target="_blank">
+            <img style="width: 52px;" [src]="imageSrc ? imageSrc : addEditForm.controls['emiratesdoc'].value" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-4 field" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <label for="file-upload1" class="custom-file-upload">
+         <mat-icon>cloud_upload</mat-icon> Back Emirates Id Attachment
+      </label><br>
+      <input id="file-upload1" (change)="onFileChangedBackEmirates($event)"
+        accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+      <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['backemiratesdoc'].value">
+        <div class="avatar-preview" for="imageUpload">
+          <a *ngIf="isPDF(addEditForm.controls['backemiratesdoc'].value.name ? addEditForm.controls['backemiratesdoc'].value.name : addEditForm.controls['backemiratesdoc'].value)"
+            [href]="addEditForm.controls['backemiratesdoc'].value" target="_blank">
+            <img style="width: 52px;"
+              src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="isIMG(addEditForm.controls['backemiratesdoc'].value.name ? addEditForm.controls['backemiratesdoc'].value.name : addEditForm.controls['backemiratesdoc'].value)"
+            [href]="addEditForm.controls['backemiratesdoc'].value" target="_blank">
+            <img style="width: 52px;" [src]="imageSrc1 ? imageSrc1 : addEditForm.controls['backemiratesdoc'].value" />
+          </a>
+        </div>
+      </div>
+    </div> 
+
+
+    <div class="col-md-4 field" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <label for="file-upload-trade" class="custom-file-upload">
+         <mat-icon>cloud_upload</mat-icon> Trade Licence Id Attachment
+      </label><br>
+      <input id="file-upload-trade" (change)="onFileChanged1($event)"
+        accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+      <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['tradelicencedoc'].value">
+        <div class="avatar-preview" for="imageUpload">
+          <a *ngIf="isPDF(addEditForm.controls['tradelicencedoc'].value.name ? addEditForm.controls['tradelicencedoc'].value.name : addEditForm.controls['tradelicencedoc'].value)"
+            [href]="addEditForm.controls['tradelicencedoc'].value" target="_blank">
+            <img style="width: 52px;"
+              src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="isIMG(addEditForm.controls['tradelicencedoc'].value.name ? addEditForm.controls['tradelicencedoc'].value.name : addEditForm.controls['tradelicencedoc'].value)"
+            [href]="addEditForm.controls['tradelicencedoc'].value" target="_blank">
+            <img style="width: 52px;"
+              [src]="tradeImageSrc ? tradeImageSrc : addEditForm.controls['tradelicencedoc'].value" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="col-md-4 field" *ngIf="!addEditForm.controls['typeid'].value.includes(4) || addEditForm.controls['typeid'].value.length >= 2">
+      <label for="file-upload-vehicle" class="custom-file-upload">
+         <mat-icon>cloud_upload</mat-icon> Vehicle Registration Card Attachment
+      </label><br>
+      <input id="file-upload-vehicle" (change)="onFileChanged2($event)"
+        accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+      <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['vehicleregistrationcard'].value">
+        <div class="avatar-preview" for="imageUpload">
+          <a *ngIf="isPDF(addEditForm.controls['vehicleregistrationcard'].value.name ? addEditForm.controls['vehicleregistrationcard'].value.name :addEditForm.controls['vehicleregistrationcard'].value)"
+            [href]="addEditForm.controls['vehicleregistrationcard'].value" target="_blank">
+            <img style="width: 52px;"
+              src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="isIMG(addEditForm.controls['vehicleregistrationcard'].value.name ? addEditForm.controls['vehicleregistrationcard'].value.name :addEditForm.controls['vehicleregistrationcard'].value)"
+            [href]="addEditForm.controls['vehicleregistrationcard'].value" target="_blank">
+            <img style="width: 52px;"
+              [src]="vehicleImageSrc ? vehicleImageSrc : addEditForm.controls['vehicleregistrationcard'].value" />
+          </a>
+        </div>
+      </div>
+    </div> -->
+
+  </form>
+</div>

@@ -1,0 +1,58 @@
+<div class="page-title">User Profile</div>
+<div class="col-md-12">
+
+  <div class="profile-container" *ngIf="userProfile && userProfile.username">
+    <div class="profile-field">
+      <label>Username:</label>
+      <span>{{ userProfile.username }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Email:</label>
+      <span>{{ userProfile.emailid }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Force Full Login:</label>
+      <span>{{ userProfile.isforcefulllogin === 'Y' ? 'Yes' : 'No' }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Role Name:</label>
+      <span>{{ userProfile.userrole }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-title">Change Password</div>
+<div class="col-md-12">
+  <div class="profile-container" *ngIf="userProfile && userProfile.username">
+
+    <div class="profile-field">
+      <label>Current Password:</label>
+      <span>{{ showPassword ? userProfile.userpassword : '••••••••' }}</span>
+      <button mat-icon-button (click)="togglePasswordVisibility()" style="margin-left: 10px;"
+        aria-label="Toggle Password">
+        <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </div>
+
+    <div class="profile-field" style="margin-top: 10px; display: flex; align-items: center;">
+      <label style="min-width: 150px;">New Password:</label>
+      <input name="to_avoid_autocomplete" matInput [(ngModel)]="newPassword" autocomplete="new-password" [type]="showNewPassword ? 'text' : 'password'"
+        placeholder="Enter new password" style=" margin-right: 10px;" />
+      <button mat-icon-button (click)="toggleNewPasswordVisibility()" aria-label="Toggle New Password">
+        <mat-icon>{{ showNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </div>
+
+    <div style="text-align: right; margin-top: 10px;">
+      <button mat-stroked-button color="primary" (click)="resetPassword()">Reset Password</button>
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<div style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+  <button mat-button class="btnnn-default-fn" (click)="goback()">Go Back</button>
+</div>

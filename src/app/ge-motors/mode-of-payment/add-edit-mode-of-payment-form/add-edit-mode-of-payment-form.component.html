@@ -1,0 +1,23 @@
+<div class="col-md-12">
+    <form [formGroup]="addEditForm" class="p-3">
+  
+      <mat-form-field class="col-md-12 " appearance="outline">
+        <mat-label class="">Mode of Payment</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="modeofpayment" type="text" />
+        <mat-error *ngIf="addEditForm.controls['modeofpayment'].hasError('required') && isShowErrors">Mode of Payment is
+          required</mat-error>
+      </mat-form-field>
+
+     
+  
+      <div class="outline pt-3 pb-3">
+        <mat-label class="p-2 col-md-12 text-center">Status </mat-label>&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Status" formControlName="status" class="inputField exammanage-radio-group">
+          <mat-radio-button value="1">Active</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">Inactive</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <br>
+  
+    </form>
+  </div>

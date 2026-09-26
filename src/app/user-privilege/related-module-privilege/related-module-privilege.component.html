@@ -1,0 +1,123 @@
+<div mat-dialog-title>
+    Related Module
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<div class="p-4 mb-2">
+    <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" style="width: 100%;">
+
+        <ng-container matColumnDef="modulename">
+            <th mat-header-cell *matHeaderCellDef> Related Module </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.modulename}}
+            </td>
+        </ng-container>
+
+        <!-- Full Access Column -->
+        <ng-container matColumnDef="full_access">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [(ngModel)]="allFullAccessChecked"
+                    (change)="toggleAllFullAccess(allFullAccessChecked)"></mat-checkbox>
+                Full Access
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox [(ngModel)]="element.full_access" (change)="toggleRowFullAccess(element)"></mat-checkbox>
+            </td>
+        </ng-container>
+
+
+        <!-- Create Access -->
+        <ng-container matColumnDef="create_access">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [(ngModel)]="allCreateChecked"
+                    (change)="toggleAll('create_access', allCreateChecked)"></mat-checkbox>
+                Create
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox (change)="toggleRowAccess('create_access',element)"
+                    [(ngModel)]="element.create_access"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <!-- Repeat similarly for Edit, Delete, View, Print -->
+
+        <ng-container matColumnDef="edit_access">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [(ngModel)]="allEditChecked"
+                    (change)="toggleAll('edit_access', allEditChecked)"></mat-checkbox>
+                Edit
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox (change)="toggleRowAccess('edit_access',element)"
+                    [(ngModel)]="element.edit_access"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete_access">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [(ngModel)]="allDeleteChecked"
+                    (change)="toggleAll('delete_access', allDeleteChecked)"></mat-checkbox>
+                Delete
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox (change)="toggleRowAccess('delete_access',element)"
+                    [(ngModel)]="element.delete_access"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="view_access">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [(ngModel)]="allViewChecked"
+                    (change)="toggleAll('view_access', allViewChecked)"></mat-checkbox>
+                View
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox (change)="toggleRowAccess('view_access',element)"
+                    [(ngModel)]="element.view_access"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="print_access">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [(ngModel)]="allPrintChecked"
+                    (change)="toggleAll('print_access', allPrintChecked)"></mat-checkbox>
+                Print
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox (change)="toggleRowAccess('print_access',element)"
+                    [(ngModel)]="element.print_access"></mat-checkbox>
+            </td>
+        </ng-container>
+
+
+
+
+        <!-- Header and Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
+
+       
+
+    </table>
+     <!-- No Data Row -->
+       <tr class="mat-row" *ngIf="dataSource3?.data.length === 0">
+  <td class="mat-cell" style="text-align: center; padding: 16px;">
+    No Related Module available
+  </td>
+</tr>
+
+</div>
+
+
+
+
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2 pt-3"
+    *ngIf="dataSource3 && dataSource3.data && dataSource3.data.length > 0">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="miscelleneosRulesSave()">
+        Save
+    </button>
+</div>

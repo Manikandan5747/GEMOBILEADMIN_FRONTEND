@@ -1,0 +1,354 @@
+<div class="col-md-12">
+  <div class="page-title"> {{title}} </div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+
+  <form [formGroup]="addEditForm">
+    <div class="row">
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Leads Information</span>
+      </div>
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Account Category Type</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="leadtype" [readonly]="disableFields" (selectionChange)="leadtypechange($event)">
+          <mat-option value="individual">Individual</mat-option>
+          <mat-option value="company">Company</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['leadtype'].hasError('required') && isShowErrors">Account Category Type is
+          Required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}"
+      *ngIf="addEditForm.controls['leadtype'].value == 'company'">
+        <mat-label class="">Company Name </mat-label>
+        <input matInput formControlName="accountname" type="text" 
+       />
+        <mat-error *ngIf="addEditForm.controls['accountname'].hasError('required') && isShowErrors">Company Name is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['accountname'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <div class="col-md-4">
+        <mat-form-field class="col-md-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+          <mat-label class="">Salutation</mat-label>
+          <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="salutation" [readonly]="disableFields">
+            <!-- <mat-option value="null">-</mat-option> -->
+            <mat-option value="Mrs">Mrs</mat-option>
+            <mat-option value="Mr">Mr</mat-option>
+            <mat-option value="Miss">Miss</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="addEditForm.controls['salutation'].hasError('required') && isShowErrors">Required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-10" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+          <mat-label class="">First Name </mat-label>
+          <input matInput formControlName="firstname" type="text" (blur)="onContactBlur($event.target.value)"
+            [readonly]="disableFields" />
+          <mat-error *ngIf="addEditForm.controls['firstname'].hasError('required') && isShowErrors">First Name is
+            required</mat-error>
+          <mat-error *ngIf="addEditForm.controls['firstname'].errors?.['whitespace']">
+            White space not allowed
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Last Name </mat-label>
+        <input matInput formControlName="lastname" type="text" />
+        <mat-error *ngIf="addEditForm.controls['lastname'].hasError('required') && isShowErrors">Last Name is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['lastname'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+   
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Campaign </mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="campaignid">
+          <mat-select-filter [array]="campaignList" (filteredReturn)="campaignFilteredList=$event"
+            [displayMember]="'name'">
+          </mat-select-filter>
+          <mat-option *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'" (click)="addRecord()"> <a
+              style="cursor: pointer;" class="shoname">
+              Create Campaign </a></mat-option>
+          <mat-option *ngFor="let item of campaignList" [value]="item.campaignid"
+            [class.hide]="!campaignFiltered(item)"> {{ item.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['campaignid'].hasError('required') && isShowErrors"> Campaign is
+          required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Mobile </mat-label><span matPrefix>+971</span>
+        <input matInput maxlength="9"  formControlName="mobile" type="text" />
+        <!-- <mat-error *ngIf="addEditForm.controls['mobile'].hasError('required') && isShowErrors">Mobile is
+          required</mat-error> -->
+        <mat-error *ngIf="addEditForm.controls['mobile'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['mobile'].hasError('invalidPhoneNumber')">
+          Please enter a valid mobile number
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Brand Name</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="brandid" (selectionChange)="getModelList($event.value,'')">
+          <mat-select-filter [array]="brandList" (filteredReturn)="filteredList=$event" [displayMember]="'brandname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of brandList" [value]="item.brandid" [class.hide]="!isBrandFiltered(item)">
+            {{item.brandname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['brandid'].hasError('required') && isShowErrors">Brand Name is
+          Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Model Name</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="modelid">
+          <mat-select-filter [array]="modelList" (filteredReturn)="filteredModelList=$event"
+            [displayMember]="'modelname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of modelList" [value]="item.modelid" [class.hide]="!isModelFiltered(item)">
+            {{item.modelname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['modelid'].hasError('required') && isShowErrors">Model Name is
+          Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Lead Source</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="leadsourceid">
+          <mat-option *ngFor="let item of leadsourcelist" [value]="item.leadsourceid">
+            {{item.leadsourcename}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['leadsourceid'].hasError('required') && isShowErrors">Lead Source
+          is required
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Email </mat-label>
+        <input matInput formControlName="email" type="text" />
+        <mat-error *ngIf="addEditForm.controls['email'].hasError('required') && isShowErrors">email is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['email'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['email'].hasError('email') && isShowErrors">Invalid email</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Leads Rating</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="leadsratingid">
+          <mat-option *ngFor="let item of leadsratinglist" [value]="item.leadsratingid">
+            {{item.leadsratingname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['leadsratingid'].hasError('required') && isShowErrors">Leads Rating
+          is required
+        </mat-error>
+      </mat-form-field>
+
+
+    
+
+      <mat-form-field class="col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Job Title </mat-label>
+        <input matInput formControlName="title" type="text" />
+        <mat-error *ngIf="addEditForm.controls['title'].hasError('required') && isShowErrors">Job Title is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['title'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <div class="col-md-4 pt-4"> <mat-slide-toggle formControlName="donotcall">Do Not Call!</mat-slide-toggle></div>
+
+      <mat-form-field *ngIf="isEdit != 'VIEW'" [class.hide-textarea]="isEdit === 'VIEW'" class="pt-2 col-md-12" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Description </mat-label>
+        <textarea  matInput formControlName="description" type="text">
+                            </textarea>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="isEdit == 'VIEW'"  class="pt-2 col-md-12" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Description </mat-label>
+        <textarea  matInput formControlName="description" type="text">
+                            </textarea>
+      </mat-form-field>
+
+   
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Address Information</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Country</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="countryid" (selectionChange)="countryFilterChange($event)">
+          <mat-select-filter [array]="countryList" (filteredReturn)="countryDetailsList=$event"
+            [displayMember]="'countryname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of countryList" [value]="item.countryid" [class.hide]="!countryFiltered(item)">
+            {{item.countryname}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>State</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="stateid" (selectionChange)="stateFilterChange($event)">
+          <mat-select-filter [array]="stateList" (filteredReturn)="stateDetailsList=$event"
+            [displayMember]="'statename'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of stateList" [value]="item.stateid" [class.hide]="!stateFiltered(item)">
+            {{item.statename}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>City</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="cityid">
+          <mat-select-filter [array]="CarCityList" (filteredReturn)="cityDetailsList=$event"
+            [displayMember]="'cityname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of CarCityList" [value]="item.cityid" [class.hide]="!cityFiltered(item)">
+            {{item.cityname}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Street </mat-label>
+        <input matInput formControlName="street" type="text" />
+        <mat-error *ngIf="addEditForm.controls['street'].hasError('required') && isShowErrors">Street is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['street'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Pincode </mat-label>
+        <input matInput formControlName="pincode" type="text" />
+        <mat-error *ngIf="addEditForm.controls['pincode'].hasError('required') && isShowErrors">Pincode is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['pincode'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+    
+
+      <!-- <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Account Information</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Num of Employees </mat-label>
+        <input matInput formControlName="numofemployees" type="text" />
+        <mat-error *ngIf="addEditForm.controls['numofemployees'].hasError('required') && isShowErrors">numofemployees is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['numofemployees'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Annual Revenue </mat-label>
+        <input matInput formControlName="annualrevenue" type="text" />
+        <mat-error *ngIf="addEditForm.controls['annualrevenue'].hasError('required') && isShowErrors">annualrevenue is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['annualrevenue'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Industry</mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="industryid">
+          <mat-option *ngFor="let item of industrylist" [value]="item.industryid">
+            {{item.industryname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['industryid'].hasError('required') && isShowErrors">Industry
+          is required
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Phone number </mat-label>
+        <input matInput formControlName="phonenumber" type="number" />
+        <mat-error *ngIf="addEditForm.controls['phonenumber'].hasError('required') && isShowErrors">phonenumber is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['phonenumber'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Website </mat-label>
+        <input matInput formControlName="website" type="text" />
+        <mat-error *ngIf="addEditForm.controls['website'].hasError('required') && isShowErrors">website is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['website'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Fax </mat-label>
+        <input matInput formControlName="fax" type="text" />
+        <mat-error *ngIf="addEditForm.controls['fax'].hasError('required') && isShowErrors">fax is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['fax'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field [class.hide-textarea]="isEdit === 'VIEW'" class="pt-2 col-md-4" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Address </mat-label>
+        <textarea  matInput formControlName="address" type="text">
+                            </textarea>
+      </mat-form-field>
+
+      <div class="col-md-4 pt-4"> <mat-slide-toggle formControlName="donotcall">Do Not Call!</mat-slide-toggle></div> -->
+
+      <br>
+      <div  style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+        <button mat-button class="btnnn-default-fn" [routerLink]="['/leads']">
+          Cancel
+        </button>&nbsp;&nbsp;
+        <button *ngIf="isEdit !='VIEW'" mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          {{buttonlabel}}
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>

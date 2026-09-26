@@ -1,0 +1,175 @@
+<!-- <div class="pdf-loading ">
+    <img src="../../../../assets/assets/logo_animation.gif" alt="">
+    <p>Copyright <span class="pdf-year"></span> © <a href="https://germanexperts.ae/" target="_blank">German Experts</a> car maintenance LLC. All Rights Reserved</p>
+</div> -->
+
+
+<div style="display: flex;">
+    <div class="return-to-menu">
+        <a (click)="goback()"><span class="material-icons"> reply
+            </span> Return to back
+        </a>
+    </div>
+    <div class="download-btn-wrapper">
+        <button class="pdf-download-btn" (click)="generatePDF()">Download PDF</button>
+    </div>
+</div>
+
+<div class="pdf-box-wrapper">
+    <div class="pdf-main-wrapper" id="contentToConvert">
+
+        <div class="pdf-padding pdf-page receipt-wrapper">
+            <!-- /assets/ge motors.png -->
+            <img class="receipt-logo" src="../../../../assets/assets/ge motors.png" alt="">
+            <!-- <img class="ge-line" src="/assets/GE Logo Line.png" alt=""> -->
+
+            <div class="spacer"></div>
+
+            <div class="receipt-inputs">
+                <div class="receipt-title-container">
+                    <div>
+                        <p class="receipt-trn">TRN :<span class="red-txt  value-space">{{advanceList?.companytrnnumber}}</span></p>
+                        <!-- <p class="receipt-trn">TRN:<span class="red-txt">{{advanceList?.trnnumber}}</span></p> -->
+                    </div>
+
+                    <div class="receipt-date-box">
+                        <p class="receipt-date">Date<span>:</span> <span>{{advanceList?.duedate | date: DATE_FORMAT
+                                }}</span></p>
+                        <p class="receipt-srl">Serial No <span>:</span> <span
+                                class="red-txt">{{advanceList?.advancerefno}}</span></p>
+                    </div>
+                </div>
+                <p class="receipt-title page-sub-title-pdf">Advance Receipt Voucher</p>
+                <p class="receipt-greeting">
+                    Thank you for choosing German Experts for your automotive needs. Your satisfaction is our priority,
+                    and we appreciate the trust you've placed in us. Should you require any further assistance or have
+                    any questions, please don't hesitate to contact our dedicated team.Below, you will find the
+                    specifics of your transaction. We value your business and look forward to serving you again in the
+                    future.
+                </p>
+
+
+                <div class="receipt-body">
+
+                    <div class="receipt-top-out" style="text-transform: capitalize;">
+                        <div class="receipt-each-out">
+                            <p>Received From</p>
+                            <p>:</p>
+                            <p>{{advanceList?.accountname}}</p>
+                        </div>
+
+                        <div class="receipt-each-out">
+                            <p>Customer TRN</p>
+                            <p>:</p>
+                            <p>{{advanceList?.trnnumber}}</p>
+                        </div>
+
+                        <div class="receipt-each-out">
+                            <p>For Payment of</p>
+                            <p>:</p>
+                            <p>{{advanceList?.forpaymentof}}</p>
+                        </div>
+                        <div class="receipt-each-out">
+                            <p>Payment Amount</p>
+                            <p>:</p>
+                            <p>{{advanceList?.advanceamount}}</p>
+                        </div>
+                        <div class="receipt-each-out">
+                            <p>Narration/Notes</p>
+                            <p>:</p>
+                            <p>{{advanceList?.narrationnote}}</p>
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Amount Due</th>
+                                    <th>Amount Paid</th>
+                                    <th>New Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{amountdue}}</td>
+                                    <td>{{advanceList?.advanceamount}}</td>
+                                    <td>{{newbalance ? newbalance :'0'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <p>Received By</p>
+                                        <p>(Name & Signature)</p>
+                                    </th>
+                                    <th>Payment Method Option</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: left;text-transform: capitalize;">{{advanceList?.recievedby}}
+                                    </td>
+                                    <td>{{advanceList?.modeofpayment}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+
+        <div class="footer-top-line" *ngIf="hidefooter"></div>
+
+        <div class="receipt-footer" *ngIf="hidefooter">
+            <div class="receipt-contact">
+                <div>
+                    <p><strong>Showroom Address:</strong></p>
+                    <p>10 Al Manara RoadAl Quoz 1, Dubai, UAE</p>
+                    <p></p>
+                </div>
+                <!-- <div class="line"></div> -->
+                <div>
+                    <p><strong>Registered Address:</strong></p>
+                    <p>Business Center 1 M Floor, The Meyden Hotel</p>
+                    <p></p>
+                    <p>Nad AlSheba, Dubai, UAE</p>
+                </div>
+                <!-- <div class="line"></div> -->
+                <div>
+                    <p><strong>P.O.Box:</strong>133599, UAE</p>
+                    <!-- <p><strong>T:</strong>800EXPERTS [3973787]</p>
+                    <p><strong>E:</strong>info@gemotor.ae</p> -->
+                    <p><span class="red-txt">www.gemotor.ae</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pdf-footer pdf-pt-1 pdf-page-break" *ngIf="hidefooter">
+            <!-- <div class="pdf-footer-line"></div> -->
+
+            <div class="pdf-upper-footer">
+                <p class="noc-pdf-footer-text">Feel free to contact us if you have any questions</p>
+                <img class="pdf-footer-experts-800" src="../../../../assets/assets/800 EXPERTS.png" alt="">
+                <img class="pdf-footer-email" src="../../../../assets/assets/Email.png" alt="">
+            </div>
+        </div>
+
+
+    </div>
+</div>

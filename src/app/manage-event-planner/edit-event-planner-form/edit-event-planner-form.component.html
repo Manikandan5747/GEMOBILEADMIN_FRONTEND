@@ -1,0 +1,424 @@
+<div class="container-fluid px-4 py-3 manage-event-planner">
+  <div class="page-title">Edit Event Planner & Query</div>
+<div class="spinner__loading" *ngIf="isLoadingData"> <mat-spinner></mat-spinner> </div>
+  <form [formGroup]="editForm" *ngIf="!isLoadingData">
+
+    <div class="filter-form-section mb-4">
+      <div class="section-divider d-flex justify-content-between align-items-center" style="cursor: pointer;"
+           (click)="plannerDetailsExpanded = !plannerDetailsExpanded">
+        <span>Event Planner Details</span>
+        <mat-icon>{{ plannerDetailsExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      </div>
+
+      <div class="form-content p-3" *ngIf="plannerDetailsExpanded">
+
+        <div class="row">
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Event Name <span class="text-danger">*</span></mat-label>
+            <mat-select formControlName="event_id" panelClass="custom-select-panel">
+              <mat-option>
+                <input matInput placeholder="Search..."
+                       [(ngModel)]="eventSearch"
+                       name="eventSearch"
+                       [ngModelOptions]="{standalone: true}"
+                       (keyup)="filterEvents(); $event.stopPropagation()"
+                       (click)="$event.stopPropagation()"
+                       (keydown)="$event.stopPropagation()"
+                       class="w-100 search-input" />
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option (click)="openCreateEventDialog(); $event.stopPropagation();" class="create-event-query-link">
+                Create Event
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option *ngFor="let item of filteredList" [value]="item.event_id">
+                {{ item.event_type }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.controls['event_id'].hasError('required') && isShowErrors">
+              Event Name is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Event Planner Name <span class="text-danger">*</span></mat-label>
+            <input matInput formControlName="event_planner_title" type="text" />
+            <mat-error *ngIf="editForm.controls['event_planner_title'].hasError('required')">
+              Planner Name is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: Event Start + End -->
+     <div class="row">
+  <mat-form-field class="col-md-6" appearance="outline">
+    <mat-label>Event Start Date <span class="text-danger">*</span></mat-label>
+    <input matInput 
+           [matDatepicker]="startPicker" 
+           formControlName="event_start_date"
+           [min]="today"
+           (dateChange)="onStartDateChange($event)"
+           placeholder="Select start date" />
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+    <mat-error *ngIf="editForm.controls['event_start_date'].hasError('required')">
+      Event Start Date is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="col-md-6" appearance="outline">
+    <mat-label>Event End Date <span class="text-danger">*</span></mat-label>
+    <input matInput 
+           [matDatepicker]="endPicker" 
+           formControlName="event_end_date"
+           [min]="minEndDate"
+           (dateChange)="onEventEndDateChange()"
+           placeholder="Select end date" />
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+    <mat-error *ngIf="editForm.controls['event_end_date'].hasError('required')">
+      Event End Date is required
+    </mat-error>
+  </mat-form-field>
+</div>
+
+        <!-- Row 3: Event Expiry + Calendar Day -->
+        <div class="row mt-3">
+          <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Event Expiry Day <span class="text-danger">*</span></mat-label>
+            <input matInput formControlName="event_planner_expiry_days"
+                   type="text" placeholder="Enter number of days"
+                   (keydown)="blockNonNumeric($event)" />
+            <mat-error *ngIf="editForm.controls['event_planner_expiry_days'].hasError('required')">
+              Expiry Day is required
+            </mat-error>
+              <mat-error *ngIf="editForm.controls['event_planner_expiry_days'].hasError('invalidExpiry')">
+  {{ expiryErrorText }}
+</mat-error>
+
+          </mat-form-field>
+
+          <div class="col-md-6 calendar-day-wrapper">
+            <div class="calendar-input-wrapper" style="position: relative;">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Calendar Day <span class="text-danger">*</span></mat-label>
+                <input matInput [value]="displayDate" readonly (click)="toggleMonthDayPicker()" style="cursor: pointer;" />
+                <button mat-icon-button matSuffix (click)="toggleMonthDayPicker()" aria-label="Open month-day picker">
+                  <mat-icon>calendar_today</mat-icon>
+                </button>
+                    <mat-error *ngIf="editForm.get('calendar_day')?.hasError('invalidCalendarDay')">
+    {{ calendarErrorText }}
+  </mat-error>
+              </mat-form-field>
+
+              <div *ngIf="showMonthDayPicker" class="month-day-dropdown small-dropdown">
+                <div class="picker-row d-flex gap-2">
+                  <mat-form-field appearance="fill" class="picker-field">
+                    <mat-label>Month</mat-label>
+                    <mat-select [(value)]="selectedMonth" (selectionChange)="onMonthOrDayChange()">
+                      <mat-option *ngFor="let m of months; let i = index" [value]="i">{{ m }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="fill" class="picker-field">
+                    <mat-label>Day</mat-label>
+                    <mat-select [(value)]="selectedDay" (selectionChange)="onMonthOrDayChange()">
+                      <mat-option *ngFor="let d of days" [value]="d">{{ d }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+  <div class="row mt-3 align-items-start">
+  <!-- Mode of Message -->
+  <div class="col-md-6">
+    <label class="form-label-text">Mode of Message <span class="text-danger">*</span></label>
+    <div class="d-flex gap-3 mt-2">
+      <mat-checkbox [checked]="editForm.value.mode_of_message.includes('Push')"
+                    (change)="toggleMode('Push', $event.checked)">Push</mat-checkbox>
+      <mat-checkbox [checked]="editForm.value.mode_of_message.includes('Whatsapp')"
+                    (change)="toggleMode('Whatsapp', $event.checked)">WhatsApp</mat-checkbox>
+      <mat-checkbox disabled
+        [checked]="editForm.value.mode_of_message.includes('Email')">
+        Email
+      </mat-checkbox>
+      <mat-checkbox disabled
+        [checked]="editForm.value.mode_of_message.includes('SMS')">
+        SMS
+      </mat-checkbox>
+    </div>
+    <mat-error *ngIf="editForm.controls['mode_of_message'].hasError('required') && isShowErrors">
+      Please select at least one mode of message.
+    </mat-error>
+  </div>
+
+  <!-- Template Dropdown -->
+  <div class="col-md-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Template Name <span class="text-danger">*</span></mat-label>
+      <mat-select
+        formControlName="template_id"
+        (openedChange)="onTemplateDropdownOpened($event)"
+        (selectionChange)="onTemplateSelect($event.value)"
+        [disabled]="editForm.value.mode_of_message.length === 0"
+        panelClass="custom-select-panel">
+        <mat-option>
+          <input
+            matInput
+            placeholder="Search..."
+            [(ngModel)]="templateSearch"
+            name="templateSearch"
+            [ngModelOptions]="{standalone: true}"
+            (keyup)="filterTemplates(); $event.stopPropagation()"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+            class="w-100 search-input" />
+        </mat-option>
+        <mat-divider></mat-divider>
+        <mat-option class="create-template-link" (click)="openCreateTemplateDialog()" [value]="null">
+          Create Template
+        </mat-option>
+        <mat-divider></mat-divider>
+        <mat-option *ngFor="let item of filteredTemplateList" [value]="item.template_id">
+          {{ item.template_name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="editForm.controls['template_id'].hasError('required') && isShowErrors">
+        Template Name is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+
+<div *ngIf="selectedTemplate" class="template-inline-preview border rounded shadow-sm p-2"
+         style="background: #fafafa; border-radius:6px;">
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <label class="fw-bold mb-0">Notification Message:</label>
+    <button mat-icon-button color="primary" (click)="openEditTemplateDialog(selectedTemplate)">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+
+  <div
+    class="template-content-text bg-white p-2 rounded"
+    style="
+      max-height: 60px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.4;
+      white-space: pre-line;
+    ">
+    {{ selectedTemplate.template_text }}
+  </div>
+</div>
+
+
+
+        <div class="row mt-3 align-items-center">
+          <div class="col-md-6">
+            <label class="form-label-text">Schedule Type <span class="text-danger">*</span></label>
+            <mat-radio-group formControlName="schedule_id" class="d-flex gap-3 mt-2">
+              <mat-radio-button value="1">Periodic</mat-radio-button>
+              <mat-radio-button disabled value="0">Manual</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mt-2">
+              <mat-checkbox formControlName="iseventyearly" [disabled]="isYearlyReadOnly()">
+                Yearly Frequency
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+
+<div class="row mt-4 align-items-start">
+
+  <div class="col-md-6 d-flex align-items-start gap-4 flex-wrap">
+    <div>
+      <label for="file-upload-event" class="custom-file-upload d-inline-flex align-items-center gap-2 mb-2">
+        <mat-icon>cloud_upload</mat-icon> Upload Event Image
+      </label>
+      <input id="file-upload-event" type="file" accept="image/*"
+             (change)="onFileChanged($event, 'event')" style="display: none;" />
+    </div>
+
+    <div class="avatar-preview position-relative" *ngIf="existingImageUrl && !imageBase64">
+      <a [href]="existingImageUrl" target="_blank">
+        <img [src]="existingImageUrl" class="img-fluid rounded shadow-sm" style="max-width: 140px;" />
+      </a>
+      <button type="button" class="btn btn-sm position-absolute"
+              style="top: -8px; right: -8px; background-color: red; color: white;"
+              (click)="removeImage('event')">&times;</button>
+    </div>
+
+    <div class="avatar-preview position-relative" *ngIf="imageBase64">
+      <a [href]="imageBase64" target="_blank">
+        <img [src]="imageBase64" class="img-fluid rounded shadow-sm" style="max-width: 140px;" />
+      </a>
+      <button type="button" class="btn btn-sm position-absolute"
+              style="top: -8px; right: -8px; background-color: red; color: white;"
+              (click)="removeImage('event')">&times;</button>
+    </div>
+  </div>
+
+  <div class="col-md-6 d-flex align-items-start gap-4 flex-wrap">
+    <div>
+      <label for="file-upload-banner" class="custom-file-upload d-inline-flex align-items-center gap-2 mb-2">
+        <mat-icon>cloud_upload</mat-icon> Upload Banner Image
+      </label>
+      <input id="file-upload-banner" type="file" accept="image/*"
+             (change)="onFileChanged($event, 'banner')" style="display: none;" />
+    </div>
+
+    <div class="avatar-preview position-relative" *ngIf="existingBannerImageUrl && !bannerImageBase64">
+      <a [href]="existingBannerImageUrl" target="_blank">
+        <img [src]="existingBannerImageUrl" class="img-fluid rounded shadow-sm" style="max-width: 140px;" />
+      </a>
+      <button type="button" class="btn btn-sm position-absolute"
+              style="top: -8px; right: -8px; background-color: red; color: white;"
+              (click)="removeImage('banner')">&times;</button>
+    </div>
+
+    <div class="avatar-preview position-relative" *ngIf="bannerImageBase64">
+      <a [href]="bannerImageBase64" target="_blank">
+        <img [src]="bannerImageBase64" class="img-fluid rounded shadow-sm" style="max-width: 140px;" />
+      </a>
+      <button type="button" class="btn btn-sm position-absolute"
+              style="top: -8px; right: -8px; background-color: red; color: white;"
+              (click)="removeImage('banner')">&times;</button>
+    </div>
+  </div>
+
+  <div class="col-md-6 mt-3">
+    <label class="form-label-text d-block mb-1">Status <span class="text-danger">*</span></label>
+    <mat-radio-group formControlName="event_planner_status" class="d-flex align-items-center gap-3">
+      <mat-radio-button value="1">Active</mat-radio-button>
+      <mat-radio-button value="0">Inactive</mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+
+
+
+
+</div>
+
+      </div>
+    
+   <div class="filter-form-section mb-4">
+  <!-- Collapsible Header -->
+  <div class="section-divider d-flex justify-content-between align-items-center"
+       style="cursor: pointer;"
+       (click)="filterDetailsExpanded = !filterDetailsExpanded">
+    <span class="fw-semibold">Event Planner Query</span>
+    <mat-icon>{{ filterDetailsExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+  </div>
+
+  <!-- Expanded Content -->
+  <div class="form-content p-3" *ngIf="filterDetailsExpanded">
+
+    <!-- Info Section -->
+    <div class="d-flex align-items-start mb-3">
+      <mat-icon class="me-2 text-info" style="font-size: 20px;">info</mat-icon>
+      <div>
+        <strong style="font-size: 14px; color:#006064;">Query Requirements:</strong>
+        <p style="margin:4px 0 8px 0; font-size:13px; color:#004d40;">
+          Your SQL query must include these mandatory fields with <code>@</code> placeholders and case sensitive.Please follow CamelCase
+        </p>
+        <div class="mandatory-fields d-flex flex-wrap gap-2">
+          <span *ngFor="let field of mandatoryFields" 
+                style="background-color:#ffebee; color:#c62828; padding:4px 10px; border-radius:15px; font-size:13px; display:inline-flex; align-items:center; gap:4px;">
+            <mat-icon style="font-size:14px;">check_circle</mat-icon>{{ field }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Query Block -->
+    <div class="card mb-3">
+      <div class="card-header bg-light" style="cursor: pointer;"
+           (click)="exampleExpanded = !exampleExpanded">
+        <strong>
+          <mat-icon class="align-middle me-1" style="font-size: 18px;">code</mat-icon>
+          Example Query
+        </strong>
+        <mat-icon class="float-end">{{ exampleExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+      </div>
+      <div class="card-body p-0" *ngIf="exampleExpanded">
+        <pre class="mb-0 p-3" style="background:#f8f9fa; font-size: 13px; overflow-x: auto;">SELECT 
+  fieldname AS alias @CustomerName,
+  fieldname AS alias @Phoneno,
+  fieldname AS alias @Email,
+  fieldname AS alias @Nationality,
+  fieldname AS alias @MobileAppRegisterationStatus,
+  fieldname AS alias @CustomerCategoryName,
+  'CompanyName' AS alias @Company,
+  fieldname AS alias @CustomerCode,
+FROM tablename 
+WHERE fieldname = 'fieldvalue';</pre>
+      </div>
+    </div>
+
+    <!-- SQL Query Textarea -->
+    <mat-form-field class="w-100 mb-3" appearance="outline">
+      <mat-label>
+        <mat-icon class="align-middle me-1" style="font-size: 18px;">description</mat-icon>
+        SQL Query <span class="text-danger">*</span>
+      </mat-label>
+      <textarea
+        matInput
+        formControlName="query_text"
+        placeholder="SELECT fieldname AS alias @CustomerName, fieldname AS alias @Phoneno... FROM table WHERE condition;"
+        rows="8"
+        style="font-family: 'Courier New', monospace; font-size: 14px;"
+        (input)="onQueryChange($event.target.value)">
+      </textarea>
+
+      <!-- Errors -->
+      <mat-error *ngIf="editForm.get('query_text')?.hasError('required') && isShowErrors">
+        <mat-icon class="align-middle me-1" style="font-size: 16px;">error</mat-icon>
+        Please enter a SQL query
+      </mat-error>
+      <mat-error *ngIf="missingPlaceholders?.length">
+        <mat-icon class="align-middle me-1" style="font-size: 16px;">warning</mat-icon>
+        Missing required placeholders: <strong>{{ missingPlaceholders.join(', ') }}</strong>
+      </mat-error>
+
+      <!-- Hint (Success) -->
+      <mat-hint *ngIf="!missingPlaceholders?.length && editForm.get('query_text')?.value">
+        <mat-icon class="align-middle me-1 text-success" style="font-size: 16px;">check_circle</mat-icon>
+        All mandatory fields included
+      </mat-hint>
+    </mat-form-field>
+
+    <!-- Execute Button & Result -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="executeQuery()"
+        [disabled]="missingPlaceholders?.length || !editForm.get('query_text')?.value">
+        Execute Query
+      </button>
+
+      <div *ngIf="queryCount !== null" class="alert alert-success mb-0 py-2 px-3">
+        <mat-icon class="align-middle me-2">list_alt</mat-icon>
+        <strong>{{ queryCount }}</strong> record(s) found
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+    <div class="pt-4 text-end">
+      <button mat-stroked-button color="warn" style="background-color: red; color: white;" type="button" (click)="cancel()">Cancel</button>
+      &nbsp;&nbsp;
+      <button mat-raised-button class="btnnn-prime-fn" (click)="updateForm()">Update</button>
+    </div>
+  </form>
+</div>

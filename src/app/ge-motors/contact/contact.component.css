@@ -1,0 +1,10 @@
+
+img{
+    width: 40px !important; 
+    height: 50px !important;
+}
+
+
+.mat-row {
+    text-transform: capitalize;
+}

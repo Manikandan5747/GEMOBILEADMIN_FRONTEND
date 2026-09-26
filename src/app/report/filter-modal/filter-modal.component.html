@@ -1,0 +1,109 @@
+<h1 mat-dialog-title>Advance Filter
+    <button mat-raised-button class="btn btn_warn" (click)="clearAllFilters()" style="float: right;color: black; background-color: #fff;">[Clear All]</button>
+</h1>
+
+<div mat-dialog-content>
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    <form [formGroup]="filterForm">
+        <table class="custom-filter-table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Field</th>
+                    <th>Operator</th>
+                    <th>Value</th>
+                    <th>Conjunction</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="filters">
+                <tr *ngFor="let filter of filtersArray.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="selectedField" (selectionChange)="onSelectedFieldChange(i)">
+                                <mat-option value="">--Select--</mat-option>
+                                <mat-option *ngFor="let field of columnsData" [value]="field.fieldName">{{ field.columnName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="comparisonOperator">
+                                <mat-option value="=">Equal to (=)</mat-option>
+                                <mat-option value="!=">Not equal to (!=)</mat-option>
+                                <mat-option value="<">Less than (&lt;)</mat-option>
+                                <mat-option value=">">Greater than (&gt;)</mat-option>
+                                <mat-option value="<=">Less than or equal to (&lt;=)</mat-option>
+                                <mat-option value=">=">Greater than or equal to (&gt;=)</mat-option>
+                                <mat-option *ngIf="getFieldType(filter.value.selectedField) !== 'date'" value="ILIKE">Containing</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <ng-container [ngSwitch]="getFieldType(filter.value.selectedField)">
+                            <div class="filter-input">
+                                <ng-container *ngSwitchCase="'select'">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Filter Value</mat-label>
+                                        <mat-select formControlName="filterCriteria">
+                                            <mat-option *ngFor="let option of getFieldOptions(i) | async" [value]="option">
+                                                {{ mapOptionLabel(option) }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'date'">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Filter Date</mat-label>
+                                        <input matInput [matDatepicker]="picker" formControlName="filterCriteria" (dateChange)="onDateChange($event, i)" />
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'text'">
+                                    <mat-form-field appearance="outline">
+                                        <input matInput placeholder="Search" type="text" formControlName="filterCriteria" [matAutocomplete]="auto" (ngModelChange)="onFilterCriteriaChange($event, i)" />
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let option of getFieldOptions(i) | async" [value]="option">
+                                                {{ option }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </ng-container>
+                               
+                            </div>
+                        </ng-container>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="logicalOperator">
+                                <mat-option value="AND">AND</mat-option>
+                                <mat-option value="OR">OR</mat-option>
+                                <mat-option value="ONLY">ONLY</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td class="action-buttons">
+                         <!-- Hide the Remove button for the first row -->
+                         <button mat-icon-button (click)="removeFilter(i)" [disabled]="filtersArray.length === 1 || i === 0">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <!-- Hide the Add button for all rows except the first -->
+                        <button mat-icon-button *ngIf="i === 0" (click)="addFilter()" [disabled]="!canAddFilter()">
+                            <mat-icon>add_circle</mat-icon>
+                        </button>
+                       
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button class="btn btn_primary" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button class="btn btn_warn" color="primary" (click)="applyFilter()">Ok</button>
+</div>

@@ -1,0 +1,74 @@
+<div mat-dialog-title>
+    {{title}}
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<div class=" p-4">
+    <form [formGroup]="addEditForm">
+
+        <div class="row">
+
+            <mat-form-field class="pt-2 col-md-6" appearance="outline">
+                <mat-label class="">Corporate Partner Name</mat-label>
+                <input matInput formControlName="corporatepartnername" type="text" />
+                <mat-error
+                    *ngIf="addEditForm.controls['corporatepartnername'].hasError('required') && isShowErrors">Corporate
+                    Partner Name
+                    is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['corporatepartnername'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="pt-2 col-md-6 readonly-input" appearance="fill">
+                <mat-label class="">Corporate Partner Code</mat-label>
+                <input readonly matInput formControlName="corporatepartnercode" type="text" />
+                <mat-error
+                    *ngIf="addEditForm.controls['corporatepartnercode'].hasError('required') && isShowErrors">Corporate
+                    Partner Code
+                    URL is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['corporatepartnercode'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+
+            <div class="pt-2 col-md-6">
+                <h1>Icon Upload
+                    <small>with preview</small>
+                </h1>
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input (change)="onFileChanged($event)" type='file' id="imageUpload"
+                            accept=".png, .jpg, .jpeg" />
+                        <label for="imageUpload"></label>
+                    </div>
+                    <div class="avatar-preview" for="imageUpload">
+                        <img id="imagePreview" height="200" src={{imageBase64}}>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 pt-2">
+                <mat-label class="p-2 pt-2 text-center">Status </mat-label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-radio-group aria-label="Is Active" formControlName="status"
+                    class="inputField exammanage-radio-group" mat-form-field>
+                    <mat-radio-button value='1'>YES</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value='0'>NO</mat-radio-button>
+                </mat-radio-group>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+        Save
+    </button>
+</div>

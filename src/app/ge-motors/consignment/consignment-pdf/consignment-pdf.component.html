@@ -1,0 +1,553 @@
+
+
+    <div style="display: flex;" *ngIf="!contractId">
+        <div class="return-to-menu">
+            <a (click)="goback()"><span class="material-icons"> reply
+                </span> Return to back
+            </a>
+        </div>
+    <div class="download-btn-wrapper">
+        <button class="pdf-download-btn" (click)="generatePDF()">Download PDF</button>
+    </div>
+    </div>
+
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+
+    <div class="pdf-box-wrapper">
+        <div class="pdf-main-wrapper consignment-wrapper" id="contentToConvert">
+            <div class="pdf-cover-page pdf-page">
+                <img class="pdf-first-logo" src="../../../assets/assets/ge motors.png" alt="">
+    
+                <div class="pdf-title-container">
+                    <p class="pdf-english-cover">CONSIGNMENT AGREEMENT</p>
+                    <p class="pdf-rtl pdf-arabic-cover">اتفاقية بيع مركبة</p>
+                </div>
+            </div>
+    
+            <div class="pdf-other-pages pdf-page pdf-page-break"  [ngClass]="{'page-padding-1': is_pdfgenerating}" >
+    
+                <!-- ? details -->
+                <div class="d-date d-grid pdf-pt-1">
+                    <p class="pdf-t-bld">This Consignment agreement (the” Agreement”) is made and effective on the date</p>
+                    <p class="start-date">{{consignmentData.consignmentstartdate | date:DATE_FORMAT}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">تم إبرام اتفاقية البيع هذه ("الاتفاقية") وأصبحت سارية المفعول في التاريخ</p>
+                </div>
+                <div class="d-date d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">BETWEEN</p>
+                    <p class="btw-date">{{consignmentData.consignmentenddate | date:DATE_FORMAT}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">بين</p>
+                </div>
+    
+                <p class="pdf-sub-headings"><span>CONSIGNEE (Showroom)</span><span>المخول بالبيع (المعرض)</span></p>
+    
+                <div class="d-consignee d-grid pdf-pt-1">
+                    <p class="pdf-t-bld">Name:</p>
+                    <p class="consignee-name">{{consignmentData?.showroom_accountname }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">الاسم:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Address:</p>
+                    <!-- <p class="consignee-address">{{consignmentData?.showroom_address }}</p> -->
+    
+                    <p class="consignee-address">
+                        <span *ngIf="consignmentData?.showroomowner_country">
+                            {{consignmentData?.showroomowner_country}}
+                        </span>
+                        <span *ngIf="consignmentData?.showroomowner_state">
+                            - {{consignmentData?.showroomowner_state}}
+                        </span>
+                        <span *ngIf="consignmentData?.showroomowner_city">
+                            - {{consignmentData?.showroomowner_city}}
+                        </span>
+                        <span *ngIf="consignmentData?.showroomowner_pincode">
+                            - {{consignmentData?.showroomowner_pincode}}
+                        </span>
+                    </p>
+    
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">العنوان:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05" *ngIf="consignmentData?.showroomowner_leadtype == 'company'">
+                    <p class="pdf-t-bld">Trade Licen No.:</p>
+                    <p class="consignee-license" >{{consignmentData?.showroom_tradelicenno }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الرخصة التجارية:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Telephone No:</p>
+                    <p class="consignee-phone">{{consignmentData?.showroom_phonenumber }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم التلفون:</p>
+                </div>
+    
+                <p class="pdf-sub-headings"><span>THE OWNER (CONSIGNOR)</span><span>مالك المركبة</span></p>
+    
+                <div class="d-consignee d-grid pdf-pt-1">
+                    <p class="pdf-t-bld">Name:</p>
+                    <p class="consignor-name">{{consignmentData?.consignor_accountname }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">الاسم:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Address:</p>
+                    <!-- <p class="consignor-address">{{consignmentData?.consignor_address }}</p> -->
+                    <p class="consignee-address">
+                        <span *ngIf="consignmentData?.consignor_country">
+                            {{consignmentData?.consignor_country}}
+                        </span>
+                        <span *ngIf="consignmentData?.consignor_state">
+                            - {{consignmentData?.consignor_state}}
+                        </span>
+                        <span *ngIf="consignmentData?.consignor_city">
+                            - {{consignmentData?.consignor_city}}
+                        </span>
+                        <span *ngIf="consignmentData?.consignor_pincode">
+                            - {{consignmentData?.consignor_pincode}}
+                        </span>
+                    </p>
+    
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">العنوان:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05" *ngIf="consignmentData?.consignor_leadtype == 'company'">
+                    <p class="pdf-t-bld">Trade Licen No.:</p>
+                    <p class="consignor-license">{{consignmentData?.consignor_tradelicenno }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الرخصة التجارية:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Telephone No:</p>
+                    <p class="consignor-phone">{{consignmentData?.consignor_phonenumber }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم التلفون:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">ID No:</p>
+                    <p class="consignor-id">{{consignmentData?.consignor_emiratesid }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">هوية رقم</p>
+                </div>
+    
+                <div class="d-info pdf-pt-1">
+                    <p>The Consignor agrees to consign the following vehicle ("VEHICLE ON CONSIGNMENT") to the Consignee for
+                        sale:</p>
+                    <p class="pdf-rtl pdf-fs-1">وافق مالك المركبة على ايداع المركبة المذكورة (المركبة) لدى المعرض، بهدف بيعها</p>
+                </div>
+    
+                <!-- ? details -->
+    
+                <p class="pdf-sub-headings"><span>VEHICLE ON CONSIGNMENT</span><span>تفاصيل المركبة </span></p>
+    
+                <div class="d-consignee d-grid pdf-pt-1">
+                    <p class="pdf-t-bld">Vehicle Make:</p>
+                    <p class="vehicle-brand">{{consignmentData?.brandname }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">نوع المركبة</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Year:</p>
+                    <p class="vehicle-year">{{consignmentData?.modelyear ?? ''}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">سنة الصنع</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Color:</p>
+                    <p class="vehicle-color">{{consignmentData?.carcolor ?? ''}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">اللون</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">No. Keys</p>
+                    <p class="vehicle-keys">{{consignmentData?.noofkeys ?? ''}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">عدد المفاتيح</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Model:</p>
+                    <p class="vehicle-model">{{consignmentData?.modelname }}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">موديل المركبة</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">No. Cylinder:</p>
+                    <p class="vehicle-cylinder">{{ consignmentData?.noofcylinder ?? '' }}                </p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">عدد السلندرات</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Plate Number:</p>
+                    <p class="vehicle-plate">{{ consignmentData?.platenumber ?? '' }} </p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم اللوحة</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">VIN No.</p>
+                    <p class="vehicle-vin">{{ consignmentData?.chasisno ?? '' }} </p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الشاسيه</p>
+                </div>
+    
+    
+                <div class="pdf-footer pdf-pt-1 page-break">
+                    <div class="pdf-footer-line"></div>
+                    <div class="pdf-upper-footer">
+                        <p>Feel free to contact us if you have any questions</p>
+                        <img class="pdf-footer-experts-800" src=".../../../../assets/assets/800 EXPERTS.png" alt="">
+                        <img class="pdf-footer-email" src=".../../../../assets/assets/Email.png" alt="">
+                        <p class="pdf-footer-page-no">1</p>
+                    </div>
+                    
+                </div>
+    
+            </div>
+            <div class="pdf-other-pages pdf-page pdf-page-break "  [ngClass]="{'page-padding': is_pdfgenerating}">
+    
+                <p class="t-main-heading pdf-pt-1">RESPONSIBILITIES OF THE PARTIES</p>
+    
+                <div class="pdf-sub-headings pdf-t-bld pdf-pt-1">
+                    <p>THE OWNER (CONSIGNOR)</p>
+                    <p>مالك المركبة </p>
+                </div>
+    
+                <div class="t-content pdf-pt-1">
+                    <p><span class="pdf-item-no">1.</span>
+                        The Consignor is mandated to deliver the Vehicle to the Consignee in an optimal state, devoid of
+                        defects or deficiencies.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">1.</span>
+                        يلتزم مالك المركبة بتسليم المركبة إلى المعرض في حالة ممتازة وخالية من أي عيوب.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p><span class="pdf-item-no">2.</span>
+                        The Consignor exclusively assumes responsibility for any assertions or warranties concerning the
+                        Vehicle's condition, historical documentation, or other pertinent aspects.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">2.</span>
+                        يتحمل مالك المركبة وحده المسؤولية عن أي تأكيدات فيما يتعلق بحالة السيارة أو السجلات التاريخية أو
+                        الجوانب الأخرى ذات الصلة.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p><span class="pdf-item-no">3.</span>
+                        The Consignor fully shoulders the responsibility for the Vehicle's condition following its sale.
+                        The
+                        Consignee is absolved from any accountability for identified defects or missing elements after
+                        the
+                        sale. Moreover, the Consignee holds no legal liability in the event of a dispute between the
+                        Vehicle's Consignor and the buyer
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">3.</span>
+                        يتحمل مالك المركبة المسؤولية الكاملة عن حالة السيارة بعد البيع. ولن يكون المعرض مسؤولاً عن أي
+                        عيوب
+                        مكتشفة أو مكونات مفقودة بعد البيع، ولا يتحمل المعرض اي مسؤوليه قانونية في حال حدوث نزاع بين مالك
+                        المركبة والمشتري.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p><span class="pdf-item-no">4.</span>
+                        The Consignor is liable for all expenses for the maintenance and repairs of the vehicle. In the
+                        event of necessary mechanical, electrical, or maintenance work required while the vehicle is on
+                        the
+                        Consignee's premises
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">4.</span>
+                        يتحمل مالك المركبة جميع التكاليف المتعلقة بصيانة وإصلاح السيارة. في حال حدوث أي أعطال ميكانيكية
+                        او
+                        كهربائية أو اي اعمال صيانة ضرورية أثناء وجود المركبة مع المعرض.
+                    </p>
+                </div>
+    
+                <div class="pdf-sub-headings pdf-t-bld pdf-pt-1">
+                    <p>CONSIGNEE</p>
+                    <p>المعرض</p>
+                </div>
+                <div class="t-content pdf-pt-1">
+                    <p><span class="pdf-item-no">1.</span>
+                        The consignee acknowledges receiving possession of the consignor's vehicle for consignment
+                        purposes
+                        and agrees to endeavour to sell the vehicle at the agreed price without requiring explicit
+                        approval
+                        from the consignor.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">1.</span>
+                        يقر المعرض باستلام حيازة مركبة مالك المركبة لأغراض البيع ويوافق على السعي لبيع السيارة بالسعر
+                        المتفق
+                        عليه دون الحاجة إلى موافقة صريحة من مالك المركبة.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p><span class="pdf-item-no">2.</span>
+                        The Consignee is entrusted with the responsibility of promoting the vehicle's marketability and
+                        ensuring its maintenance and safety while exhibited in the showroom.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">2.</span>
+                        يُعهد إلى المرسل إليه مسؤولية التسويق للمركبة وضمان صيانتها وسلامتها أثناء عرضها في صالة العرض.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p><span class="pdf-item-no">3.</span>
+                        The Consignee functions as an impartial third party accountable for procuring potential buyers
+                        and
+                        facilitating the sale of the vehicle. Any disputes, claims, or legal matters arising between the
+                        Consignor and the buyer are expressly excluded from the Consignee's liability.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">3.</span>
+                        يعمل المعرض كطرف ثالث محايد مسؤول عن ايجاد المشترين المحتملين وتسهيل بيع السيارة. يتم استبعاد أي
+                        نزاعات أو مطالبات أو مسائل قانونية تنشأ بين مالك المركبة والمشتري صراحة من مسؤولية المعرض.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p><span class="pdf-item-no">4.</span>
+                        The Consignee bears no liability for verifying the accuracy of information provided by the
+                        Consignor
+                        concerning the Vehicle.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">4.</span>
+                        لا يتحمل المعرض أي مسؤولية عن التحقق من دقة المعلومات المقدمة من قبل مالك المركبة فيما يتعلق
+                        بالمركبة.
+                    </p>
+                </div>
+    
+    
+                <div class="pdf-footer pdf-pt-1 page-break">
+                    <div class="pdf-footer-line"></div>
+                    <div class="pdf-upper-footer">
+                        <p>Feel free to contact us if you have any questions</p>
+                        <img class="pdf-footer-experts-800" src=".../../../../assets/assets/800 EXPERTS.png" alt="">
+                        <img class="pdf-footer-email" src=".../../../../assets/assets/Email.png" alt="">
+                        <p class="pdf-footer-page-no">2</p>
+                    </div>
+                    
+                </div>
+    
+            </div>
+    
+            <div class="pdf-other-pages pdf-page pdf-page-break "  [ngClass]="{'page-padding': is_pdfgenerating}">
+                <div class="t-content pdf-pt-1">
+                    <p><span class="pdf-item-no">5.</span>
+                        In the event of a sale, the Consignee's obligations are confined to facilitating the transaction
+                        and
+                        ensuring the lawful transfer of ownership. The Consignee assumes no role in post-sale
+                        obligations,
+                        warranties, or guarantees.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">5.</span>
+                        في حالة البيع، تقتصر التزامات المعرض على تسهيل المعاملة وضمان النقل القانوني للملكية. ولن يكون
+                        مسؤولا باي شكل عن التزامات ما بعد البيع أو الضمانات.
+                    </p>
+                </div>
+    
+                <div class="t-content pdf-pt-05">
+                    <p><span class="pdf-item-no">6.</span>
+                        The Consignee does not operate as an agent for either the Consignor or the buyer. All
+                        communication
+                        or negotiation among the Consignee, Consignor, and buyer is exclusively to finalise the sale
+                        transaction.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">6.</span>
+                        لا يتعبر المعرض وكيلا للمالك المركبة أو المشتري. وجميع الاتصالات أو المفاوضات بين المعرضومالك
+                        المركبة والمشتري تكون حصريًا لغرض إتمام معاملة البيع.
+                    </p>
+                </div>
+    
+                <div class="pdf-sub-headings pdf-t-bld pdf-pt-1">
+                    <p>Duration of the Agreement</p>
+                    <p>مدة الاتفاقية</p>
+                </div>
+                <div class="t-content pdf-pt-1">
+                    <p>
+                        The agreement is valid for <span>{{consignmentData?.durationagreement   }}</span> months from the date of signing
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        تعتبر الاتفاقية سارية لمدة <span>{{consignmentData?.durationagreement   }}</span> شهر من تاريخ توقيعها
+                    </p>
+                </div>
+    
+                <div class="pdf-sub-headings pdf-t-bld pdf-pt-1">
+                    <p>Commision and Payment</p>
+                    <p>العمولة والدفع</p>
+                </div>
+    
+                <div class="t-content pdf-pt-05">
+                    <p>
+                        The Consignor hereby consents to the deduction by the Consignee of a commission, amounting to
+                        <span class="commission-percentage">{{consignmentData?.commissionpercentage  }}</span>% (per cent) of the ultimate selling price or a fixed sum of <span class="commission-price">{{consignmentData?.commissionpayment }}</span> AED upon the
+                        successful sale and complete funding of the vehicle
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        يوافق مالك المركبة على ان يقوم المعرض بخصم عمولة تساوي <span>{{consignmentData?.commissionpercentage  }}</span>% من سعر البيع النهائي، أو مبلغ <span>{{consignmentData?.commissionpayment }}</span> درهم اماراتي  عند بيع المركبة وتمويلها.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <div>
+                        <p>"The term 'sale' is defined as follows:
+                        </p>
+                        <div class="t-list">
+                            <p><span class="pdf-item-no">a.</span>When the consignee receives the full purchase price or executes a conditional sales
+                                contract
+                                for the vehicle.</p>
+                            <p><span class="pdf-item-no">b.</span>When the purchaser takes possession of the vehicle, whichever event happens first.</p>
+                        </div>
+                    </div>
+                    <div class="pdf-rtl pdf-fs-1">
+                        <p>
+                            يعتبر البيع قد حدث، في حال مالك المركبة:
+                        </p>
+                        <div class="t-list">
+                            <p><span class="pdf-item-no">.a</span>
+                                استلم ثمن المركبة بالكامل او تم تنفيذ بيع مشروط للمركبة، أو 
+                            </p>
+                            <p><span class="pdf-item-no">.b</span>
+                                عند استلام المشتري للمركبة، ايهما يأتي اولا
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p>
+                        If the Consignee identifies a buyer for the specified vehicle and the Consignor seeks to avoid
+                        compensating the Consignee for the commission by directly selling to a customer introduced by
+                        the
+                        Consignee, such action shall be considered a sale. Consequently, the aforementioned commission
+                        shall
+                        be obligated to pay the Consignee.
+    
+                        Additionally, if the Consignor concludes a sale with any individual or entity other than the
+                        Consignee, regardless of any involvement by the Consignee, throughout the contract's duration,
+                        the
+                        previously stipulated commission will be considered due and payable.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        في حال حاول مالك المركبة التهرب من دفع العمولة للمخول بالبيع، من خلال البيع المباشر للعميل الذي
+                        قدمه
+                        المعرض، فسيتم اعتبار هذا الاجراء بيعا، وستصبح العمولة المتفق عليها مستحقة، وواجبة الدفع للمعرض.
+    
+                        علاوة على ذلك وفي حال قيام مالك المركبة باجراء عملية البيع لأي فرد أوكيان آخر، سواء بمساعدة
+                        المرسل
+                        اليه أم لا، خلال فترة العقد، سيتم اعتبار العمولة المذكورة مستحقة وواجبة الدفع.
+                    </p>
+                </div>
+    
+                <div class="pdf-footer pdf-pt-1 page-break">
+                    <div class="pdf-footer-line"></div>
+                    <div class="pdf-upper-footer">
+                        <p>Feel free to contact us if you have any questions</p>
+                        <img class="pdf-footer-experts-800" src=".../../../../assets/assets/800 EXPERTS.png" alt="">
+                        <img class="pdf-footer-email" src=".../../../../assets/assets/Email.png" alt="">
+                        <p class="pdf-footer-page-no">3</p>
+                    </div>
+                    
+                </div>
+    
+            </div>
+    
+            <div class="pdf-other-pages pdf-page pdf-page-break " [ngClass]="{'page-padding': is_pdfgenerating}">
+                <div class="t-content pdf-pt-1">
+                    <p>
+                        The Consignee will exhibit the vehicle in the showroom for an initial duration of <span class="free-holding-period">{{consignmentData?.showroomfreeofcharge  }}</span> month,
+                        free
+                        of charge. Should the Consignor opt to extend the vehicle's stay at the showroom beyond this
+                        period,
+                        a monthly fee of <span class="holding-charge">{{consignmentData?.showroomchargepermonth   }}</span> AED must be paid.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        سيقوم المعرض بعرض المركبة في صاله العرض الخاصه به لمدة أولية مدتها <span class="free-holding-period-arb">{{consignmentData?.showroomfreeofcharge  }}</span> شهر مجانًا. وفي إذا
+                        اختار
+                        مالك المركبة تمديد فترة إقامة السيارة في صالة العرض بعد هذه الفترة، فيجب دفع رسوم قدرها
+                        <span class="holding-charge-arb">{{consignmentData?.showroomchargepermonth   }}</span>
+                        شهريا.
+                    </p>
+                </div>
+    
+                <div class="t-content pdf-pt-05">
+                    <p>
+                        In the event the Consignor wishes to withdraw the vehicle from the showroom before the end of
+                        the
+                        contract period or to terminate the contract, the Consignor shall be liable to pay a monthly fee
+                        of
+                        <span class="penalty-amount">{{consignmentData?.liableamount }}</span> AED
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        في حال رغبة مالك المركبة سحب المركبة من المعرض ، قبل انتهاء مدة العقد،او الغاء العقد، توجب عليه
+                        دفع
+                        رسوم شهرية مقدارها <span class="penalty-amount-arb">{{consignmentData?.liableamount }}</span> درهم شهريا.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p>
+                        The calculation of months will follow the Gregorian calendar, and any portion of a month will be
+                        regarded as a complete month
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        سيتم احتساب الأشهر حسب التقويم الميلادي، ويعتبر الجزء من الشهر شهرا كاملا
+                    </p>
+                </div>
+                <div class="pdf-sub-headings pdf-t-bld pdf-pt-1">
+                    <p>Agreement Termination</p>
+                    <p></p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p>
+                        Either party reserves the right to terminate this agreement by providing written notice to the
+                        other
+                        party. Upon termination, the Consignor is obligated to reclaim the Vehicle from the showroom
+                        expeditiously.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        يحتفظ أي من الطرفين بالحق في إنهاء هذه الاتفاقية عن طريق تقديم إشعار كتابي للطرف الآخر. عند
+                        الإنهاء،
+                        يلتزم مالك المركبة باستعادة السيارة على وجه السرعة من صالة العرض.
+                    </p>
+                </div>
+    
+                <div class="pdf-sub-headings pdf-t-bld pdf-pt-1">
+                    <p>Governing Law</p>
+                    <p>القانون الحاكم</p>
+                </div>
+    
+                <div class="t-content pdf-pt-05">
+                    <p>
+                        This Agreement is subject to and shall be interpreted in accordance with the laws of the United
+                        Arab
+                        Of Emirates.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        تخضع هذه الاتفاقية ويتم تفسيرها وفقًا لقوانين دولة الإمارات العربية المتحدة.
+                    </p>
+                </div>
+                <div class="t-content pdf-pt-05">
+                    <p>
+                        IN WITNESS WHEREOF, the undersigned parties have executed this Consignment Agreement as of the
+                        Effective Date.
+                    </p>
+                    <p class="pdf-rtl pdf-fs-1">
+                        إثباتاً لما تقدم، قامت الأطراف الموقعة أدناه بتنفيذ هذه الاتفقية اعتباراً من تاريخ السريان.
+                    </p>
+                </div>
+                <div class="signature-container t-signature pdf-pt-2" *ngIf="!contractId">
+                    <div>
+                        <p>[Consignor's Signature]</p>
+                        <img width="150" *ngIf="consignmentData && consignmentData.seller_sign_path_base64" class="sign" [src]="'data:image/png;base64,' + (consignmentData.seller_sign_path_base64 || '')" alt="Seller Signature">
+                      
+                      <div >
+                        <p class="pdf-pt-2">_____________________________________</p>
+                        <p class="pdf-pt-1">
+                            Date: {{ consignmentData?.buyer_sign_date ? (consignmentData?.buyer_sign_date | date: 'dd/MM/yyyy') : '' }}
+                          </p>
+                      </div> 
+                    </div>
+                    <div>
+                        <p>[Consignee's Signature]</p>
+                        <img width="150" *ngIf="showroomSign" class="sign" [src]="'data:image/png;base64,' + (showroomSign || '')" alt="Showroom Signature">
+                      
+                      <div>
+                        <p class="pdf-pt-2">_____________________________________</p>
+                        <p class="pdf-pt-1">
+                            Date: {{ consignmentData?.createdat ? (consignmentData?.createdat | date: 'dd/MM/yyyy') : '' }}
+                          </p>
+                      </div> 
+                    </div>
+                </div>
+    
+                <div class="pdf-footer pdf-pt-1 page-break">
+                    <div class="pdf-footer-line"></div>
+                    <div class="pdf-upper-footer">
+                        <p>Feel free to contact us if you have any questions</p>
+                        <img class="pdf-footer-experts-800" src=".../../../../assets/assets/800 EXPERTS.png" alt="">
+                        <img class="pdf-footer-email" src=".../../../../assets/assets/Email.png" alt="">
+                        <p class="pdf-footer-page-no">4</p>
+                    </div>
+                    
+                </div>
+    
+            </div>
+    
+        </div>
+    </div>

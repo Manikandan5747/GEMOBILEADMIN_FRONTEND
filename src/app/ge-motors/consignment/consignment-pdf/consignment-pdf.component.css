@@ -1,0 +1,35 @@
+@import '../../../../style.scss';
+
+.pdf-cover-page {
+    background-image: url('../../../../assets/assets/bg-g-1.jpg');
+}
+.return-to-menu>a {
+    color: #007bff;
+  }
+  
+  .return-to-menu {
+    margin-bottom: 5px !important;
+  }
+  
+
+
+
+
+/*    
+  @media only screen and (max-width: 1200px) {
+  
+  
+  }
+  
+  @media only screen and (max-width: 700px) {
+  
+    .d-date {
+      color: red;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  } */
+
+  
+
+
+ 

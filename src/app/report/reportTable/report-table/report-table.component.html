@@ -1,0 +1,135 @@
+<div class="col-md-12">
+    <div class="page-title">{{ reportHeader }}</div>
+
+    <div class="return-to-menu">
+        <a (click)="goBack()"><span class="material-icons"> reply
+            </span> Return to back
+        </a>
+    </div>
+
+    <!-- <div class="col-md-12">
+        <div class="row">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Reports</mat-label>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+    </div> -->
+
+
+    <button class="apply-filter-button" (click)="openFilterModal()">
+        <mat-icon>filter_alt</mat-icon>
+    </button>
+
+
+
+    <button *ngIf="this.existingFilters?.length" mat-raised-button class="btn btn_warn clear-filter-button"
+        color="primary" (click)="clearAdvancedFilter()">
+        <mat-icon>clear</mat-icon>
+        Clear Filter </button>
+
+    <div class="col-12 pt-2 mb-2 p-0 d-flex justify-content-end">
+
+        <!-- <button class="btnnn-secondary-fn" (click)="exportPdf()">
+            <img width="30" src="../../../assets/images/pdf.jpg" class="button-icon" alt="PDF icon" mat-responsive />
+            Export to PDF
+        </button>&nbsp; -->
+        <button *ngIf="printaccess == 'true'" class="btnnn-secondary-fn" (click)="exportExcel()">
+            <img width="30" src="../../../assets/images/excel.png" class="button-icon" alt="Excel icon"
+                mat-responsive />
+            Export to Excel
+        </button>
+    </div>
+    <div *ngIf="dataSource.data.length === 0" class="no-data-card">
+        <mat-card>
+            <mat-card-content>
+                <p>No data available</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="mat-table-container mt-3">
+        <table mat-table [dataSource]="dataSource" matSort class="custom-table" (matSortChange)="onSortChange($event)">
+            <!-- Define columns dynamically -->
+            <ng-container *ngFor="let column of columnsData" [matColumnDef]="column.fieldName">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="header-content">
+                        <div class="header-text">
+                            <span>{{ column.columnName }}</span>
+                            <button mat-icon-button matSuffix aria-label="Sort by {{column.columnName}}"
+                                (click)="toggleSort(column.fieldName)">
+                                <mat-icon>{{ getSortIcon(column.fieldName) }}</mat-icon>
+                            </button>
+                        </div>
+                        <div class="filter-sort-wrapper" *ngIf="shouldRenderFilter(column.fieldName)">
+                            <input delay="500" type="text" class="form-control input-sm"
+                                (click)="$event.stopPropagation()" (input)="applyFilter1($event, column.fieldName)"
+                                placeholder="Filter by {{ column.columnName }}"
+                                [attr.data-field-name]="column.fieldName">
+                        </div>
+                    </div>
+                </th>
+                <td mat-cell *matCellDef="let report" class="custom-width">
+                    <ng-container
+                        *ngIf="column.fieldName !== 'created_at' && column.fieldName !== 'purchasedate' 
+                        && column.fieldName !== 'gift_draw_time'
+                        && column.fieldName !== 'gift_validity'
+                        && column.fieldName !== 'validity'
+                        && column.fieldName !== 'paymentdate'
+                        && column.fieldName !== 'sp_created_at'
+                        && column.fieldName !== 'offer_valid_from'
+                        && column.fieldName !== 'offer_valid_to'
+                        && column.fieldName !== 'received_date' && column.fieldName !==  'requestdate'
+                        && column.fieldName !== 'solddate' && column.fieldName !== 'createdat' && column.fieldName !== 'consignmentexpirydate' && column.fieldName !== 'consignmentenddate' && column.fieldName !== 'consignmentstartdate' && column.fieldName !== 'expensedate' && column.fieldName !== 'expectedclosedate'&& column.fieldName !== 'duedate' && column.fieldName !== 'modifiedat' && column.fieldName !== 'expirydate' &&  column.fieldName !== 'modified_at'; else dateTemplate">
+                        <ng-container *ngIf="column.fieldName !== 'status'">
+                            {{ report[column.fieldName] }}
+                        </ng-container>
+                        <ng-container *ngIf="column.fieldName === 'status'">
+                            <p style="margin-bottom: 0rem;">{{ report[column.fieldName] === 1 ? 'ACTIVE' : 'INACTIVE' }}
+                            </p>
+                        </ng-container>
+
+
+
+
+
+
+                    </ng-container>
+                    <ng-template #dateTemplate>
+                        <ng-container
+                            *ngIf="column.fieldName == 'purchasedate' || column.fieldName == 'consignmentexpirydate' || column.fieldName == 'requestdate' ||
+                            column.fieldName == 'consignmentenddate' || column.fieldName == 'consignmentstartdate' ||
+                            column.fieldName == 'expectedclosedate' || column.fieldName == 'duedate' || 
+                            column.fieldName == 'expirydate' ||
+                            column.fieldName == 'expensedate' || 
+                            column.fieldName == 'gift_validity' || 
+                            column.fieldName == 'paymentdate' || 
+                            column.fieldName == 'validity'; 
+                            else defaultDateFormat">
+                            {{ report[column.fieldName] | date: DATE_ONLYFORMAT }}
+                        </ng-container>
+
+                        <ng-template #defaultDateFormat>
+                            <span>{{ report[column.fieldName] | date: DATE_FORMAT }}</span>
+                        </ng-template>
+                    </ng-template>
+
+
+                </td>
+            </ng-container>
+            <!-- Assign dynamic columns to table rows -->
+            <tr mat-header-row *matHeaderRowDef="fieldNames"></tr>
+            <tr mat-row *matRowDef="let row; columns: fieldNames;"
+                [ngClass]="{'highlight-row': row.holdingperiod > 70 && row.carownertype =='GEMOTORS' && reportHeader !='SOLD CAR SALES REPORT'}">
+            </tr>
+
+        </table>
+
+    </div>
+
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        showFirstLastButtons (page)="onPageChange($event)">
+    </mat-paginator>
+</div>

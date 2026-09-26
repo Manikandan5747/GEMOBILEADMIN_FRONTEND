@@ -1,0 +1,189 @@
+.header-content {
+    align-items: center;
+}
+
+.header-text {
+    text-align: left;
+}
+
+.filter-sort-wrapper {
+    flex-shrink: 0; /* Ensure filter input does not affect header alignment */
+    margin-left: auto;
+}
+
+.input-sm {
+    height: 30px; /* Adjust the height of the input */
+}
+
+.filter-dropdown-container {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown {
+    margin-right: 10px;
+}
+
+.filter-container {
+    display: none; /* Initially hide the filter container */
+    flex-direction: row;
+    border-radius: 5px;
+    position: relative;
+    
+    z-index: 1;
+}
+
+.filter-container.active {
+    display: flex; /* Show the filter container when active */
+}
+
+.filter-header {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    gap: 10px; /* Space between the button and container */
+  }
+
+
+.filter-input label {
+    font-weight: bold;
+}
+
+.filter-input select,
+.filter-input input[type="text"],
+.filter-input input[type="date"],
+.filter-input mat-form-field {
+    padding: 8px!important;
+    border: 1px solid #ced4da!important;
+    border-radius: 4px!important;
+    width: 150px!important;
+    height: 43px!important;
+    margin-left: 10px!important;
+}
+
+.apply-filter-button {
+    padding: 10px 10px;
+    background-color: #f4d35f;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    cursor: pointer !important;
+}
+
+.apply-filter-button:hover {
+    background-color: #f4d35f;
+}
+.mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 .75em 0 .75em;
+    margin-top: -0.25em;
+    position: relative;
+}
+.filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .filter-action-button {
+    background-color: #f5f5f5; /* Light background for buttons */
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .filter-action-button:disabled {
+    background-color: #e0e0e0; /* Disabled state */
+    cursor: not-allowed;
+  }
+  
+  .filter-action-button mat-icon {
+    font-size: 20px; /* Adjust size if needed */
+  }
+
+  
+  .clear-filter-button mat-icon {
+    vertical-align: middle;
+    margin-right: 4px;
+    padding:3px
+  }
+
+  .return-to-menu > a {
+    color: #007bff;
+  }
+  .return-to-menu{
+    margin-bottom: 5px !important;
+  }
+
+  .highlight-row {
+    background-color: #ffe6e6; /* Light red background */
+    color: #a94442; /* Optional: text color for better contrast */
+  }
+
+
+
+
+
+  .mat-column-modelyear,.mat-column-holdingperiod, .mat-column-totalexpense,
+  .mat-column-grandtotal,.mat-column-sellingprice,
+  .mat-column-carprice,
+  .mat-column-purchaseprice,
+  .mat-column-advanceamount,
+  .mat-column-ownersharevalue,
+  .mat-column-wsrepair,
+  .mat-column-customs,
+  .mat-column-bsrepair,
+  .mat-column-recovery,
+  .mat-column-warranty,
+    .mat-column-totalcost,
+    .mat-column-insurance,
+    .mat-column-shelflife,
+    .mat-column-profit,
+    .mat-column-margin,
+    .mat-column-discount,
+    .mat-column-subtotal,
+    .mat-column-tax,
+    .mat-column-grandtotal,
+    .mat-column-quantity,
+    .mat-column-salesprice,
+    .mat-column-amount,
+    .mat-column-registration,
+    .mat-column-stageprobability,
+    .mat-column-exchangerate,
+    .mat-column-taxamount,
+    .mat-column-expensevalue,
+    .mat-column-consignmentamount,
+    .mat-column-enginecapacity,
+
+    .mat-column-mileage,
+    .mat-column-noofseats,
+    .mat-column-noofcylinder,
+    .mat-column-count,
+    .mat-column-win_qty,
+    .mat-column-qty,
+    .mat-column-remaining_qty,
+    .mat-column-campaign_id,
+    .mat-column-invoice_amount,
+    .mat-column-geshareval,
+    .mat-column-paymentstatus,
+     .mat-column-modeofpayment
+    
+    
+
+
+    {
+    text-align: center;
+  }
+
+
+    .mat-column-original_url {
+      text-transform: lowercase !important;
+    }
+    .mat-column-original_url span{
+      text-transform: capitalize !important;
+    }
+
+  
+  
+  

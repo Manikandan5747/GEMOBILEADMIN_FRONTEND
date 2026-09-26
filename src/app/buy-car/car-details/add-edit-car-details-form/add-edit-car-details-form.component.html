@@ -1,0 +1,965 @@
+<div class="col-md-12">
+  <div class="page-title"> {{title}}</div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="text-left mt-3 mb-3 ac-formgroup-title">
+    <span>General</span>
+  </div>
+
+  <form [formGroup]="addEditForm" *ngIf="addEditForm">
+    <div class="row">
+      <a class="scroll-target"></a>
+      <mat-form-field class="pt-2 col-md-4 readonly-input" appearance="fill">
+        <mat-label class="">Car Showroom Ref No </mat-label>
+        <input readonly matInput formControlName="carshowroomrefno" type="text" />
+        <mat-error *ngIf="addEditForm.controls['carshowroomrefno'].hasError('required') && isShowErrors">Car Showroom
+          Ref No is required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['carshowroomrefno'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>Showroom Detail</mat-label>
+        <mat-select formControlName="showroomdetid" (selectionChange)="getShowroomContactList($event.value)" disabled>
+          <mat-select-filter [array]="showroomCarDetailsList" (filteredReturn)="filteredShowroomDetailsList=$event"
+            [displayMember]="'showroomname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of showroomCarDetailsList" [value]="item.showroomdetid"
+            [class.hide]="!isShowroomDetailFiltered(item)">
+            {{item.showroomname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['showroomdetid'].hasError('required') && isShowErrors">Showroom Detail is
+          required
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>Showroom Contact Detail</mat-label>
+        <mat-select formControlName="showroomcontactDetail" (selectionChange)="getContactList($event.value)" >
+          <mat-select-filter [array]="showroomContactDetailsList"
+            (filteredReturn)="filteredShowroomContactDetailsList=$event" [displayMember]="'contactName'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of showroomContactDetailsList"
+            [value]="item.contactName ? item.contactName :item.showroomdcon_id"
+            [class.hide]="!isShowroomContactDetailFiltered(item)">
+            {{item.contactName ? item.contactName :item.showroomconname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['showroomcontactDetail'].hasError('required') && isShowErrors">Showroom
+          Contact Detail is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>City</mat-label>
+        <mat-select formControlName="carcityid">
+          <mat-select-filter [array]="CarCityList" (filteredReturn)="cityDetailsList=$event"
+            [displayMember]="'carcityname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of CarCityList" [value]="item.carcityid" [class.hide]="!cityFiltered(item)">
+            {{item.carcityname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['carcityid'].hasError('required') && isShowErrors">City Name is
+          required</mat-error>
+      </mat-form-field>
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Car Details</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>Brand Name</mat-label>
+        <mat-select formControlName="brandid" (selectionChange)="getModelList($event.value)">
+          <mat-select-filter [array]="brandList" (filteredReturn)="filteredList=$event" [displayMember]="'brandname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of brandList" [value]="item.brandid" [class.hide]="!isFiltered(item)">
+            {{item.brandname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['brandid'].hasError('required') && isShowErrors">Brand Name is required
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>Model Name</mat-label>
+        <mat-select formControlName="modelid">
+          <mat-select-filter [array]="modelList" (filteredReturn)="filteredModelList=$event"
+            [displayMember]="'modelname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of modelList" [value]="item.modelid" [class.hide]="!isModelFiltered(item)">
+            {{item.modelname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['modelid'].hasError('required') && isShowErrors">Model Name is required
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Model Year</mat-label>
+        <mat-select formControlName="modelyear">
+          <mat-select-filter [array]="yearList" (filteredReturn)="filteredYearList=$event" [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of yearList" [value]="item.key" [class.hide]="!isYearFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['modelyear'].hasError('required') && isShowErrors">Model Year is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4 pt-2" appearance="outline">
+        <mat-label class="">Chassis No</mat-label>
+        <input maxlength="17" matInput [errorStateMatcher]="matcher" formControlName="chasisno" type="text" />
+        <mat-error *ngIf="addEditForm.controls['chasisno'].hasError('required') && isShowErrors">Chassis No is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['chasisno'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['chasisno'].hasError('pattern') && isShowErrors">Chassis No must be 17
+          digits</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Plate Number</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="platenumber" type="text" />
+        <mat-error *ngIf="addEditForm.controls['platenumber'].hasError('required') && isShowErrors">Plate No is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['platenumber'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">No of Cylinder</mat-label>
+        <mat-select formControlName="noofcylinder">
+          <mat-select-filter [array]="noofcylinderList" (filteredReturn)="filterednoofcylinderList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of noofcylinderList" [value]="item.key"
+            [class.hide]="!isnoofcylinderFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['noofcylinder'].hasError('required') && isShowErrors">No of Cylinder is
+          required
+        </mat-error>
+      </mat-form-field>
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Car Owner Details</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Sales Type</mat-label>
+        <mat-select formControlName="salestype">
+          <mat-option value="localsale">Local Sales</mat-option>
+          <mat-option value="export">Export</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['salestype'].hasError('required') && isShowErrors"> Sales Type is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>Car Owner Type</mat-label>
+        <mat-select formControlName="carownertypeid" (selectionChange)="carownertypeChange($event)"  [disabled]="carshowroom_id">
+          <ng-container *ngFor="let ele of carownertypeList">
+            <mat-option [value]="ele.carownertypeid"  [disabled]="ownerTypeshouldDisableOption(ele)"
+              *ngIf="role_id !== 9 || (role_id === 9 && ele.carownertypeid !== 3)">
+              {{ele.carownertype}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['carownertypeid'].hasError('required') && isShowErrors">
+          Car Owner Type is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>
+          {{
+          addEditForm.get('carownertypeid').value == 1 ? "Seller" :
+          addEditForm.get('carownertypeid').value == 2 ? "Consignor" :
+          "Car Owner"
+          }}
+        </mat-label>
+        <mat-select formControlName="carowner" (selectionChange)="selectionFilterChange($event)" [disabled]="addEditForm.get('carownertypeid').value === 1">
+          <mat-select-filter [array]="accountList" (filteredReturn)="accountFilteredList=$event"
+            [displayMember]="'accountname'">
+          </mat-select-filter>
+          <mat-option (click)="addAccountRecord()"> <a style="cursor: pointer;" class="shoname">
+              {{
+              addEditForm.get('carownertypeid').value == 1 ? "Create Seller" :
+              addEditForm.get('carownertypeid').value == 2 ? "Create Consignor" :
+              "Create Car Owner"
+              }}
+            </a></mat-option>
+          <mat-option *ngFor="let item of accountList" [value]="item.accountid" [class.hide]="!accountidFiltered(item)">
+            {{ item.accountname }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['carowner'].hasError('required') && isShowErrors">
+          {{addEditForm.get('carownertypeid').value == 1 ? "Seller":"Car Owner"}} is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" *ngIf="addEditForm.get('carownertypeid').value === 3" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label class="">Share With </mat-label>
+        <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="sharewithid">
+          <mat-select-filter [array]="sharewithaccountList" (filteredReturn)="sharewithaccountFilterList=$event"
+            [displayMember]="'accountname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of sharewithaccountList" [value]="item.accountid" [class.hide]="!sharewithaccountFiltered(item)">
+            {{ item.accountname }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['sharewithid'].hasError('required') && isShowErrors"> Share With is
+          required</mat-error>
+        </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline" *ngIf="addEditForm.get('carownertypeid').value === 3">
+        <mat-label class="">Ge Cost Share Value</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="geshareval" type="number" />
+        <mat-error *ngIf="addEditForm.controls['geshareval'].hasError('required') && isShowErrors">Ge Cost Share Value
+          is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['geshareval'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['geshareval'].hasError('zero')">
+          Zero Ge Cost Share Value Not Allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline" *ngIf="addEditForm.get('carownertypeid').value === 3">
+        <mat-label class="">Ge Profit Share (%)</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="ownersharevalue" type="number" />
+        <mat-error *ngIf="addEditForm.controls['ownersharevalue'].hasError('required') && isShowErrors">Ge Profit Share
+          is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['ownersharevalue'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['ownersharevalue'].hasError('zero')">
+          Zero Ge Profit Share Not Allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline" *ngIf="addEditForm.get('carownertypeid').value === 3">
+        <mat-label class="">Shared Cost Value</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="sharedcostvalue" type="number" />
+        <mat-error *ngIf="addEditForm.controls['sharedcostvalue'].hasError('required') && isShowErrors">Shared Cost
+          Value is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['sharedcostvalue'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+
+
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Car Specifications</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">No Of Keys</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="noofkeys" type="text" />
+        <mat-error *ngIf="addEditForm.controls['noofkeys'].hasError('required') && isShowErrors">No Of Keys is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['noofkeys'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['noofkeys'].hasError('pattern') && isShowErrors">
+          No Of Keys. Only whole numbers are allowed.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Mileage</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="mileage" type="number"
+          (ngModelChange)="validateMileageWhite($event)" />
+        <mat-error *ngIf="addEditForm.controls['mileage'].hasError('required') && isShowErrors">Mileage is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['mileage'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['mileage'].hasError('pattern') && isShowErrors">
+          Mileage. Only whole numbers are allowed.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Engine Capacity</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="enginecapacity" type="number" />
+        <mat-error *ngIf="addEditForm.controls['enginecapacity'].hasError('required') && isShowErrors">Engine Capacity
+          is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['enginecapacity'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Drive Type</mat-label>
+        <mat-select formControlName="drivetype">
+          <mat-select-filter [array]="driveTypeList" (filteredReturn)="filteredDriveTypeList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of driveTypeList" [value]="item.value" [class.hide]="!isDriveTypeFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['drivetype'].hasError('required') && isShowErrors">Drive Type is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Transmission type</mat-label>
+        <mat-select formControlName="transmissiontype">
+          <mat-option value="Automatic">Automatic</mat-option>
+          <mat-option value="Manual">Manual</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['transmissiontype'].hasError('required') && isShowErrors">Transmission
+          Type is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Fuel type</mat-label>
+        <mat-select formControlName="fueltype">
+          <mat-select-filter [array]="fuelTypeList" (filteredReturn)="filteredFuelTypeList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of fuelTypeList" [value]="item.key" [class.hide]="!isFuelTypeFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['fueltype'].hasError('required') && isShowErrors">Fuel Type is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Horsepower</mat-label>
+        <mat-select formControlName="horsepower">
+          <mat-select-filter [array]="horsepowerList" (filteredReturn)="filteredHorsepowerList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of horsepowerList" [value]="item.key" [class.hide]="!isHorsepowerFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['horsepower'].hasError('required') && isShowErrors">Horsepower is
+          required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">No of Seats</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="noofseats" type="text"
+          (ngModelChange)="validateSeatsWhite($event)" />
+        <mat-error *ngIf="addEditForm.controls['noofseats'].hasError('required') && isShowErrors">No of Seats is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['noofseats'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Regional Specs</mat-label>
+        <mat-select formControlName="specs">
+          <mat-select-filter [array]="regionalSpecsList" (filteredReturn)="filteredRegionalSpecsList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of regionalSpecsList" [value]="item.key"
+            [class.hide]="!isRegionalSpecsFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['specs'].hasError('required') && isShowErrors">Regional Specs is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Body Conditions</mat-label>
+        <mat-select formControlName="bodycondition">
+          <mat-select-filter [array]="bodyConditionsList" (filteredReturn)="filteredBodyConditionsList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of bodyConditionsList" [value]="item.key"
+            [class.hide]="!isBodyConditionsFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['bodycondition'].hasError('required') && isShowErrors">Body Conditions is
+          required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Mechanical Condition</mat-label>
+        <mat-select formControlName="mechanicalcondition">
+          <mat-select-filter [array]="mechanicalConditionList" (filteredReturn)="filteredMechanicalConditionList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of mechanicalConditionList" [value]="item.key"
+            [class.hide]="!isMechanicalConditionFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['mechanicalcondition'].hasError('required') && isShowErrors">Mechanical
+          Condition is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Car Color</mat-label>
+        <mat-select formControlName="carcolor">
+          <mat-select-filter [array]="carColorList" (filteredReturn)="filteredCarColorList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of carColorList" [value]="item.key" [class.hide]="!isCarColorFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['carcolor'].hasError('required') && isShowErrors">Car color is required
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Warranty</mat-label>
+        <mat-select formControlName="warranty">
+          <mat-option value="Yes">Yes</mat-option>
+          <mat-option value="No">No</mat-option>
+          <mat-option value="Does not apply">Does not apply</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['warranty'].hasError('required') && isShowErrors">Warranty is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline" *ngIf="addEditForm.get('warranty').value =='Yes'">
+        <mat-label class="">Warranty Type</mat-label>
+        <mat-select formControlName="warrantytype">
+          <mat-option value="dealer">Dealer</mat-option>
+          <mat-option value="gemotors ">GE Motors </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['warrantytype'].hasError('required') && isShowErrors">Warranty Type is
+          required</mat-error>
+      </mat-form-field>
+
+
+
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Doors</mat-label>
+        <mat-select formControlName="door">
+          <mat-option value="2 door">2 Door</mat-option>
+          <mat-option value="3 door">3 Door</mat-option>
+          <mat-option value="4 door">4 Door</mat-option>
+          <mat-option value="5+ door">5+ Door</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['door'].hasError('required') && isShowErrors">Doors is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Body Type</mat-label>
+        <mat-select formControlName="bodytype">
+          <mat-select-filter [array]="bodyTypeList" (filteredReturn)="filteredBodyTypeList=$event"
+            [displayMember]="'key'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of bodyTypeList" [value]="item.key" [class.hide]="!isBodyTypeFiltered(item)">
+            {{item.key}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['bodytype'].hasError('required') && isShowErrors">Body Type is required
+        </mat-error>
+      </mat-form-field>
+
+
+      <div *ngIf="isEdit !='VIEW'" class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Upload Car Images</span>
+      </div>
+      <!-- [accept]="'image/*'" -->
+      <div class="custom-dropzone" ngx-dropzone (change)="onSelect($event)" *ngIf="isEdit !='VIEW'">
+        <ngx-dropzone-label>
+          <div>
+            <h2>Upload Multiple Cars</h2>
+          </div>
+        </ngx-dropzone-label>
+        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f"
+          [removable]="true" (removed)="onRemove(f)">
+          <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+        </ngx-dropzone-image-preview>
+      </div>
+
+
+      <div class="row pt-4" cdkDropListGroup *ngIf="isEdit !='VIEW'">
+        <div class="col-md-2" *ngFor="let item of files;let i=index">
+          <div class="artist-collection-photo " cdkDropList cdkDropListOrientation="horizontal"
+            [cdkDropListData]="{item:item,index:i}" (cdkDropListDropped)="customdrop($event)">
+            <div class="attr-box" [ngClass]="{'car-img-disable': iscarsold}" cdkDrag>
+              <div class="inner" cdkDrag>
+                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                {{i +1 }} Position
+                <!-- <img [src]="item.base64" width="100px" height="100px"/> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="carshowroom_id" class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Uploaded Car Images List</span>
+      </div>
+
+      <div class="row pt-4" *ngIf="carshowroom_id" cdkDropListGroup>
+        <div class="col-md-2" *ngFor="let item of carimgpathList;let i=index">
+          <div class="artist-collection-photo " cdkDropList cdkDropListOrientation="horizontal"
+            [cdkDropListData]="{item:item,index:i}" (cdkDropListDropped)="drop($event)">
+            <div class="attr-box" cdkDrag>
+              <button *ngIf="isEdit !='VIEW'" class="close" type="button" (click)="removeImg(item)">×</button>
+             <a [href]="item" target="_blank">
+                <img [src]="item" alt="car img" style="width: 119px;height: 119px;border-radius: 25px;">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-left mt-3 ac-formgroup-title">
+        <span>Video Upload</span>
+      </div>
+      <div class="col-md-2 p-4">
+        <input [disabled]="isEdit=='VIEW'" type="file" name="file1" id="file1" class="inputfile"
+          (change)="onVideoChange($event)" /> 
+        <label for="file1" style="float: left;">
+          <mat-icon >cloud_upload</mat-icon> Choose a Video file</label>
+      </div>
+      <div class="col-md-2 p-4">
+        <div *ngIf="choosedVideoFileName"> <b>File Selected</b> </div>
+        <div *ngIf="choosedVideoFileName"> {{ choosedVideoFileName}} </div>
+      </div>
+
+      <div class="col-md-4 p-3" *ngIf="videopath">
+        <span>Uploaded Video</span>&nbsp;&nbsp;&nbsp;
+        <mat-icon (click)="viewVideo()">visibility</mat-icon>
+      </div>
+
+      <mat-form-field class="col-md-4 pt-4" appearance="outline">
+        <mat-label class="">Car Video URL</mat-label>
+        <input matInput formControlName="videourl" type="text" />
+      </mat-form-field>
+
+
+      <div class="text-left mt-3 ac-formgroup-title">
+        <span>Inspection Report Upload</span>
+      </div>
+
+      <div class="col-md-2 p-4">
+        <input [disabled]="isEdit=='VIEW'" type="file" name="file" id="file" class="inputfile"
+          (change)="onChange($event)" /> 
+        <label for="file" style="float: left;"><mat-icon >cloud_upload</mat-icon>Choose a file</label>
+      </div>
+
+      <div class="col-md-2 p-4">
+        <div *ngIf="choosedFileName"> <b>File Selected</b> </div>
+        <div *ngIf="choosedFileName"> {{ choosedFileName}} </div>
+      </div>
+
+      <div class="col-md-4 p-3" *ngIf="docpath">
+        <span>Uploaded Report</span>
+        <a [href]="docpath" target="_blank">
+          <mat-icon style="width: 100% !important;" class="edit-mat-icon">download</mat-icon>
+        </a>
+      </div>
+      <mat-form-field class="col-md-4 pt-4" appearance="outline">
+        <mat-label class="">Inspection Report URL</mat-label>
+        <input matInput formControlName="inspectionreporturl" type="text" />
+      </mat-form-field>
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Portal Status Details</span>
+      </div>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label class="">Title</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="title" type="text" />
+        <mat-error *ngIf="addEditForm.controls['title'].hasError('required') && isShowErrors">Title
+          is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['title'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-4" appearance="outline">
+        <mat-label>Portal Status</mat-label>
+        <mat-select formControlName="isapprovedstatus" (selectionChange)="isapprovedstatusChange($event)">
+          <!-- <mat-option value="0">NO REQUEST</mat-option> -->
+          <mat-option *ngFor="let item of portalUsersStatusList" value="{{ item.portalstatusid }}"
+            [disabled]="item.portalstatusid == '1'">{{ item.portalstatus }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['isapprovedstatus'].hasError('required') && isShowErrors">Portal Status
+          is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4 pt-2" appearance="outline">
+        <mat-label class="">Car Details URL</mat-label>
+        <input matInput formControlName="cardetailsurl" type="text" />
+      </mat-form-field>
+
+      <div class="col-md-2 pt-2">
+        <mat-label class="pr-2 pt-5 text-center">Status </mat-label> &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-slide-toggle [disabled]="(this.addEditForm.get('isapprovedstatus')?.value == '1')" formControlName="status"
+          (change)="onToggleStatusChange($event)"></mat-slide-toggle>
+      </div>
+
+      <div class="col-md-2 pt-2">
+        <mat-label class="pr-2 pt-5 text-center">Sold Status </mat-label> &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-slide-toggle [disabled]="this.addEditForm.get('isapprovedstatus')?.value == '1'"
+          formControlName="soldstatus" (change)="onsoldstatusChange($event)"></mat-slide-toggle>
+      </div>
+
+      <div class="col-md-2 pt-2">
+        <mat-label class="pr-2 pt-5 text-center">Service History </mat-label> &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-slide-toggle formControlName="servicehistorystatus"></mat-slide-toggle>
+      </div>
+
+
+      <div class="col-md-2 pt-2">
+        <mat-label class="pr-2 pt-5 text-center">Price Availablity </mat-label> &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-slide-toggle formControlName="priceavailablity" (change)="onTogglePriceAvailablityChange($event)">
+        </mat-slide-toggle>
+      </div>
+
+      <div class="col-md-2 pt-2">
+        <mat-label class="pr-2 pt-5 text-center">Show Mobile App </mat-label> &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-slide-toggle formControlName="showmobileapp"  (change)="onToggleShowinMobileAppChange($event)">
+        </mat-slide-toggle>
+      </div>
+
+      <div class="col-md-2 pt-2" *ngIf="durationDays > 70 && !addEditForm.get('soldstatus').value && addEditForm.get('carownertypeid').value === 1 && role_id != 9">
+        <mat-label class="pr-2 pt-5 text-center">Special Offer </mat-label> &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-slide-toggle formControlName="specialoffer">
+        </mat-slide-toggle>
+      </div>
+
+      <mat-form-field class="pt-4 col-md-4" appearance="outline" *ngIf="durationDays > 70 && addEditForm.get('specialoffer').value"
+     >
+        <mat-label class="">Special Offer Price</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="specialofferprice" type="text" />
+        <mat-error *ngIf="addEditForm.controls['specialofferprice'].hasError('required') && isShowErrors">Special Offer Price
+          is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['specialofferprice'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['specialofferprice'].hasError('min')">
+          Special Offer Price Should Not Be 0
+        </mat-error>
+
+        <mat-error *ngIf="addEditForm.controls['specialofferprice'].hasError('pattern') && isShowErrors">
+          Special Offer Price must be Number.
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4 pt-4" appearance="outline">
+        <mat-label class="">Price</mat-label>
+        <input matInput formControlName="carprice" type="number"
+          [readOnly]="!addEditForm.get('priceavailablity')?.value" />
+        <mat-error *ngIf="addEditForm.controls['carprice'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+        <mat-error>
+          {{formValidationService.wholeNumberErrorMessage(f.carprice)}}
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-4 pt-4" appearance="outline" *ngIf="isEdit == 'VIEW'">
+        <mat-label class="">Show Mobile App Date </mat-label>
+        <input matInput readonly type="text" [value]="showmobileappdate | date: DATE_FORMAT"
+           />
+      </mat-form-field>
+
+
+      <div class="col-md-8"></div>
+
+      <mat-form-field class="pt-2 col-md-6" appearance="outline">
+        <mat-label class="">Description</mat-label>
+        <textarea matInput formControlName="description" type="text">
+              </textarea>
+        <mat-error *ngIf="addEditForm.controls['description'].hasError('required') && isShowErrors">Description is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6" appearance="outline">
+        <mat-label class="">Remark</mat-label>
+        <textarea matInput formControlName="remark" type="text">
+              </textarea>
+      </mat-form-field> 
+
+      <div class="col-md-4 field" >
+        <span style="display: flex;">Mulkiya Front Copy</span>
+        <label for="file-upload" class="custom-file-upload">
+          <mat-icon>cloud_upload</mat-icon>  Mulkiya Vehicle Registration Card Attachment
+        </label><br>
+        <input id="file-upload" (change)="onFileChanged($event)" class="inputfile"
+          accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+        <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['mulkiyadocfront'].value">
+          <div class="avatar-preview" for="imageUpload">
+            <a *ngIf="isPDF(addEditForm.controls['mulkiyadocfront'].value.name ? addEditForm.controls['mulkiyadocfront'].value.name : addEditForm.controls['mulkiyadocfront'].value)"
+              [href]="CommonConstants + addEditForm.controls['mulkiyadocfront'].value" target="_blank">
+              <img style="width: 52px;"
+                src="assets/images/pdf_icon.png" />
+            </a>
+            <a *ngIf="isIMG(addEditForm.controls['mulkiyadocfront'].value.name ? addEditForm.controls['mulkiyadocfront'].value.name : addEditForm.controls['mulkiyadocfront'].value)"
+              [href]="CommonConstants + addEditForm.controls['mulkiyadocfront'].value" target="_blank">
+              <img style="width: 52px;"
+               
+                [src]="imageSrc ? imageSrc : CommonConstants + addEditForm.controls['mulkiyadocfront'].value" />
+
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 field" >
+        <span style="display: flex;">Mulkiya Back Copy</span>
+         <label for="file-upload1" class="custom-file-upload1">
+          <mat-icon>cloud_upload</mat-icon>   Mulkiya Vehicle Registration Card Attachment
+        </label><br>
+        <input id="file-upload1" (change)="onFileChanged2($event)" class="inputfile"
+          accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+        <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['mulkiyadocback'].value">
+          <div class="avatar-preview" for="imageUpload1">
+            <a *ngIf="isPDF(addEditForm.controls['mulkiyadocback'].value.name ? addEditForm.controls['mulkiyadocback'].value.name : addEditForm.controls['mulkiyadocback'].value)"
+              [href]="CommonConstants + addEditForm.controls['mulkiyadocback'].value" target="_blank">
+              <img style="width: 52px;"
+                src="assets/images/pdf_icon.png" />
+            </a>
+            <a *ngIf="isIMG(addEditForm.controls['mulkiyadocback'].value.name ? addEditForm.controls['mulkiyadocback'].value.name : addEditForm.controls['mulkiyadocback'].value)"
+              [href]="CommonConstants + addEditForm.controls['mulkiyadocback'].value" target="_blank">
+              <img style="width: 52px;"
+              [src]="imageSrcback ? imageSrcback : CommonConstants + addEditForm.controls['mulkiyadocback'].value" />
+
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title" *ngIf="carshowroom_id && hidePricediv">
+        <span>Car Additional Cost Details</span>
+      </div>
+
+      <div class="row outline pt-2" *ngIf="carshowroom_id && hidePricediv" style="margin-left: 10px;">
+        <div class="col-md-4 row p-3" style="margin-left: 12px;">
+          <div class="col-md-6 p-0  font-weight-bold">Total Expense Amount :</div>
+          <div class="col-md-6 p-0 " style="overflow-wrap: break-word">{{ totalExpense | number:'1.2-2'}}</div>
+        </div>
+
+        <div class="col-md-4 row p-3">
+          <div class="col-md-6 p-0  font-weight-bold">Total Advance Amount :</div>
+          <div class="col-md-6 p-0 " style="overflow-wrap: break-word">{{ totalAdvance | number:'1.2-2' }}</div>
+        </div>
+
+        <div class="col-md-4 row p-3" *ngIf="addEditForm.get('carownertypeid').value === 2">
+          <div class="col-md-6 p-0  font-weight-bold">Total Consignment Amount :</div>
+          <div class="col-md-6 p-0 " style="overflow-wrap: break-word">{{ totalConsignment | number:'1.2-2'}}</div>
+        </div>
+
+        <!-- <div class="col-md-4 row p-3" style="margin-left: 10px;">
+          <div class="col-md-6 p-0  font-weight-bold">Total Addition Cost Price :</div>
+          <div class="col-md-6 p-0 " style="overflow-wrap: break-word">{{ totalsalesprice | number:'1.2-2'}}</div>
+        </div> -->
+      </div>
+
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title" *ngIf="hidePricediv">
+        <span>Car Purchase Details</span>
+      </div>
+
+      <div *ngIf="hidePricediv" class="row">
+        <mat-form-field class="pt-2 col-md-4" appearance="outline">
+          <mat-label class="">Purchase Price</mat-label>
+          <input matInput [errorStateMatcher]="matcher" formControlName="purchaseprice" type="text" />
+          <mat-error *ngIf="addEditForm.controls['purchaseprice'].hasError('required') && isShowErrors">Purchase Price
+            is
+            required</mat-error>
+          <mat-error *ngIf="addEditForm.controls['purchaseprice'].errors?.['whitespace']">
+            White space not allowed
+          </mat-error>
+          <mat-error *ngIf="addEditForm.controls['purchaseprice'].hasError('min')">
+            Purchase Price Should Not Be 0
+          </mat-error>
+
+          <mat-error *ngIf="addEditForm.controls['purchaseprice'].hasError('pattern') && isShowErrors">
+            Purchase Price must be Number.
+          </mat-error>
+
+        </mat-form-field>
+
+     
+
+        <mat-form-field class="p-2 col-md-4" appearance="outline">
+          <mat-label class="">Purchase Date </mat-label>
+          <input matInput (click)="picker.open()" readonly [matDatepicker]="picker" formControlName="purchasedate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="addEditForm.controls['purchasedate'].hasError('required') && isShowErrors">Purchase Date is
+            required</mat-error>
+        </mat-form-field>
+
+       
+
+
+       
+
+        <!-- <div class="row" *ngIf="hidePricediv"> -->
+        <!-- <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+          <mat-label class="">Purchase Mode Of Payment</mat-label>
+          <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="modeofpayment">
+            <mat-option value="cash">Cash</mat-option>
+            <mat-option value="cheque">Cheque</mat-option>
+            <mat-option value="banktransfer">Bank Transfer</mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['modeofpayment'].hasError('required') && isShowErrors">Purchase Mode Of Payment
+            is
+            Required</mat-error>
+        </mat-form-field> -->
+
+        <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}"  >
+          <mat-label class="">Mode of Payment</mat-label>
+          <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="modeofpaymentid" multiple (selectionChange)="selectionModePaymentFilterChange($event)">
+            <mat-select-filter [array]="modeofpaymentList" (filteredReturn)="modeofpaymentfilteredList=$event" [displayMember]="'modeofpayment'">
+            </mat-select-filter>
+            <mat-option *ngFor="let item of modeofpaymentList" [value]="item.modeofpaymentid" [class.hide]="!isModeFiltered(item)">
+              {{item.modeofpayment }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['modeofpaymentid'].hasError('required') && isShowErrors">Mode of Payment  is
+            Required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="pt-2 col-md-4" appearance="outline">
+          <mat-label>Cash Request </mat-label>
+          <mat-select formControlName="cashrequestid" multiple>
+            <mat-select-filter [array]="cashReqList"
+              (filteredReturn)="filteredCashreqDetailsList=$event" [displayMember]="'cashrequesrefno'">
+            </mat-select-filter>
+            <mat-option *ngFor="let item of cashReqList"
+              [value]="item.cashrequestid" [disabled]="shouldDisableOption(item)"
+              [class.hide]="!isCashreqDetailFiltered(item)">
+              {{item.cashrequesrefno}} - {{item?.amount}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['cashrequestid'].hasError('required') && isShowErrors">Showroom
+           Cash Request is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-4 pt-2" appearance="outline">
+          <mat-label class="">Car Purchase From</mat-label>
+          <mat-select formControlName="purchasedetails"
+            (selectionChange)="selectionPurchasedetailsFilterChange($event)">
+            <mat-select-filter [array]="purchaseaccountList" (filteredReturn)="purchaseaccountFilteredList=$event"
+              [displayMember]="'accountname'">
+            </mat-select-filter>
+            <mat-option (click)="addAccountPurchaseDetailsRecord()"> <a style="cursor: pointer;" class="shoname">
+                Create Seller
+              </a></mat-option>
+            <mat-option *ngFor="let item of purchaseaccountList" [value]="item.accountid"
+              [class.hide]="!purchaseaccountidFiltered(item)">
+              {{ item.accountname }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['purchasedetails'].hasError('required') && isShowErrors"> Car Purchase From is
+            required</mat-error>
+        </mat-form-field>
+
+
+
+        <!-- <mat-form-field class="col-md-4 pt-2" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+          <mat-label class="">Purchase Aggrement Status</mat-label>
+          <mat-select [class.hide-arrow]="isEdit === 'VIEW'" formControlName="purchaseaggrementstatus" disabled>
+            <mat-option value="pending">Pending</mat-option>
+            <mat-option value="pendingforsign">Pending for Signature</mat-option>
+            <mat-option value="signed">Signed</mat-option>
+          </mat-select>
+          <mat-error *ngIf="addEditForm.controls['purchaseaggrementstatus'].hasError('required') && isShowErrors">Purchase Aggrement Status
+            is
+            Required</mat-error>
+        </mat-form-field> -->
+
+        <!-- </div> -->
+
+
+       
+
+      </div>
+
+      <div class="text-left mt-3 mb-3 ac-formgroup-title" *ngIf="hidePricediv">
+        <span>Car Sales Details</span>
+      </div>
+      <div *ngIf="hidePricediv" class="row">
+      
+        <mat-form-field class="col-md-4 pt-2 readonly-input" appearance="fill">
+          <mat-label class="">Selling Price</mat-label>
+          <input matInput readonly [value]="sellingprice" type="text" />
+        </mat-form-field>
+
+      
+
+        <mat-form-field class="pt-2 col-md-4" appearance="outline">
+          <mat-label class="">Max Discount Price</mat-label>
+          <input matInput [errorStateMatcher]="matcher" formControlName="maxdiscount" type="number" />
+          <mat-error *ngIf="addEditForm.controls['maxdiscount'].hasError('required') && isShowErrors">Max Discount Price
+            is
+            required</mat-error>
+          <mat-error *ngIf="addEditForm.controls['maxdiscount'].errors?.['whitespace']">
+            White space not allowed
+          </mat-error>
+        </mat-form-field>
+
+    
+
+        <mat-form-field class="p-2 col-md-4" appearance="outline">
+          <mat-label class="">Car Sold Date</mat-label>
+           <input matInput (click)="picker2.open()" readonly [matDatepicker]="picker2" formControlName="solddate" (dateChange)="onDateChange($event)" [disabled]="!divhasAccess">
+           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+           <mat-datepicker #picker2></mat-datepicker>
+           <mat-error *ngIf="addEditForm.controls['solddate'].hasError('required') && isShowErrors">Car Sold Date is
+             required</mat-error>
+         </mat-form-field>
+
+
+      </div>
+
+    </div>
+  </form>
+
+
+  <div style="float: right;" class="pt-2 pb-2">
+    <button mat-button class="btnnn-default-fn" [routerLink]="['/car-details']">
+      Cancel
+    </button>&nbsp;&nbsp;
+    <button *ngIf="isEdit !='VIEW'" href="#top" mat-raised-button class="btnnn-prime-fn" (click)="save()">
+      Save
+    </button>
+  </div>
+</div>

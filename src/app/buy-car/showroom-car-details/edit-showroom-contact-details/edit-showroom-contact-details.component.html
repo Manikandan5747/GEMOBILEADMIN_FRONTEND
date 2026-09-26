@@ -1,0 +1,18 @@
+<div mat-dialog-title>
+    Showroom Contact Details
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<section mat-dialog-content>
+    <app-add-edit-showroom-contact-details-form [showroomdcon_id]="showroomdcon_id" [isShowErrors]="isShowErrors" [showroomdetailsno]="showroomdetailsno"  [action]="action" [portalstatus]="portalstatus">
+
+    </app-add-edit-showroom-contact-details-form>
+</section>
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="update()">
+        Save
+    </button>
+</div>

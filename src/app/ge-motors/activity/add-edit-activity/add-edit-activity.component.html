@@ -1,0 +1,183 @@
+<div class="col-md-12">
+    <div class="page-title"> {{title}} </div>
+    <div class="spinner__loading" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  
+  <div *ngIf="addEditForm">
+    <form [formGroup]="addEditForm">
+        <div class="row">
+    
+          <div class="text-left mt-3 mb-3 ac-formgroup-title">
+            <span>Task Details</span>
+          </div> 
+    
+          <mat-form-field class="col-md-4 readonly-input" appearance="fill">
+            <mat-label class="">Activity Type </mat-label>
+            <input readonly matInput formControlName="activitytype" type="text" 
+              />
+            <mat-error *ngIf="addEditForm.controls['activitytype'].hasError('required') && isShowErrors">Activity Type is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['activitytype'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label class="">Subject  </mat-label>
+            <input matInput formControlName="subject" type="text" 
+              />
+            <mat-error *ngIf="addEditForm.controls['subject'].hasError('required') && isShowErrors">Subject  is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['subject'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label class="">Activity Status</mat-label>
+            <mat-select formControlName="activitystatus">
+              <!-- <mat-option value="null">-</mat-option> -->
+              <mat-option value="Cancelled">Cancelled</mat-option>
+              <mat-option value="In Progress">In Progress</mat-option>
+              <mat-option value="Missed">Missed</mat-option>
+              <mat-option value="Not Started">Not Started</mat-option>
+              <!-- <mat-option value="Closed">Closed</mat-option> -->
+              <mat-option value="Completed">Completed</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="addEditForm.controls['activitystatus'].hasError('required') && isShowErrors">Activity Status Required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label class=""> Priority</mat-label>
+            <mat-select formControlName="priority">
+              <mat-option value="Normal">Normal</mat-option>
+              <mat-option value="Low">Low</mat-option>
+              <mat-option value="Medium">Medium</mat-option>
+              <mat-option value="High">High</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="addEditForm.controls['activitystatus'].hasError('required') && isShowErrors"> Priority Required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="col-md-4 readonly-input" appearance="fill">
+            <mat-label class="">Entity Type </mat-label>
+            <input readonly matInput formControlName="entitytype" type="text"  
+              />
+            <mat-error *ngIf="addEditForm.controls['entitytype'].hasError('required') && isShowErrors">Entity Type is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['entitytype'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+         
+          
+          <mat-form-field class="col-md-4 readonly-input" appearance="fill">
+            <mat-label class=""> Name </mat-label>
+            <input readonly matInput formControlName="name" type="text" 
+              />
+            <mat-error *ngIf="addEditForm.controls['name'].hasError('required') && isShowErrors"> Name is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['name'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label class="">Contact Name </mat-label>
+            <input matInput formControlName="contactname" type="text" 
+              />
+            <mat-error *ngIf="addEditForm.controls['contactname'].hasError('required') && isShowErrors">Contact Name is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['contactname'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="p-2 col-md-4 " appearance="outline">
+            <mat-label class="">Due Date </mat-label>
+            <input (click)="picker.open()" readonly matInput [min]="minFromDate" [matDatepicker]="picker" formControlName="duedate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="addEditForm.controls['duedate'].hasError('required') && isShowErrors">Due Date is required</mat-error>
+          </mat-form-field>
+    
+       
+          <mat-form-field class="pt-2 col-md-4" appearance="outline">
+            <mat-label class="">Assigned To </mat-label>
+            <mat-select formControlName="assignedto" >
+              <mat-select-filter [array]="userList" (filteredReturn)="accountFilteredList=$event"
+                [displayMember]="'username'">
+              </mat-select-filter>
+              <mat-option *ngFor="let item of userList" [value]="item.login_id" [class.hide]="!userFiltered(item)">
+                {{ item.username }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="addEditForm.controls['assignedto'].hasError('required') && isShowErrors"> Assigned To is
+              required</mat-error>
+          </mat-form-field>
+       
+          <mat-form-field class="col-md-12" appearance="outline">
+            <mat-label class="">Description </mat-label>
+            <textarea matInput formControlName="description" type="text">
+                                </textarea>
+          </mat-form-field>
+    
+          <div class="text-left mt-3 mb-3 ac-formgroup-title">
+            <span>Additional Details</span>
+          </div>
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label class="">Phone </mat-label>
+            <input matInput formControlName="phone" type="number" 
+              />
+            <mat-error *ngIf="addEditForm.controls['phone'].hasError('required') && isShowErrors">Phone is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['phone'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label class="">Email </mat-label>
+            <input matInput formControlName="email" type="text" 
+              />
+            <mat-error *ngIf="addEditForm.controls['email'].hasError('required') && isShowErrors">Email is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['email'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+
+
+          <mat-form-field class="col-md-4" appearance="outline">
+            <mat-label class="">Location </mat-label>
+            <input matInput formControlName="location" type="text" 
+              />
+            <mat-error *ngIf="addEditForm.controls['location'].hasError('required') && isShowErrors">Location is
+              required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['location'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+          </mat-form-field>
+        
+          <!-- <div class="col-md-4 pt-4"> <mat-slide-toggle formControlName="status">Status</mat-slide-toggle></div> -->
+
+    
+        
+          <div *ngIf="isEdit !='VIEW'" style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+            <button mat-button class="btnnn-default-fn" (click)="goback()">
+              Cancel
+            </button>&nbsp;&nbsp;
+            <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+              Save
+            </button>
+          </div>
+    
+        </div>
+      </form>
+  </div>
+   
+  </div>

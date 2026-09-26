@@ -1,0 +1,97 @@
+<div mat-dialog-title>
+    {{title}}
+      <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+    </div>
+    
+    <div class="col-md-12 row p-4">
+        <form [formGroup]="addEditForm">
+      
+         <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">User Name</mat-label>
+            <input matInput required  [errorStateMatcher]="matcher" formControlName="username" type="text"   />
+            <mat-error *ngIf="addEditForm.controls['username'].hasError('required') && isShowErrors" >User Name is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['username'].errors?.['whitespace']">
+              White space not allowed
+          </mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Password</mat-label>
+            <input matInput  formControlName="password" type="text"   />
+            <mat-error *ngIf="addEditForm.controls['password'].hasError('required') && isShowErrors" >Password is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['password'].errors?.['whitespace']">
+              White space not allowed
+          </mat-error>
+          </mat-form-field>
+
+        
+
+          <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Email</mat-label>
+            <input matInput  formControlName="emailid" type="text"   />
+            <mat-error *ngIf="addEditForm.controls['emailid'].hasError('required') && isShowErrors" >Email is required</mat-error>
+            <mat-error *ngIf="addEditForm.controls['emailid'].errors?.['whitespace']">
+              White space not allowed
+            </mat-error>
+            <mat-error *ngIf="addEditForm.controls['emailid'].errors?.['pattern']">
+            Email Invalid
+            </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field class="pt-2" appearance="outline">
+            <mat-label class="">Role</mat-label>
+            <mat-select formControlName="role" >
+              <mat-select-filter [array]="userRoleList" (filteredReturn)="filteredRoleList=$event"
+                [displayMember]="'rolename'">
+              </mat-select-filter>
+              <mat-option *ngFor="let item of userRoleList" [value]="item.role_id" [class.hide]="!isRoleFiltered(item)">
+                {{item.rolename}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="addEditForm.controls['role'].hasError('required') && isShowErrors">Role is
+              required</mat-error>
+            </mat-form-field>
+            
+            
+            
+<div class="row pt-3">
+
+  <div class="col-12 mb-3">
+    <mat-label class="d-block mb-2">Forceful Login</mat-label>
+
+    <mat-radio-group formControlName="isforcefulllogin"
+      class="d-flex gap-3">
+
+      <mat-radio-button value="Y">YES</mat-radio-button>
+      <mat-radio-button value="N">NO</mat-radio-button>
+
+    </mat-radio-group>
+  </div>
+
+  <div class="col-12">
+    <mat-label class="d-block mb-2">Status</mat-label>
+
+    <mat-radio-group formControlName="status"
+      class="d-flex gap-3">
+
+      <mat-radio-button value="1">Active</mat-radio-button>
+      <mat-radio-button value="0">In Active</mat-radio-button>
+
+    </mat-radio-group>
+  </div>
+
+</div>
+      
+        
+    </form>
+    </div>
+    
+    <div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+      <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+          Cancel
+      </button>
+      <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          Save
+      </button>
+    </div>
+    

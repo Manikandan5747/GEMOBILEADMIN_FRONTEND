@@ -1,0 +1,12 @@
+.no_records {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #888;          /* subtle gray text */
+  padding: 20px;        /* spacing around */
+  background-color: #f9f9f9; /* light background */
+  border: 1px dashed #ccc;  /* dashed border */
+  border-radius: 8px;   /* rounded edges */
+  margin-top: 15px;
+  animation: fadeIn 0.3s ease-in-out;
+}

@@ -1,0 +1,28 @@
+.mat-row {
+  text-transform: capitalize;
+}
+
+mat-icon {
+  cursor: pointer !important;
+}
+
+mat-label,mat-option {
+  text-transform: capitalize ; 
+}
+
+.large-icon {
+  font-size: 24px !important;
+  /* Adjust the size as needed */
+}
+
+.mat-filter::after {
+  content: "\e8b6";
+  font-family: material icons;
+  vertical-align: bottom;
+  font-size: 20px;
+  padding-left: 5px;
+}
+
+.mat-option.hide {
+  display: none;
+}

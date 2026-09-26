@@ -1,0 +1,25 @@
+.profile-container {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .profile-field {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-right: 10px; /* Adjust the spacing between label and span */
+    min-width: 150px; /* Ensure labels have a consistent width */
+  }
+  
+  span {
+    /* font-style: italic; */
+    flex-grow: 1; /* Allow span to take up remaining space */
+  }
+  

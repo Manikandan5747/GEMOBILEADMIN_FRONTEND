@@ -1,0 +1,245 @@
+<!-- <app-header></app-header> -->
+<div class="col-md-12">
+    <div class="page-title"> Registration </div>
+
+    <!-- {{startTime | date: DATE_FORMAT  }} -- {{endTime | date: DATE_FORMAT }} -->
+    <div class="spinner__loading" *ngIf="loading"> <mat-spinner></mat-spinner> </div>
+    <!-- <button style="cursor: pointer;"  matTooltip="Test" (click)="test()"> Test </button> -->
+    <div class="col-md-12">
+      <div class="row" >
+           
+        <mat-form-field class="col-md-4  pr-2" appearance="outline" >
+          <mat-label>Search Registration Detail</mat-label>
+          <input matInput (keyup)="applyFilter($event)" [(ngModel)]="search" placeholder="" />
+        </mat-form-field>
+     
+        <mat-form-field class="col-md-2  pr-2" appearance="outline" >
+        <mat-select (selectionChange)="customerStatus($event)"  [(ngModel)]="customer_status" placeholder="Customer Status">
+          <mat-option value="None">All</mat-option>
+          <mat-option value="Registered">Registered</mat-option>
+           <mat-option value="Approved">Approved</mat-option>
+          <mat-option value="Pending">Pending</mat-option>
+          <mat-option value="Cancel">Cancel</mat-option>
+          <mat-option value="OnHold">On Hold</mat-option>
+        </mat-select>
+       </mat-form-field>
+    
+       <mat-form-field class="col-md-2  pr-2" appearance="outline" >
+        <mat-select (selectionChange)="blockStatus($event)"  [(ngModel)]="block_status" placeholder="BLOCK STATUS">
+          <mat-option value="None">All</mat-option>
+          <mat-option value="0">Open</mat-option>
+          <mat-option value="1">Blocked</mat-option>
+          <!-- <mat-option value="Cancel">Cancel</mat-option> -->
+        </mat-select>
+       </mat-form-field>
+
+       <mat-form-field class="col-md-2  pr-2" appearance="outline" >
+        <mat-select (selectionChange)="type($event)"  [(ngModel)]="customertypes" placeholder="Customer Type">
+          <mat-option value="None">All</mat-option>
+          <mat-option value="INDIVIDUAL">Individual</mat-option>
+         <mat-option value="CORPORATE">Corporate</mat-option>
+        </mat-select>
+       </mat-form-field>
+
+     
+
+
+
+       
+        <div class="col-md-2" style="text-align: end">
+          <button  style="cursor: pointer;" mat-mini-fab color="primary"   matTooltip="Create Customer" (click)="addRecord()"> + </button>
+        </div>
+      
+      </div>
+    </div>
+
+      <div class="mat-table-container" id="test1" #test1>
+   
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">
+      <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+              No records found.
+          </mat-footer-cell>
+      </ng-container>
+     
+      <ng-container matColumnDef="customername" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+          <td mat-cell *matCellDef="let element"> {{element?.customername}} </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="customer_refno" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> customer refno </th>
+        <td mat-cell *matCellDef="let element"> {{element?.customer_refno}} </td>
+    </ng-container> -->
+
+      
+
+      <ng-container matColumnDef="mobilenumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile Number</th>
+          <td mat-cell *matCellDef="let element"> {{element?.mobilenumber}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="emailid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> email</th>
+        <td mat-cell *matCellDef="let element"> {{element?.emailid}} </td>
+    </ng-container>
+
+      
+
+      <ng-container matColumnDef="password">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Security Pin </th>
+          <td mat-cell *matCellDef="let element"> {{element?.password}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="customercode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  code </th>
+          <td mat-cell *matCellDef="let element" (click)="openDescriptionDialog(element)"> 
+            <a  style="cursor: pointer;" class="shoname">
+              {{element?.customercode}}
+          </a> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fcmtoken">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>fcm token</th>
+        <td mat-cell *matCellDef="let element"  style="cursor: pointer !important;"> 
+          <span (click)="copyToClipboard(element?.fcmtoken)" style="cursor: pointer !important;" matTooltip="Click to copy">
+
+              {{ element.fcmtoken ? (element.fcmtoken | slice:0:20) + '...' : element.fcmtoken }}
+
+          </span>
+        </td>
+      </ng-container>
+
+       
+
+      <ng-container matColumnDef="dobmonth">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>  dob month </th>
+        <td mat-cell *matCellDef="let element"> {{element?.dobmonth}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dobday">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>  dob day </th>
+      <td mat-cell *matCellDef="let element"> {{element?.dobday}} </td>
+  </ng-container>
+
+      <ng-container matColumnDef="nationalityname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> nationality </th>
+          <td mat-cell *matCellDef="let element"> {{element?.nationalityname}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="customerstatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> customer status </th>
+        <td mat-cell *matCellDef="let element"> {{element?.customerstatus}} </td>
+    </ng-container>
+
+      <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+          <td mat-cell *matCellDef="let element"> {{element?.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="block_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> block status </th>
+        <td mat-cell *matCellDef="let element"> {{element?.block_status}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="platform">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> platform</th>
+      <td mat-cell *matCellDef="let element"> {{element?.platform}} </td>
+  </ng-container>
+    
+
+  <ng-container matColumnDef="created_by" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+    <td mat-cell *matCellDef="let element"> {{element?.created_by}} </td>
+</ng-container>
+
+<ng-container matColumnDef="username" >
+  <th mat-header-cell *matHeaderCellDef mat-sort-header> username</th>
+  <td mat-cell *matCellDef="let element"> {{element?.username}} </td>
+</ng-container>
+
+<ng-container matColumnDef="userpassword" >
+  <th mat-header-cell *matHeaderCellDef mat-sort-header> password </th>
+  <td mat-cell *matCellDef="let element"> {{element?.userpassword}} </td>
+</ng-container>
+
+      <ng-container matColumnDef="customertypes" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> customer types </th>
+          <td mat-cell *matCellDef="let element"> {{element?.customertypes}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+          <td mat-cell *matCellDef="let element"> {{element?.created_at }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modified_by">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+          <td mat-cell *matCellDef="let element"> {{element?.modified_by}} </td>
+      </ng-container>
+
+  
+      <ng-container matColumnDef="modified_at">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> modified at </th>
+          <td mat-cell *matCellDef="let element"> {{element?.modified_at }} </td>
+      </ng-container>
+
+  
+      <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+              Action
+          </th>
+          <td mat-cell *matCellDef="let element">
+
+            <button  mat-icon-button  matTooltip="Block" *ngIf="(element.block_status != 'Blocked' && userrole != 'RegistrationAdmin') && (userPrivilegeObj && userPrivilegeObj?.editaccess == '1')" 
+            (click)="blockRecord(element)">
+            <mat-icon class="edit-mat-icon">block</mat-icon>
+          </button>
+
+          <button  mat-icon-button  matTooltip="Un Block" *ngIf="(element.block_status != 'Open' && userrole != 'RegistrationAdmin') && (userPrivilegeObj && userPrivilegeObj?.editaccess == '1')" 
+          (click)="unBlockRecord(element)">
+          <mat-icon class="edit-mat-icon">lock_open</mat-icon>
+        </button>
+
+            <button  mat-icon-button  matTooltip="Edit" *ngIf="(element.block_status == 'Open' && element.customerstatus != 'Approved') && (userPrivilegeObj && userPrivilegeObj?.editaccess == '1') "
+            (click)="editRecord(element)">
+            <mat-icon class="edit-mat-icon">edit</mat-icon>
+          </button>
+
+          <!-- (change)="activeUserToggle($event)" -->
+          <!-- <mat-slide-toggle [checked]="element && element.status == 'Active'" matTooltip="InActive" *ngIf="element.block_status == 'Open'" 
+          (change)="inActiveRecord($event,element)"></mat-slide-toggle> -->
+
+          <button  mat-icon-button  matTooltip="Delete"  *ngIf="(userrole != 'RegistrationAdmin') && (userPrivilegeObj && userPrivilegeObj?.deleteaccess == '1') "
+          (click)="inActiveRecord(element)">
+          <mat-icon class="delete-mat-icon">delete</mat-icon>
+        </button>
+
+
+
+        <!-- <button mat-icon-button  matTooltip="Edit" (click)="editRecord(element)"> <mat-icon class="edit-mat-icon">edit</mat-icon> </button> -->
+         
+      </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;" ></tr>
+  </table> 
+
+
+
+    </div>
+    
+    
+    </div>
+
+      <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" (page)="onPageChange($event)"
+        [length]="totalItemCount" showFirstLastButtons></mat-paginator>
+
+
+    <!-- {{dataSource.data | json}} -->
+
+    
+    
+    
+    

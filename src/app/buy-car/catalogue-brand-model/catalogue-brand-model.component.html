@@ -1,0 +1,80 @@
+<div class="col-md-12">
+    <div class="page-title"> Catalogue API - Data </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+  
+   
+
+    <div class="col-md-12 pt-2 pl-5 mb-2 outline">
+        <div class="row pl-5">
+        <div class="page-sub-title-1"> Brand Import from API </div>
+
+        <div class="col-md-2 pt-1 pb-2 ml-2">
+            <!-- https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN6lOXCO2TrtZHLLkQbJGudtbpKcQnKRyOVA&usqp=CAU -->
+            <button mat-raised-button class="btnnn-prime-fn " style="background-color: #5f71f4 !important;" (click)="getAllBrand()">
+              Get All Catalogue Brand
+            </button>&nbsp;
+        </div>
+        <div class="col-md-2 pt-1 pb-3" >
+          <button  class="btnnn-secondary-fn" (click)="exportExcel()">
+            <img width="30" src="../../../assets/images/excel.png" class="button-icon" alt="Excel icon" mat-responsive />     Export to Excel
+          </button>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="col-md-12 pt-2 pl-5 mb-2 outline">
+        <div class="row pl-5">
+        <div class="page-sub-title-1"> Model Import from API </div>
+        
+          <mat-form-field class="col-md-3" appearance="outline">
+            <mat-label>Brand Name</mat-label>
+            <mat-select [(ngModel)]="catalogueid">
+              <mat-select-filter [array]="originalValuebrandList" (filteredReturn)="filteredList=$event" [displayMember]="'brandname'">
+              </mat-select-filter>
+              <mat-option *ngFor="let item of originalValuebrandList" [value]="item"
+                [class.hide]="!isFiltered(item)">
+                {{item.brandname}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <div class="col-md-2 pt-3" *ngIf="catalogueid">
+            <button mat-raised-button class="btnnn-prime-fn " style="background-color: #5f71f4 !important;" (click)="getBrandsbasedModelsFromCatalogue()">
+                Show Models
+            </button>
+          </div>
+
+          <div class="col-md-2 pt-3" >
+            <button  class="btnnn-secondary-fn" (click)="exportExcel()">
+              <img width="30" src="../../../assets/images/excel.png" class="button-icon" alt="Excel icon" mat-responsive />     Export to Excel
+            </button>
+          </div>
+       </div>
+    </div>
+
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort >
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> id </th>
+                <td mat-cell *matCellDef="let element"> {{element?.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
+                <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+    </div>
+   
+</div>

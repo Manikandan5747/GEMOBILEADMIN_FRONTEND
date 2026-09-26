@@ -1,0 +1,82 @@
+<div class="col-md-12">
+  <form [formGroup]="addEditForm" class="p-3">
+    
+    <!-- Table Name -->
+    <mat-form-field class="col-md-12" appearance="outline">
+      <mat-label>Module Name</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="table_id"
+        [matAutocomplete]="auto"
+        autocomplete="off"
+        placeholder="Search module name..."
+      />
+
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        [displayWith]="displayFn"
+        (optionSelected)="onTableSelected($event.option.value)"
+      >
+        <mat-option *ngFor="let option of filteredTableList | async" [value]="option">
+          {{ option.table_name }}
+        </mat-option>
+      </mat-autocomplete>
+
+      <mat-error *ngIf="addEditForm.controls['table_id'].hasError('required') && isShowErrors">
+        Event Module Name is required
+      </mat-error>
+      <mat-error *ngIf="addEditForm.controls['table_id'].hasError('invalidTable')">
+        Please enter a valid module name
+      </mat-error>
+    </mat-form-field>
+
+   <!-- Field Name Selector -->
+<mat-form-field class="w-100" appearance="outline">
+  <mat-label>Field Name<span class="text-danger">*</span></mat-label>
+  <mat-select formControlName="field_name" multiple (selectionChange)="onFieldsSelected($event)">
+    
+    <!-- Search box (no checkbox) -->
+    <ng-container>
+      <div class="mat-select-search">
+        <input matInput
+               placeholder="Search field..."
+               [(ngModel)]="fieldFilter"
+               (ngModelChange)="filterFields()"
+               [ngModelOptions]="{standalone:true}"
+               (click)="$event.stopPropagation()"
+               (keydown)="$event.stopPropagation()" />
+      </div>
+    </ng-container>
+
+    <mat-divider></mat-divider>
+
+    <!-- Field options -->
+    <mat-option *ngFor="let field of filteredFields" [value]="field">
+      {{ field.COLUMN_NAME }} ({{ field.DATA_TYPE }})
+    </mat-option>
+
+  </mat-select>
+
+  <mat-error *ngIf="addEditForm.controls['field_name'].hasError('required') && isShowErrors">
+    Event Field Name is required
+  </mat-error>
+</mat-form-field>
+
+
+    <!-- Status -->
+    <div class="outline pt-3 pb-3">
+      <mat-label class="p-2 col-md-12 text-center">Status</mat-label>
+      <mat-radio-group
+        aria-label="Is Status"
+        formControlName="status"
+        class="inputField exammanage-radio-group"
+      >
+        <mat-radio-button value="1">Active</mat-radio-button>
+        &nbsp;
+        <mat-radio-button value="0">Inactive</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+  </form>
+</div>

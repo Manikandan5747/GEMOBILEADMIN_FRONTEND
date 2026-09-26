@@ -1,0 +1,85 @@
+<div class="col-md-12 row p-4">
+
+    <form [formGroup]="addEditForm">
+
+
+
+
+       <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label>App Type</mat-label>
+        <mat-select formControlName="apptype">
+          <mat-option value="GE APP">GE APP</mat-option>
+          <mat-option value="DRIVER APP">DRIVER APP</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['apptype'].hasError('required') && isShowErrors" >App Type is required</mat-error>
+      </mat-form-field>
+
+      
+  
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label>App category</mat-label>
+        <mat-select formControlName="appcategory">
+          <mat-option value="ANDROID">ANDROID</mat-option>
+          <mat-option value="IOS">IOS</mat-option>
+          <mat-option value="APP GALLERY">APP GALLERY</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['appcategory'].hasError('required') && isShowErrors" >App Category is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label class="">App Version</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="appversion" type="text" />
+        <mat-error *ngIf="addEditForm.controls['appversion'].hasError('required') && isShowErrors">App Version is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['appversion'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label class="">App URL api</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="appurlapi" type="text" />
+        <mat-error *ngIf="addEditForm.controls['appurlapi'].hasError('required') && isShowErrors">App URL api is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['appurlapi'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label>version created at</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="versioncreated_at">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['versioncreated_at'].hasError('required') && isShowErrors">Version created at is
+          required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label>APP STATE</mat-label>
+        <mat-select formControlName="appstate">
+          <mat-option value="false">Testing </mat-option>
+          <mat-option value="true">Production</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['appstate'].hasError('required') && isShowErrors" >App State is required</mat-error>
+      </mat-form-field>
+
+      <mat-label  class="p-2 pt-2 text-center">Status </mat-label>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-group  aria-label="Is Active" formControlName="status"
+        class="inputField exammanage-radio-group" mat-form-field>
+        <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value='0'>In Active</mat-radio-button>
+      </mat-radio-group>
+
+      <br>
+      <!-- <mat-form-field class="p-2 col-md-12" appearance="outline">
+        <mat-label class="">Remark</mat-label>
+        <textarea matInput  formControlName="remark" type="text" >
+      </textarea>
+      </mat-form-field> -->
+  
+    </form>
+  </div>

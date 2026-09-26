@@ -1,0 +1,39 @@
+<div class="col-md-12">
+    <div class="page-title">LIST OF REPORTS</div>
+  
+    
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 pr-2">
+                <mat-form-field  appearance="outline">
+                    <mat-label>Search Reports</mat-label>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="" />
+                    <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+          
+            <div *ngIf="carreport" class="col-2 mt-2 " >
+                <button class="btnnn-secondary-fn "  (click)="reportList()">
+                    Car Reports 
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container">
+        <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+            
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef class="left-align">Report Names</th>
+                <td mat-cell *matCellDef="let report" (click)="redirectToDetail(report)" style="cursor: pointer">{{ report.name }}</td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="[ 'name']"></tr>
+            <tr mat-row *matRowDef="let row; columns: [ 'name'];"></tr>
+        </table>
+    </div>
+    <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPageChange($event)">
+    </mat-paginator>
+</div>

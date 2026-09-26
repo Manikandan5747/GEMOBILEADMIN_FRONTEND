@@ -1,0 +1,210 @@
+<div class="col-md-12">
+  <div class="page-title"> Inspection Report Request Details </div>
+
+
+  <div class="return-to-menu">
+    <a (click)="goback()"><span class="material-icons"> reply
+      </span> Return to back
+    </a>
+  </div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="row outline pt-2" *ngIf="carshowroom_id">
+    <div class="page-sub-title-1"> Car Details </div>
+    <div class="col-md-6 row p-3" style="margin-left: 12px;">
+      <div class="col-md-4 p-0  font-weight-bold">Car Showroom Ref No </div>
+      <div class="col-md-4 p-0 " style="overflow-wrap: break-word">:&nbsp;{{
+        addEditForm?.controls['carshowroomrefno']?.value || ''}} </div>
+    </div>
+
+    <div class="col-md-6 row p-3">
+      <div class="col-md-4 p-0  font-weight-bold">Brand</div>
+      <div class="col-md-4 p-0 " style="overflow-wrap: break-word">:&nbsp;{{ addEditForm?.controls['brandname']?.value
+        || ''}}
+      </div>
+    </div>
+
+    <div class="col-md-6 row p-3" style="margin-left: 12px;">
+      <div class="col-md-4 p-0  font-weight-bold"> Model</div>
+      <div class="col-md-4 p-0 " style="overflow-wrap: break-word">:&nbsp;{{ addEditForm?.controls['modelname']?.value
+        || ''}}
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div class="col-md-12 pt-4">
+    <div class="row">
+
+      <!-- Search -->
+      <mat-form-field class="col-md-5 pr-2" appearance="outline">
+        <mat-label>Search Inspection Report Request Details</mat-label>
+        <input [(value)]="searchValue" matInput (keyup)="applyFilter($event)" placeholder="" />
+      </mat-form-field>
+
+      <!-- Request Mode -->
+      <mat-form-field class="col-md-2 pr-2" appearance="outline">
+        <mat-label>Request Mode</mat-label>
+
+        <mat-select [(value)]="request_mode" (selectionChange)="applyFilters()">
+
+          <mat-option value="">All</mat-option>
+          <mat-option value="PORTAL_APP">Portal</mat-option>
+          <mat-option value="MOBILE_APP">Mobile App</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Request Status -->
+      <mat-form-field class="col-md-2 pr-2" appearance="outline">
+        <mat-label>Request Status</mat-label>
+
+        <mat-select [(value)]="request_status" (selectionChange)="applyFilters()">
+
+          <mat-option value="">All</mat-option>
+          <mat-option value="PENDING">Pending</mat-option>
+          <mat-option value="APPROVED">Approved</mat-option>
+          <mat-option value="REJECTED">Rejected</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Clear -->
+      <div class="col-md-1 pt-2">
+        <button mat-button class="btnnn-default-fn" (click)="clearSearch()">
+
+          <mat-icon class="large-icon">clear</mat-icon>
+          Clear
+
+        </button>
+      </div>
+
+      <!-- Add -->
+      <div class="col-md-2" style="text-align: end"
+        *ngIf="(privilege?.create_access || userPrivilegeObj?.createaccess)">
+
+        <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Request Inspection Report"
+          (click)="addRecord()">
+
+          +
+
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <div class="mat-table-container" id="test1" #test1>
+    <table mat-table [dataSource]="dataSource" matSort>
+
+
+      <ng-container matColumnDef="request_ref_no">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Request Ref No</th>
+        <td mat-cell *matCellDef="let element"> {{element?.request_ref_no}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="requested_by_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>requested by </th>
+        <td mat-cell *matCellDef="let element"> {{element?.requested_by_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="request_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>request status</th>
+        <td mat-cell *matCellDef="let element"> {{element?.request_status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="request_mode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>request mode </th>
+        <td mat-cell *matCellDef="let element"> {{element?.request_mode }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action_info">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button *ngIf="element.request_status === 'APPROVED' || element.request_status === 'REJECTED'"
+            [matTooltip]="getActionInfoTooltip(element)" matTooltipClass="multiline-tooltip">
+            <mat-icon class="edit-mat-icon">info</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modified_by_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>modified by </th>
+        <td mat-cell *matCellDef="let element"> {{element?.modified_by_name}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+        <td mat-cell *matCellDef="let element"> {{element?.status }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created_by_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modified_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified at </th>
+        <td mat-cell *matCellDef="let element"> {{element?.modified_at | date: DATE_FORMAT }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actioned_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> actioned at </th>
+        <td mat-cell *matCellDef="let element"> {{element?.actioned_at | date: DATE_FORMAT }} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="carshowroomrefno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> car showroom refno </th>
+        <td mat-cell *matCellDef="let element"> {{element?.carshowroomrefno }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+        <th mat-header-cell *matHeaderCellDef class="center-black-text">
+          Action
+        </th>
+        <td mat-cell *matCellDef="let element">
+
+
+          <button matTooltip="Edit Record" mat-icon-button (click)="editRecord(element)"
+            *ngIf="(privilege?.edit_access || userPrivilegeObj?.editaccess) && element.status == 'Active' && element?.request_status === 'PENDING'">
+            <mat-icon class="edit-mat-icon">edit</mat-icon></button>
+
+
+          <button matTooltip="View Record" mat-icon-button (click)="viewRecord(element)"
+            *ngIf="(privilege?.view_access || userPrivilegeObj?.viewaccess)">
+            <mat-icon class="edit-mat-icon">visibility</mat-icon></button>
+
+
+
+          <button matTooltip="In-Active Record" mat-icon-button (click)="inActiveRecord(element)"
+            *ngIf="(privilege?.edit_access || userPrivilegeObj?.editaccess) && element.status == 'Active' && element?.request_status === 'PENDING'">
+            <mat-icon class="edit-mat-icon">no_sim</mat-icon> </button>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+    </table>
+
+  </div>
+  <tr *ngIf="dataSource?.data == 0">
+    <td class="no-data-cell">
+      No Records Found.
+    </td>
+  </tr>
+  <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

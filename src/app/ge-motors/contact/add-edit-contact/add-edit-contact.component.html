@@ -1,0 +1,20 @@
+
+<div class="page-title">Contact </div>
+<div class="spinner__loading" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<app-add-edit-contact-form [isShowErrors]="isShowErrors"
+[countryid]="countryid"
+   [stateid]="stateid"
+   [contactid]="contactid" >
+ 
+</app-add-edit-contact-form>
+<div  style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+  <button mat-button class="btnnn-default-fn" [routerLink]="['/contact']">
+    Cancel
+  </button>&nbsp;&nbsp;
+  <button  mat-raised-button class="btnnn-prime-fn" (click)="save()">
+    Save
+  </button>
+</div>

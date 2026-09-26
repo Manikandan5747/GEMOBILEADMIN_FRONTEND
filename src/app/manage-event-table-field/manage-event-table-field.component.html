@@ -1,0 +1,116 @@
+<div class="col-md-12">
+    <div class="page-title"> Manage Event Module Field</div>
+
+        <div class="row align-items-center" style="padding-left:10px;">
+  
+    <mat-form-field class="col-md-3 pr-2" appearance="outline">
+        <mat-label>Search Event Field Detail</mat-label>
+        <input matInput [(ngModel)]="search" (keyup)="applyFilter()" placeholder="" />
+    </mat-form-field>
+
+    <mat-form-field class="col-md-2 pr-2" appearance="outline">
+        <mat-label>Module Name</mat-label>
+        <mat-select [(ngModel)]="selectedModule" (selectionChange)="applyFilter()">
+            <mat-option [value]="">All</mat-option>
+            <mat-option *ngFor="let module of mainTableList" [value]="module.table_name">
+                {{module.table_name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-2 pr-2" appearance="outline">
+        <mat-label>Field Type</mat-label>
+        <mat-select [(ngModel)]="selectedFieldType" (selectionChange)="applyFilter()">
+            <mat-option [value]="">All</mat-option>
+            <mat-option *ngFor="let type of fieldTypeList" [value]="type">
+                {{type}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+ <div class="col-md-2 d-flex justify-content-start">
+    <button mat-button style="background-color: red; color: white;" (click)="clearAllFilters()">X Clear</button>
+</div>
+
+
+    <div class="col-md-3 d-flex justify-content-end">
+        <button mat-mini-fab color="primary" matTooltip="Create Event" (click)="addRecord()"> + </button>
+    </div>
+
+</div>
+
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="field_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Field Name</th>
+                <td mat-cell *matCellDef="let element"> {{element?.field_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="data_type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Field Type</th>
+                <td mat-cell *matCellDef="let element"> {{element?.data_type}} </td>
+            </ng-container>
+
+             <ng-container matColumnDef="table_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Module Name</th>
+                <td mat-cell *matCellDef="let element"> {{element?.table_name}} </td>
+            </ng-container>
+
+
+           <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                <td mat-cell *matCellDef="let element"> {{ element.status == 1 ? 'Active' : 'Inactive'}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="created_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by</th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT }} </td>
+
+            </ng-container>
+
+            
+            <ng-container matColumnDef="modified_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by</th>
+                <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+            </ng-container>
+
+              <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_at | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+             <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                  Action
+              </th>
+              <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button matTooltip="edit"  (click)="deleteRecord(element)"  *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'"> 
+                      <mat-icon class="delete-mat-icon">delete</mat-icon>
+                  </button>
+              </td>
+          </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

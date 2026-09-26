@@ -1,0 +1,143 @@
+<div mat-dialog-title>
+    {{title}}
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<div class=" p-4" mat-dialog-content >
+   
+
+
+    <form [formGroup]="addEditForm">
+
+        <div class="row">
+
+
+            <mat-form-field class="pt-1 col-md-6" appearance="outline">
+                <mat-label class="">Special Offer Title</mat-label>
+                <input matInput formControlName="specialoffer_title" type="text" />
+                <mat-error
+                    *ngIf="addEditForm.controls['specialoffer_title'].hasError('required') && isShowErrors">
+                    Special Offer Title is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['specialoffer_title'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="pt-1 col-md-6" appearance="outline">
+                <mat-label class="">Special Offer Promocode</mat-label>
+                <input  matInput formControlName="promocode" type="text" />
+                <mat-error
+                    *ngIf="addEditForm.controls['promocode'].hasError('required') && isShowErrors">
+                    Promo Code  is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['promocode'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="pt-1 col-md-6" appearance="outline">
+                <mat-label class="">Special Offer Category</mat-label>
+                <mat-select formControlName="specialoffercategoryid" (selectionChange)="onCategoryChange($event)">
+                  <mat-option value="0">Internal</mat-option>
+                  <mat-option value="1">External</mat-option>
+                </mat-select>
+                <mat-error *ngIf="addEditForm.controls['specialoffercategoryid'].hasError('required') && isShowErrors">Transmission Type is
+                  required</mat-error>
+              </mat-form-field>
+              <!-- *ngIf="this.addEditForm.get('specialoffercategoryid')?.value != '0'" -->
+              <mat-form-field class="pt-1 col-md-6" appearance="outline" >
+                <mat-label>External Company</mat-label>
+                <mat-select formControlName="showroomdetid" >
+                  <mat-option *ngFor="let item of showroomCarDetails" [value]="item.showroomdetid" >
+                    {{item.showroomname}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="pt-1 col-md-6" appearance="outline" >
+                <mat-label class="">Company</mat-label>
+                <mat-select  placeholder="Select Company"  formControlName="cmp_id">
+                  <mat-option *ngFor="let ele of companyList" [value]="ele.cmp_id">
+                    {{ele.cmp_name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="addEditForm.controls['cmp_id'].hasError('required') && isShowErrors">Company is
+                    required</mat-error>
+              </mat-form-field>
+
+              
+               <mat-form-field class="pt-1 col-md-6" appearance="outline">
+                <mat-label class="">Usage Type</mat-label>
+                <mat-select formControlName="usagetype" >
+                  <mat-option value="1">Single</mat-option>
+                  <mat-option value="2">Multiple</mat-option>
+                </mat-select>
+                <mat-error *ngIf="addEditForm.controls['usagetype'].hasError('required') && isShowErrors">Usage Type is
+                  required</mat-error>
+              </mat-form-field>
+              
+              <div class="col-md-6 pt-3">
+                <mat-label class="p-2 pt-1 text-center">Status </mat-label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-radio-group aria-label="Is Active" formControlName="status"
+                    class="inputField exammanage-radio-group" mat-form-field>
+                    <mat-radio-button value='1'>YES</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value='0'>NO</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <mat-form-field class="pt-3 col-md-12" appearance="outline">
+                <mat-label class="">Special Offer Description</mat-label>
+                <textarea matInput  formControlName="specialofferdesc"></textarea>
+                  <!-- <input  matInput formControlName="specialofferdesc" type="text" /> -->
+                <mat-error *ngIf="addEditForm.controls['specialofferdesc'].hasError('required') && isShowErrors">
+                    Special Offer Description is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['specialofferdesc'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  appearance="outline"  class="pt-1 col-md-6"> <mat-label  class="" >Offer Valid From</mat-label>
+                <input matInput  (click)="picker.open()" (dateChange)="setEndDateMinValue()" formControlName="offer_valid_from" [matDatepicker]="picker" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="addEditForm.controls['offer_valid_from'].hasError('required') && isShowErrors">
+                    Offer Valid From is required</mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="pt-1 col-md-6" appearance="outline">
+                <mat-label>Offer Valid To Date</mat-label>
+                <input readonly  (click)="picker1.open()" matInput  [min]="minFromDate" [matDatepicker]="picker1" formControlName="offer_valid_to">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error *ngIf="addEditForm.controls['offer_valid_to'].hasError('required') && isShowErrors">Offer Valid to Date is
+                  required</mat-error>
+              </mat-form-field>
+
+
+
+            <div class="pt-1 col-md-6">
+                <h1>Icon Upload
+                    <small>with preview</small>
+                </h1>
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input (change)="onFileChanged($event)" type='file' id="imageUpload"
+                            accept=".png, .jpg, .jpeg" />
+                        <label for="imageUpload"></label>
+                    </div>
+                    <div class="avatar-preview" for="imageUpload">
+                        <img id="imagePreview" height="100" src={{imageBase64}}>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </form>
+</div>
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+        Save
+    </button>
+</div>

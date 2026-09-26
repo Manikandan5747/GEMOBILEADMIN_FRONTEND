@@ -1,0 +1,131 @@
+<!-- <div class="pdf-loading ">
+    <img src="../../../../assets/assets/logo_animation.gif" alt="">
+    <p>Copyright <span class="pdf-year"></span> © <a href="https://germanexperts.ae/" target="_blank">German Experts</a>
+        car maintenance LLC. All Rights Reserved</p>
+</div> -->
+
+
+
+<div style="display: flex;">
+    <div class="return-to-menu">
+        <a (click)="goback()"><span class="material-icons"> reply
+            </span> Return to back
+        </a>
+    </div>
+    <div class="download-btn-wrapper">
+        <button class="pdf-download-btn" (click)="generatePDF()">Download PDF</button>
+    </div>
+</div>
+
+
+<div class="pdf-box-wrapper">
+    <div class="pdf-main-wrapper" id="contentToConvert">
+
+
+        <div class="pdf-padding pdf-page pdf-page-break">
+
+            <!-- ? header -->
+            <div class="pdf-header-container pt-4" *ngIf="hideheader">
+                <img class="pdf-logo" src="../../../../assets/assets/Ge_Motors_black.png" alt="">
+                <p class="pdf-header">Quotation</p>
+            </div>
+            <!-- ? header -->
+
+            <!-- ? customer details -->
+            <div class="pdf-customer-details pdf-pt-2">
+                <!-- <p class="title">Customer Details</p> -->
+
+                <div class="pdf-cd-rows">
+                    <div class="pdf-cd-each-row">
+                        <div>
+                            <p class="pdf-t-bld">Name </p>
+                            <p>:</p>
+                            <p>{{ quotationData?.opportunityname }}</p>
+                        </div>
+                        <div>
+                            <p class="pdf-t-bld">Phone</p>
+                            <p>:</p>
+                            <p>{{ quotationData?.mobile }}</p>
+                        </div>
+                        <div>
+                            <p class="pdf-t-bld">Email</p>
+                            <p>:</p>
+                            <p>{{ quotationData?.email }}</p>
+                        </div>
+
+                        <div>
+                            <p class="pdf-t-bld">Currency</p>
+                            <p>:</p>
+                            <p>UAE, Dirham</p>
+                        </div>
+                    </div>
+                    <div class="pdf-cd-each-row">
+                        <div>
+                            <p class="pdf-t-bld">Date</p>
+                            <p>:</p>
+                            <p>{{ quotationData?.createdat | date: 'dd-MMM-yyyy' }}</p>
+                        </div>
+                        <div>
+                            <p class="pdf-t-bld">Quotation no</p>
+                            <p>:</p>
+                            <p>{{ quotationData?.quoterefno }}</p>
+                        </div>
+                        <div>
+                            <p class="pdf-t-bld">Valid till</p>
+                            <p>:</p>
+                            <p>{{ quotationData?.expirydate | date: 'dd-MMM-yyyy' }}</p>
+                        </div>
+                        <div *ngIf="quotationData?.paymentmode =='finance'">
+                            <p class="pdf-t-bld">Bank</p>
+                            <p>:</p>
+                            <p>{{ quotationData?.bankname }}</p>
+                        </div>
+
+                        <!-- UAE, Dirham -->
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- ? customer details -->
+
+            <!-- ? car details table -->
+            <div class="pdf-car-table pdf-pt-1">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sl.no</th>
+                            <th>Brand & Model</th>
+                            <th>Description</th>
+                            <th>Nos.</th>
+                            <th>Price</th>
+                            <!-- <th>Tax</th>
+                            <th>Discount</th> -->
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="pdf-car-table-out">
+
+                    </tbody>
+                    <tfoot class="pdf-table-footer">
+                        <tr class="pdf-total">
+                            <td>Total</td>
+                            <td></td>
+                            <td></td>
+                            <!-- <td></td>
+                            <td></td> -->
+                            <td></td>
+                            <td></td>
+                            <td>{{quotationData?.grandtotal}}</td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+            <!-- ? car details table -->
+
+
+
+        </div>
+    </div>
+</div>

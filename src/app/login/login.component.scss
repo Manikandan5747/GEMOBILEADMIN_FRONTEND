@@ -1,0 +1,97 @@
+.main-container
+{
+  zoom: 80% !important;
+}
+.portal{
+  font-family: sans-serif !important;
+  text-align: center;
+  color: #3c4b64 !important;
+  font-size: 23px !important;
+  
+}
+
+label{
+  color: #768192!important;
+}
+
+.form-group{
+  width: 88% !important;
+}
+.input-group{
+  min-height: 45px;
+}
+
+.bg-img {
+    padding-left: 1px !important;
+    background: url("../../assets/images/home_original1.jpg") no-repeat center center fixed;
+    height: 100vh !important;
+    width: 101% !important;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+
+  .sec{
+    align-items: end;
+    display: flex;
+   
+  }
+
+
+
+
+  .bg-gold {
+    background: -webkit-linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+    background: -o-linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+    background: -moz-linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+    background: linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+  }
+  .bg-gold-co{
+    color: -webkit-linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+    color: -o-linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+    color: -moz-linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+    color: linear-gradient(110deg, #fa5738 45%, #f4d35f 60%);
+  }
+
+
+.main-container {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: #ffffff9c !important;
+  width: 500px !important;
+    height: 324px !important;
+    border-radius: 7px !important;
+    // box-shadow: 0 6px 12px rgba(179, 179, 179, 0.7);
+    z-index: 1 !important;
+    overflow: hidden;
+}
+
+// .container {
+//   width: 400px !important;
+//   height: 300px !important;
+//   border-radius: 7px !important;
+//   box-shadow: 0 6px 12px rgba(179, 179, 179, 0.7);
+//   z-index: 1 !important;
+//   overflow: hidden;
+// }
+
+form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 0px !important;
+  flex-direction: column;
+  align-items: center;
+  // background-color: white;
+  justify-content: space-evenly;
+}
+
+
+
+
+
+

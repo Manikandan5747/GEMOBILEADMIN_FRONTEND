@@ -1,0 +1,165 @@
+<!-- <app-header></app-header> -->
+<div class="col-md-12">
+  <div class="page-title"> Users </div>
+
+  <div class="col-md-12 row">
+    <div class="row" style="padding-left: 21px !important">
+
+      <mat-form-field class="col-md-10 p-0 pr-2" appearance="outline">
+        <mat-label>Search User Detail</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" />
+      </mat-form-field>
+
+      <div class="col-md-2" style="text-align: end" *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'">
+        <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create User" (click)="addRecord()"> +
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mat-table-container" id="test1" #test1>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+          No records found.
+        </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+        <td mat-cell *matCellDef="let element"> {{element?.username}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="userpassword">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Password</th>
+        <td mat-cell *matCellDef="let element"> {{element?.userpassword}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="userrole">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>user role </th>
+        <td mat-cell *matCellDef="let element"> {{element?.userrole}} </td>
+      </ng-container>
+
+      
+      <ng-container matColumnDef="loginlink">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>login link</th>
+        <td mat-cell *matCellDef="let element">
+          <!-- {{ element.loginlink }} -->
+          <button mat-icon-button *ngIf="element.loginlink" (click)="copyLink(element.loginlink)">
+            <mat-icon>content_copy</mat-icon>
+            </button>
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="dashboardurl">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> dashboard url </th>
+        <td mat-cell *matCellDef="let element"> {{element?.dashboardurl}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+        <td mat-cell *matCellDef="let element"> {{element?.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created_by}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modified_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+        <td mat-cell *matCellDef="let element"> {{element?.modified_by}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="modified_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified at </th>
+        <td mat-cell *matCellDef="let element"> {{element?.modified_at }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rolename">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> role name </th>
+        <td mat-cell *matCellDef="let element"> {{element?.rolename}} </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="isforcefulllogin">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> forcefull login </th>
+        <td mat-cell *matCellDef="let element"> {{element && element.isforcefulllogin == 'Y'? "Enable":"Disable"}} </td>
+      </ng-container> -->
+
+
+      <ng-container matColumnDef="isforcefulllogin" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> forcefull login </th>
+        <td mat-cell *matCellDef="let element">
+          <img style="width: 20%;cursor: pointer;" (click)="updateforcefullstatus(element,'N')" 
+          src="assets/images/tick.jpg" *ngIf="element && element.isforcefulllogin == 'Y'"> 
+        
+          <img (click)="updateforcefullstatus(element,'Y')" 
+          style="width: 20%;cursor: pointer;" src="assets/images/wrong.webp" *ngIf="element && element.isforcefulllogin == 'N'"> 
+       
+        </td>
+      </ng-container>
+
+
+
+
+      <ng-container matColumnDef="emailid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> email </th>
+        <td mat-cell *matCellDef="let element"> {{element?.emailid}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="useronline_status" sticky>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Online Status </th>
+        <td mat-cell *matCellDef="let element">
+
+          <!-- <button [ngClass]="{'userpadecursordiable': userPrivilegeObj && userPrivilegeObj?.editaccess == '0'}"
+            [disabled]="userPrivilegeObj && userPrivilegeObj?.editaccess == '0'" (click)="makeOffline(element)"
+            mat-button style="border-radius: 25px;color: black !important;background-color: #f4d35f  !important;"
+            class="btnnn-default-fn" *ngIf="element && element.useronline_status == true">
+           
+            <img src="../../../assets/images/Online-icon.png" > 
+          </button> -->
+          <img [ngClass]="{'userpadecursordiable': userPrivilegeObj && userPrivilegeObj?.editaccess == '0'}" 
+          [disabled]="userPrivilegeObj && userPrivilegeObj?.editaccess == '0'" (click)="makeOffline(element)"
+          src="../../../assets/images/Online-icon.png" *ngIf="element && element.useronline_status == true"> 
+
+          <!-- <button mat-button style="cursor:not-allowed !important ;border-radius: 25px;background-color: #eef5f9!important;
+        color: black !important;" class="btnnn-default-fn" *ngIf="element && element.useronline_status != true">
+            <img src="../../../assets/images/Offline-icon.png" > 
+          </button> -->
+          <img style="cursor:not-allowed !important;" src="../../../assets/images/Offline-icon.png" *ngIf="element && element.useronline_status != true"> 
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created_at }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+          Action
+        </th>
+        <td mat-cell *matCellDef="let element">
+         
+          <button mat-icon-button matTooltip="Edit" *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'"
+            (click)="editRecord(element)">
+            <mat-icon class="edit-mat-icon">edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+      [ngClass]= "{'isInternalNotify': element.showroomdetid != null}"></tr>
+    </table>
+
+  </div>
+
+  <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

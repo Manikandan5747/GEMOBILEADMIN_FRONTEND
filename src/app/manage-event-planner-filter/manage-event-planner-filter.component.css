@@ -1,0 +1,26 @@
+.section-divider {
+  transition: background-color 0.3s;
+}
+.section-divider:hover {
+  opacity: 0.85;
+}
+
+.view-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.view-value {
+  font-weight: 400;
+  padding: 4px 8px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.table-bordered th, .table-bordered td {
+  vertical-align: middle;
+}
+
+.condition-table {
+  font-size: 14px;
+}

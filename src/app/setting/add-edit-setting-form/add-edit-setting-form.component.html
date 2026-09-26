@@ -1,0 +1,103 @@
+<div class="col-md-12 row p-4">
+
+    <form [formGroup]="addEditForm">
+  
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label class="">Setting Category</mat-label>
+        <mat-select formControlName="appsetcategory" [disabled]="userrole=='ShowroomSupervisor'">
+          <mat-option value="APIKEY">API Key</mat-option>
+          <mat-option value="EMAIL">Email</mat-option>
+          <mat-option value="SMS">SMS</mat-option>
+          <mat-option value="NOTIFICATION">Notification</mat-option>
+          <mat-option value="GENERAL">General</mat-option>
+          <mat-option value="PERFORMAINVOICE">Performa Invoice </mat-option>
+          <mat-option value="PURCHASEAGREEMENT">Purchase Agreement </mat-option>
+          <mat-option value="ADVANCE">Advance </mat-option>
+          <mat-option value="EXPENSE">Expense </mat-option>
+          <mat-option value="CONSIGNMENT">Consignment </mat-option>
+          <mat-option value="PAYMENTSTATUS">Cash Req Payment Status </mat-option>
+          <mat-option value="CAROWNERTYPE">Car Owner Type </mat-option>
+          <mat-option value="SALESORDERPAYMENT">Sales Order Payment </mat-option>
+          <mat-option value="SHOWROOMCARDETAILS">Showroom Car Details </mat-option>
+            <mat-option value="PAYMENTGATEWAY"> Payment Gateway </mat-option>
+              <mat-option value="GEMOTORS_API"> Ge Motors Api Key </mat-option>
+            
+           <!-- <mat-option value="USERPRIVILEGE">User privilege Dashboard</mat-option> -->
+          
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['appsetcategory'].hasError('required') && isShowErrors">Setting Category is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label class="">Setting parameter</mat-label>
+        <input matInput [readonly]="userrole=='ShowroomSupervisor'" [errorStateMatcher]="matcher" formControlName="appsetparameter" type="text" />
+        <mat-error *ngIf="addEditForm.controls['appsetparameter'].hasError('required') && isShowErrors"> Setting Parameter is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['appsetparameter'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label class="">Setting parameter value</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="appsetparametervalue" type="text" />
+        <mat-error *ngIf="addEditForm.controls['appsetparametervalue'].hasError('required') && isShowErrors">Setting Parameter Value is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['appsetparametervalue'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label>Setting date</mat-label>
+        <input readonly matInput [matDatepicker]="picker" formControlName="settingdate_at">
+       
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['settingdate_at'].hasError('required') && isShowErrors">Setting Date is
+          required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="p-2 col-md-6 " appearance="outline">
+        <mat-label>Setting Expiry Date</mat-label>
+        <input readonly matInput [matDatepicker]="picker1" formControlName="settingexpirydate_at">
+       
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['settingexpirydate_at'].hasError('required') && isShowErrors">Setting Expiry Date is
+          required</mat-error>
+      </mat-form-field> -->
+
+
+      <mat-label  class="p-2 pt-2 text-center">Status </mat-label>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-group  aria-label="Is Active" formControlName="status" [disabled]="userrole=='ShowroomSupervisor'"
+        class="inputField exammanage-radio-group" mat-form-field>
+        <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value='0'>In Active</mat-radio-button>
+      </mat-radio-group>
+
+      <br>
+   
+      
+      <div class="col-md-4 field">
+        <label for="file-upload-trade" class="custom-file-upload">
+          <mat-icon>cloud_upload</mat-icon> Image
+        </label><br>
+        <input id="file-upload-trade" (change)="onFileChanged1($event)"
+          accept="image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+        <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['image'].value">
+          <div class="avatar-preview" for="imageUpload">
+            <a [href]="addEditForm.controls['image'].value" target="_blank">
+              <img style="width: 60px;" [src]="imageSrc ? imageSrc : url+addEditForm.controls['image'].value" />
+            </a>
+          </div>
+        </div>
+      </div>
+  
+    </form>
+  </div>

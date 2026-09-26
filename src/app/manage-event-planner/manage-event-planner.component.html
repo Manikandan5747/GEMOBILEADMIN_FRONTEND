@@ -1,0 +1,290 @@
+<div class="col-md-12">
+  <!-- Page Title -->
+  <div class="page-title mb-3">Manage Event Planner</div>
+<div class="spinner__loading" *ngIf="isPageLoading"> <mat-spinner></mat-spinner> </div>
+  <!-- Top Row: Search Fields + Clear + Add/Excel -->
+  <div class="row align-items-center gx-2">
+
+    <!-- Search Fields -->
+    <div class="col-md-9 d-flex gap-2">
+      <mat-form-field class="flex-fill" appearance="outline">
+        <mat-label>Search Event Planner Detail</mat-label>
+        <input
+          matInput
+          [(ngModel)]="search"
+          (keyup)="applyFilter($event)"
+          placeholder="Search..."
+        />
+        <button
+          mat-icon-button
+          *ngIf="search"
+          matSuffix
+          aria-label="Clear"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="flex-fill" appearance="outline">
+        <mat-label>Search Calendar Day</mat-label>
+        <input
+          matInput
+          [(ngModel)]="calendarDayFilter"
+          (keyup)="applyFilters()"
+          placeholder="Enter calendar day"
+        />
+      </mat-form-field>
+
+     
+
+
+
+
+      <mat-form-field class="flex-fill" appearance="outline">
+        <mat-label>Search Created Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="createdDatePicker"
+          [(ngModel)]="createdDateFilter"
+          (dateChange)="applyFilters()"
+          placeholder="Choose date"
+        />
+        <mat-datepicker-toggle matSuffix [for]="createdDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #createdDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Clear Button -->
+    <div class="col-md-1 d-flex justify-content-center">
+      <button mat-flat-button style="background-color: red; color:white" (click)="clearAllFilters()">
+        X Clear
+      </button>
+    </div>
+
+    <!-- Add + Excel Upload -->
+    <div class="col-md-2 d-flex justify-content-end gap-2">
+       <label matTooltip="Upload Excel" class="mb-0">
+       <input
+  type="file"
+  id="excelInput"
+  (change)="onExcelFileSelected($event)"
+  hidden
+  accept=".xlsx, .xls"
+/>
+
+        <button
+  class="excel-upload-btn-outline"
+  [disabled]="uploading"
+  (click)="showExcelInstructions()"
+>
+  <mat-spinner *ngIf="uploading" diameter="20"></mat-spinner>
+  <span *ngIf="!uploading">Excel Upload</span>
+</button>
+
+      </label>
+      <button
+        mat-mini-fab
+        color="primary"
+        matTooltip="Create Event"
+        (click)="addRecord()"
+      >
+        +
+      </button>
+
+     
+    </div>
+  </div>
+  <!-- Table -->
+  <div class="mat-table-container mt-3" id="test1" #test1>
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- No Data -->
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+          No records found.
+        </mat-footer-cell>
+      </ng-container>
+
+      <!-- Event Planner Name -->
+
+      <ng-container matColumnDef="event_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Name</th>
+        <td mat-cell *matCellDef="let element">{{ element?.event_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="event_planner_title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Planner Name</th>
+        <td mat-cell *matCellDef="let element">{{ element?.event_planner_title }}</td>
+      </ng-container>
+
+
+       <ng-container matColumnDef="calendar_day">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Calendar Day</th>
+        <td mat-cell *matCellDef="let element">{{ element?.calendar_day }}</td>
+      </ng-container> 
+
+      <!-- Country Name -->
+      <!-- <ng-container matColumnDef="country_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Country Name</th>
+        <td mat-cell *matCellDef="let element">{{ element?.country_name }}</td>
+      </ng-container> -->
+
+      <!-- Event Expiry Days -->
+      <ng-container matColumnDef="event_planner_expiry_days">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Expiry Days</th>
+        <td mat-cell *matCellDef="let element">{{ element?.event_planner_expiry_days }}</td>
+      </ng-container>
+
+      <!-- Event Planner Image -->
+      <ng-container matColumnDef="event_planner_image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Planner Image</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.event_planner_image; else noImg">
+            <a [href]="element.event_planner_image" target="_blank">
+              <img
+                class="spclofferpath"
+                [src]="element.event_planner_image"
+                style="max-width: 140px"
+              />
+            </a>
+          </ng-container>
+          <ng-template #noImg> Image not available </ng-template>
+        </td>
+      </ng-container>
+
+         <ng-container matColumnDef="banner_image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Banner Image</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.banner_image; else noImg">
+            <a [href]="element.banner_image" target="_blank">
+              <img
+                class="spclofferpath"
+                [src]="element.banner_image"
+                 style="max-width: 140px"
+              />
+            </a>
+          </ng-container>
+          <ng-template #noImg> Image not available </ng-template>
+        </td>
+      </ng-container>
+
+
+      <!-- Schedule Type -->
+      <ng-container matColumnDef="schedule_type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Schedule Type</th>
+        <td mat-cell *matCellDef="let element">{{ element?.schedule_type }}</td>
+      </ng-container>
+
+      <!-- Mode of Message -->
+      <ng-container matColumnDef="mode_of_message">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Mode of Message</th>
+        <td mat-cell *matCellDef="let element">{{ element?.mode_of_message }}</td>
+      </ng-container>
+
+      <!-- Template Name -->
+      <ng-container matColumnDef="template_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Template Name</th>
+        <td mat-cell *matCellDef="let element">{{ element?.template_name }}</td>
+      </ng-container>
+
+      <!-- Event Status -->
+      <ng-container matColumnDef="event_planner_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Status</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.event_planner_status == 1 ? "Active" : "Inactive" }}
+        </td>
+      </ng-container>
+
+      <!-- Created By -->
+      <ng-container matColumnDef="created_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+        <td mat-cell *matCellDef="let element">{{ element?.createdbyname }}</td>
+      </ng-container>
+
+      <!-- Created At -->
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Created At</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.created_at | date: DATE_FORMAT }}
+        </td>
+      </ng-container>
+
+    <ng-container matColumnDef="event_start_date">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Start Date</th>
+  <td mat-cell *matCellDef="let element">
+    {{ element?.event_start_date | date: 'dd-MM-yyyy' }}
+  </td>
+</ng-container>
+
+<ng-container matColumnDef="event_end_date">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>Event End Date</th>
+  <td mat-cell *matCellDef="let element">
+    {{ element?.event_end_date | date: 'dd-MM-yyyy' }}
+  </td>
+</ng-container>
+
+
+            
+  <ng-container matColumnDef="iseventyearly">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>Yearly</th>
+  <td mat-cell *matCellDef="let element">
+    <mat-icon *ngIf="element.iseventyearly">check</mat-icon>
+  </td>
+</ng-container>
+
+
+      <!-- Modified By -->
+      <ng-container matColumnDef="modified_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Modified By</th>
+        <td mat-cell *matCellDef="let element">{{ element?.updatedbyname }}</td>
+      </ng-container>
+
+      <!-- Modified At -->
+      <ng-container matColumnDef="modified_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Modified At</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.modified_at | date: DATE_FORMAT }}
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions" sticky>
+        <th mat-header-cell *matHeaderCellDef style="width: 120px">Action</th>
+        <td mat-cell *matCellDef="let element">
+         <button 
+  mat-icon-button
+  matTooltip="Edit"
+  (click)="updaterecord(element)"
+  *ngIf="element?.event_planner_id && userPrivilegeObj?.editaccess == '1'"
+>
+  <mat-icon class="edit-mat-icon">edit</mat-icon>
+</button>
+
+
+          <button
+  mat-icon-button
+  matTooltip="View"
+  (click)="openFilterPage(element)"
+>
+  <mat-icon>visibility</mat-icon>
+</button>
+
+        </td>
+      </ng-container>
+
+      <!-- Header & Row -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <!-- Paginator -->
+  <mat-paginator
+    [pageSize]="PAGE_SIZE"
+    [pageSizeOptions]="PAGINATION_RANGE"
+    showFirstLastButtons
+  ></mat-paginator>
+
+ 
+</div>

@@ -1,0 +1,120 @@
+<div class="col-md-12">
+    <div class="page-title"> Test Drive Detail</div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+ 
+
+      <div class="return-to-menu" *ngIf="opportunityid"> 
+        <a (click)="goBack()"><span class="material-icons"> reply
+          </span> Return to back
+        </a>
+      </div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Test Drive Detail</mat-label>
+                <input matInput [(ngModel)]="search" (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <div class="col-md-2" style="text-align: end" *ngIf="opportunityid && privilege?.create_access">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Test Drive"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="opportunityname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>opportunity name </th>
+                <td mat-cell *matCellDef="let element"> {{element?.opportunityname}} </td>
+            </ng-container>
+
+            
+            <ng-container matColumnDef="testdriverefno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>test drive ref no </th>
+                <td mat-cell *matCellDef="let element"> {{element?.testdriverefno}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="carshowroomrefno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>carshowroom ref no </th>
+                <td mat-cell *matCellDef="let element"> {{element?.carshowroomrefno}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="brandname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>brand </th>
+                <td mat-cell *matCellDef="let element"> {{element?.brandname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modelname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>model </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modelname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="chasisno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>chasis no </th>
+                <td mat-cell *matCellDef="let element"> {{element?.chasisno}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Of Test Drive </th>
+                <td mat-cell *matCellDef="let element"> {{element?.date | date: DATE_ONLYFORMAT}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="time">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Time Of Test Drive </th>
+                <td mat-cell *matCellDef="let element"> {{formatTime(element?.time) }} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="accompanying_test_drive">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Accompanying Test Drive </th>
+                <td mat-cell *matCellDef="let element"> {{element?.customer}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="createdby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button *ngIf="privilege?.print_access || privilege?.createaccess"  mat-icon-button matTooltip="Print Test Drive" (click)="downloadRecord(element)">
+                        <mat-icon class="large-icon">print</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,420 @@
+<!-- <div class="pdf-loading ">
+        <img src="../../../../assets/assets/logo_animation.gif" alt="">
+        <p>Copyright <span class="pdf-year"></span> © <a href="https://germanexperts.ae/" target="_blank">German Experts</a> car maintenance LLC. All Rights Reserved</p>
+    </div> -->
+
+
+<div style="display: flex;" *ngIf="!contractId">
+    <div class="return-to-menu">
+        <a (click)="goback()"><span class="material-icons"> reply
+            </span> Return to back
+        </a>
+    </div>
+    <div class="download-btn-wrapper">
+        <button class="pdf-download-btn" (click)="generatePDF()">Download PDF</button>
+    </div>
+</div>
+
+<div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+<div class="pdf-box-wrapper">
+    <div class="pdf-main-wrapper sales-contract-wrapper" id="contentToConvert">
+        <div class="pdf-cover-page pdf-page">
+            <img class="pdf-first-logo" src="../../../../assets/assets/ge motors.png" alt="">
+
+            <div class="pdf-title-container">
+                <p class="pdf-english-cover">SALES</p>
+                <p class="pdf-english-cover">CONTRACT</p>
+                <p class="pdf-rtl pdf-arabic-cover">عقد مبايعة مركبة</p>
+            </div>
+        </div>
+
+        <div class="pdf-other-pages pdf-page pdf-page-break" [ngClass]="{'page-padding': is_pdfgenerating}">
+
+            <!-- ? header -->
+            <!-- <div class="header-container pdf-pt-1">
+                    <div class="logo">
+                        <img src="../../../../assets/assets/ge motors.png" alt="">
+                    </div>
+    
+                    <div class="header-text">
+                        <p class="header">CONSIGNMENT AGREEMENT</p>
+                        <p class="header pdf-rtl">اتفاقية بيع مركبة</p>
+                    </div>
+                </div> -->
+            <!-- ? header -->
+
+            <!-- ? details -->
+            <div class="d-date d-grid pdf-pt-1">
+                <p class="pdf-t-bld">Date</p>
+                <p class="sc-date">{{salescontractData.createdat | date: DATE_FORMAT }} </p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">التاريخ</p>
+            </div>
+
+            <div class="d-info pdf-pt-1">
+                <p>Dear Director of the Roads and Transport Authority </p>
+                <p class="pdf-rtl pdf-fs-1">السيد مدير هيئة الطرق والمواصلات المحترم</p>
+            </div>
+            <div class="d-info pdf-pt-1">
+                <p>It had been agreed between the two parties:</p>
+                <p class="pdf-rtl pdf-fs-1">تم الاتفاق بين الطرفين:</p>
+            </div>
+
+            <p class="pdf-sub-headings"><span>First Party: Seller of the vehicle</span><span class="pdf-rtl">الطرف الأول
+                    : مالك المركبة</span></p>
+
+
+
+
+            <div class="d-consignee d-grid pdf-pt-1">
+                <p class="pdf-t-bld">Name:</p>
+                <p class="consignee-name" style="text-transform: capitalize;">
+                    {{salescontractData?.seller_accountname}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">الاسم:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05">
+                <p class="pdf-t-bld">Address:</p>
+
+                <p class="consignee-address">
+                    <span *ngIf="salescontractData?.seller_country">
+                        {{salescontractData?.seller_country}}
+                    </span>
+                    <span *ngIf="salescontractData?.seller_state">
+                        - {{salescontractData?.seller_state}}
+                    </span>
+                    <span *ngIf="salescontractData?.seller_city">
+                        - {{salescontractData?.seller_city}}
+                    </span>
+                    <span *ngIf="salescontractData?.seller_pincode">
+                        - {{salescontractData?.seller_pincode}}
+                    </span>
+                </p>
+
+
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">العنوان:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05" *ngIf="salescontractData?.seller_leadtype == 'company'">
+                <p class="pdf-t-bld">License Number:</p>
+                <p class="consignee-license">{{salescontractData?.seller_tradelicenno}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الرخصة:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05">
+                <p class="pdf-t-bld">Phone Number:</p>
+                <p class="consignee-phone">{{salescontractData?.seller_phonenumber}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الهاتف:</p>
+            </div>
+
+            <div class="d-consignee d-grid pdf-pt-05">
+                <p class="pdf-t-bld">Nationality:</p>
+                <p class="consignee-phone">{{salescontractData?.seller_nationality}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">الجنسية :</p>
+            </div>
+
+
+
+            <p class="pdf-sub-headings"><span>Second Party: Buyer of the vehicle</span><span>الطرف الثاني:
+                    المشتري</span></p>
+
+            <div class="d-consignee d-grid pdf-pt-1">
+                <p class="pdf-t-bld">Name:</p>
+                <p class="consignor-name" style="text-transform: capitalize;">{{salescontractData?.buyer_accountname}}
+                </p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">الاسم:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05">
+                <p class="pdf-t-bld">Address:</p>
+                <!-- <p class="consignor-address">{{salescontractData?.buyer_address}}</p> -->
+
+                <p class="consignor-address">
+                    <span *ngIf="salescontractData?.buyer_country">
+                        {{salescontractData?.buyer_country}}
+                    </span>
+                    <span *ngIf="salescontractData?.buyer_state">
+                        - {{salescontractData?.buyer_state}}
+                    </span>
+                    <span *ngIf="salescontractData?.buyer_city">
+                        - {{salescontractData?.buyer_city}}
+                    </span>
+                    <span *ngIf="salescontractData?.buyer_pincode">
+                        - {{salescontractData?.buyer_pincode}}
+                    </span>
+                </p>
+
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">العنوان:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05" *ngIf="salescontractData?.buyer_leadtype == 'company'">
+                <p class="pdf-t-bld">License Number:</p>
+                <p class="consignor-license">{{salescontractData?.buyer_tradelicenno}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الرخصة:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05">
+                <p class="pdf-t-bld">Phone Number:</p>
+                <p class="consignor-phone">{{salescontractData?.buyer_phonenumber}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الهاتف:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05" *ngIf="salescontractData?.buyer_leadtype == 'individual'">
+                <p class="pdf-t-bld">Emirates ID:</p>
+                <p class="consignor-id">{{salescontractData?.buyer_emiratesid}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الملف المروري:</p>
+            </div>
+            <div class="d-consignee d-grid pdf-pt-05">
+                <p class="pdf-t-bld">Nationality:</p>
+                <p class="consignor-id">{{salescontractData?.buyer_nationality}}</p>
+                <p class="pdf-rtl pdf-fs-1 pdf-t-bld">الجنسية:</p>
+            </div>
+
+            <p *ngIf="salescontractData.showexcutedby" class="pdf-sub-headings"><span>Sold
+                    by</span><span>بواسطة</span></p>
+            <div *ngIf="salescontractData.showexcutedby">
+                <div class="d-consignee d-grid pdf-pt-1">
+                    <p class="pdf-t-bld">Name:</p>
+                    <p class="consignor-name">{{salescontractData?.excutedby_accountname}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">الاسم:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Address:</p>
+
+
+                    <p class="consignor-address">
+                        <span *ngIf="salescontractData?.excutedby_country">
+                            {{salescontractData?.excutedby_country}}
+                        </span>
+                        <span *ngIf="salescontractData?.excutedby_state">
+                            - {{salescontractData?.excutedby_state}}
+                        </span>
+                        <span *ngIf="salescontractData?.excutedby_city">
+                            - {{salescontractData?.excutedby_city}}
+                        </span>
+                        <span *ngIf="salescontractData?.excutedby_pincode">
+                            - {{salescontractData?.excutedby_pincode}}
+                        </span>
+                    </p>
+
+
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">العنوان:</p>
+                </div>
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Phone Number:</p>
+                    <p class="consignor-phone">{{salescontractData?.excutedby_phonenumber}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الهاتف:</p>
+                </div>
+
+          
+            </div>
+
+                <div class="d-info pdf-pt-1">
+                    <p>The two parties mutually agreed to acquire the vehicle described below, and once the contract is
+                        signed, neither party retains the right to withdraw from the agreement for any cause.</p>
+                    <p class="pdf-rtl pdf-fs-1"> تم الاتفاق بين الطرفين على شراء السيارة المدونة اوصافها أدناه ولا يحق
+                        لاي
+                        منهما الرجوع عن العقد بعد التوقيع عليه لأي سبب كان</p>
+                </div>
+            
+
+                <div *ngFor="let item of salescontractData?.salesorder_details">
+                    <p class="pdf-sub-headings"><span>Vehicle Data</span><span>بيانات المركبة</span></p>
+    
+                    <div class="d-consignee d-grid pdf-pt-1">
+                        <p class="pdf-t-bld">Vehicle Class:</p>
+                        <p class="vehicle-brand">{{item?.brandname}} - {{item?.modelname}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">صنف المركبة :</p>
+                    </div>
+                    <div class="d-consignee d-grid pdf-pt-05">
+                        <p class="pdf-t-bld">Plate Number:</p>
+                        <p class="vehicle-year">{{item?.platenumber}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم اللوحة :</p>
+                    </div>
+                    <div class="d-consignee d-grid pdf-pt-05">
+                        <p class="pdf-t-bld">Vehicle Colour:</p>
+                        <p class="vehicle-color">{{item?.carcolor}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">لون المركبة:</p>
+                    </div>
+                    <div class="d-consignee d-grid pdf-pt-05">
+                        <p class="pdf-t-bld">Vehicle Keys:</p>
+                        <p class="vehicle-keys">{{item?.noofkeys}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">نوع المركبة:</p>
+                    </div>
+                    <div class="d-consignee d-grid pdf-pt-05">
+                        <p class="pdf-t-bld">Vehicle Type:</p>
+                        <p class="vehicle-model">{{item?.bodytype}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">تفاصيل المركبة:</p>
+                    </div>
+                    <div class="d-consignee d-grid pdf-pt-05">
+                        <p class="pdf-t-bld">Number of Cylinder:</p>
+                        <p class="vehicle-cylinder">{{item?.noofcylinder}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">عدد الاسطوانات:</p>
+                    </div>
+                    <div class="d-consignee d-grid pdf-pt-05">
+                        <p class="pdf-t-bld">Model Year:</p>
+                        <p class="vehicle-plate">{{item?.modelyear}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">سنة الصنع :</p>
+                    </div>
+                    <div class="d-consignee d-grid pdf-pt-05">
+                        <p class="pdf-t-bld">Chassis No:</p>
+                        <p class="vehicle-vin">{{item?.chasisno}}</p>
+                        <p class="pdf-rtl pdf-fs-1 pdf-t-bld">رقم الشاصي :</p>
+                    </div>
+    
+                </div>
+    
+                <div class="d-consignee d-grid pdf-pt-05">
+                    <p class="pdf-t-bld">Selling Price:</p>
+                    <p class="vehicle-vin">{{salescontractData?.grandtotal}}</p>
+                    <p class="pdf-rtl pdf-fs-1 pdf-t-bld">سعر البيع:</p>
+                </div>
+
+
+                <div class="pdf-footer pdf-pt-1 page-break">
+                    <div class="pdf-footer-line"></div>
+                    <div class="pdf-upper-footer">
+                        <p>Feel free to contact us if you have any questions</p>
+                        <img class="pdf-footer-experts-800" src="../../../../assets/assets/800 EXPERTS.png" alt="">
+                        <img class="pdf-footer-email" src="../../../../assets/assets/Email.png" alt="">
+                        <p class="pdf-footer-page-no">1</p>
+                    </div>
+
+                </div>
+
+          
+        </div>
+
+        <div class="pdf-other-pages pdf-page pdf-page-break" [ngClass]="{'page-padding': is_pdfgenerating}" >
+
+            <p class="pdf-sub-headings pdf-pt-1"><span>Terms and Conditions</span><span>الشروط والاحكام</span></p>
+
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">1.</span>
+                    The buyer acknowledges having inspected the car before purchase, accepting it in its present
+                    condition and relinquishes any right to return it for any reason.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">1.</span>
+                    أقر المشتري بأنه فحص السيارة قبل شرائها وقبل بها على حالتها، وليس له الحق بإرجاعها لأي سبب
+                </p>
+            </div>
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">2.</span>
+                    The buyer is required to complete full payment for the car's value within three days from the date
+                    of purchase
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">2.</span>
+                    يجب على المشتري دفع قيمة السيارة كاملا خلال ثلاثة أيام من تاريخه
+                </p>
+            </div>
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">3.</span>
+                    The seller is obligated to transfer ownership of the car to the buyer within three days from the
+                    date of purchase.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">3.</span>
+                    يجب على البائع تحويل ملكية السيارة للمشتري خلال ثلاثه ايام من تاريخه
+                </p>
+            </div>
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">4.</span>
+                    The car once sold is non-returnable or replaceable, and any deposit made remains non-refundable.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">4.</span>
+                    السيارة المباعة لا ترد ولا تستبدل، كما وان العربون المدفوع غير مسترد
+                </p>
+            </div>
+
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">5.</span>
+                    Both parties share financial and legal responsibility for any external obligations. The exhibition
+                    is not accountable.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">5.</span>
+                    المبايعة الخارجية تحت مسؤولية الطرفين من الناحية المالية والقانونية والمعرض غير مسؤول
+                </p>
+            </div>
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">6.</span>
+                    The model's specifications are based on the car's official documents.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">6.</span>
+                    يتم احتساب الموديل من واقع الاوراق الرسمية للسيارة
+                </p>
+            </div>
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">7.</span>
+                    The customer is not entitled to take possession of the vehicle under mortgage after the bank places
+                    a lien on the vehicle's ownership.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">7.</span>
+                    لا يحق للزبون استلام المركبة المرهونة الابعد وضع رهن البنك على ملكية المركبة
+                </p>
+            </div>
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">8.</span>
+                    The deposit will only be refunded if mutually agreed upon and explicitly stated in the purchase
+                    agreement's notes.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">8.</span>
+                    لا يرد العربون الا إذا تم الاتفاق على ذلك، وذكر صراحة في نص الملاحظات عند الشراء
+                </p>
+            </div>
+
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">9.</span>
+                    Once signed and approved, any alterations, modifications, deletions, or changes to the content in
+                    the commitment form are considered void. Verification of received information is paramount.
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">9.</span>
+                    اي كشط او تغيير او تعديل او حذف او تغيير للمحتوى ف نموذج المبايعة بعد توقيعها واعتمادها تعتبر لاغية
+                    مع مراعاة التاكد من المعلومات الواردة
+                </p>
+            </div>
+            <div class="t-content pdf-pt-1">
+                <p><span class="pdf-item-no">10.</span>
+                    This commitment document has been prepared in three copies, with one copy designated for each
+                    contracting party for their respective compliance. Another copy is provided to the Roads and
+                    Transport Authority for secure retention, documentation, and auditing purposes
+                </p>
+                <p class="pdf-rtl pdf-fs-1"><span class="pdf-item-no">10.</span>
+                    حررت هذه المبايعة من ثلاث نسخ، نسخة لكل من طرفي التعاقد وذلك للعمل بموجبها، ونسخة لهيئة الطرق
+                    والمواصلات للحفظ والتوثيق والتدقيق
+                </p>
+            </div>
+
+            <div class="signature-container pdf-mt-4" *ngIf="!contractId">
+                <div>
+                    <p>Buyer Signature</p>
+                    <img width="150" *ngIf="salescontractData && salescontractData.buyer_sign_path" class="sign" [src]="'data:image/png;base64,' + (salescontractData.buyer_sign_path_base64 || '')" alt="Buyer Signature">
+                    <div class="sign-line buyer-sign"></div>
+                </div>
+                <div>
+                    <p>Seller Signature</p>
+                    <img width="150" *ngIf="salescontractData && salescontractData.seller_sign_path_base64" class="sign" [src]="'data:image/png;base64,' + (salescontractData.seller_sign_path_base64 || '')" alt="Seller Signature">
+                    <div class="sign-line seller-sign"></div>
+                </div>
+                <div>
+                    <p>CEO Signature</p>
+                    <img width="150" *ngIf="showroomSign" class="sign" [src]="'data:image/png;base64,' + (showroomSign || '')" alt="CEO Signature">
+
+                    <div class="sign-line showroom-sign"></div>
+                </div>
+            </div>
+
+
+            <div class="pdf-footer pdf-pt-1 page-break">
+                <div class="pdf-footer-line"></div>
+                <div class="pdf-upper-footer">
+                    <p>Feel free to contact us if you have any questions</p>
+                    <img class="pdf-footer-experts-800" src="../../../../assets/assets/800 EXPERTS.png" alt="">
+                    <img class="pdf-footer-email" src="../../../../assets/assets/Email.png" alt="">
+                    <p class="pdf-footer-page-no">2</p>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        
+
+
+
+    </div>
+</div>

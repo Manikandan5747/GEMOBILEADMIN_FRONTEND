@@ -1,0 +1,7 @@
+.mat-sort-header-button, th.mat-header-cell, .mat-header-cell {
+    text-align: start !important;
+}
+.outline {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}

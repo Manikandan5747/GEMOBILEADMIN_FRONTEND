@@ -1,0 +1,19 @@
+<mat-nav-list appAccordion *ngIf="menuItems" class="scrollable-nav-list">
+    <div class="sticky-search">
+        <mat-form-field class="p-2 pb-0" appearance="outline">
+            <mat-label>Search</mat-label>
+            <input matInput type="text" (input)="filterByText($event.target.value)" />
+        </mat-form-field>
+    </div>
+
+    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems"   [routerLinkActiveOptions]="{ exact: true }"  routerLinkActive="selected"
+
+        group="{{menuitem.state}}">
+        <a class="sideMenuList" appAccordionToggle [routerLink]="[menuitem.state]" (click)="menuclick()"
+            *ngIf="menuitem.type === 'link'">
+            <mat-icon class="pt-2">{{ menuitem.icon }}</mat-icon>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
+</mat-nav-list>

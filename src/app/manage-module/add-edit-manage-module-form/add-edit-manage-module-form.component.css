@@ -1,0 +1,55 @@
+.outline {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-left: 10px;
+  width: 425px
+}
+
+.outline:hover {
+  border: 1px solid rgba(0, 0, 0, 0.87);
+  border-radius: 5px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+/* Increase size of all mat-icons inside your form */
+.mat-icon.custom-icon {
+  font-size: 25px !important;   /* Adjust as needed (24px, 28px, etc.) */
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+/* Optional: Add some spacing around the icons */
+.icon-button {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+/* Optional: Style checkboxes for larger clickable area */
+.mat-checkbox.custom-checkbox .mat-checkbox-inner-container {
+  width: 44px !important;
+  height: 44px !important;
+}

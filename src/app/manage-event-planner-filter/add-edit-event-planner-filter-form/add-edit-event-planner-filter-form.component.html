@@ -1,0 +1,106 @@
+<div class="col-md-12">
+  <form [formGroup]="addEditForm" class="p-3">
+
+    <div class="row">
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Parameter Description</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="parameter_desc" type="text" />
+        <mat-error *ngIf="addEditForm.controls['parameter_desc'].hasError('required') && isShowErrors">
+          Parameter Description is required
+        </mat-error>
+      </mat-form-field>
+
+      
+
+
+
+   <mat-form-field class="col-md-6" appearance="outline">
+  <mat-label>Parameter Name</mat-label>
+  <mat-select formControlName="parameter_text">
+    <mat-option *ngFor="let item of parameterList" [value]="item.field_name">
+      {{ item.field_name }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="addEditForm.controls['parameter_text'].hasError('required') && isShowErrors">
+    Parameter Name is required
+  </mat-error>
+</mat-form-field>
+
+
+
+          <mat-form-field class="col-md-6" appearance="outline">
+  <mat-label>Parameter Condition</mat-label>
+  <mat-select formControlName="parameter_condition">
+  
+    <mat-option *ngFor="let cond of parameterConditionList" [value]="cond.value">
+      {{ cond.label }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="addEditForm.controls['parameter_condition'].hasError('required') && isShowErrors">
+    Parameter Condition is required
+  </mat-error>
+</mat-form-field>
+
+
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Parameter Value</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="parameter_value" type="text" />
+        <mat-error *ngIf="addEditForm.controls['parameter_value'].hasError('required') && isShowErrors">
+          Parameter Value is required
+        </mat-error>
+      </mat-form-field>
+
+
+       <mat-form-field class="col-md-6" appearance="outline">
+  <mat-label>Parameter Conjunction</mat-label>
+  <mat-select formControlName="parameter_conjunction">
+  
+    <mat-option *ngFor="let conj of parameterConjunctionList" [value]="conj.value">
+      {{ conj.label }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="addEditForm.controls['parameter_conjunction'].hasError('required') && isShowErrors">
+    Parameter Conjunction is required
+  </mat-error>
+</mat-form-field>
+
+
+
+     
+    </div>
+
+    <div class="row">
+    <mat-form-field class="col-md-6" appearance="outline">
+  <mat-label>Event Planner Name</mat-label>
+  <mat-select [errorStateMatcher]="matcher" formControlName="event_planner_id" [disabled]="true">
+    <mat-option *ngFor="let item of EventList" [value]="item.event_planner_id">
+      {{ item.event_planner_title }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="addEditForm.controls['event_planner_id'].hasError('required') && isShowErrors">
+    Event Planner Name is required
+  </mat-error>
+</mat-form-field>
+
+
+   
+    </div>
+
+
+
+
+
+    <!-- Status -->
+    <div class="outline pt-3 pb-3 mt-3">
+      <mat-label class="p-2 col-md-12 text-center">Status</mat-label>
+      <mat-radio-group
+        aria-label="Status"
+        formControlName="status"
+        class="inputField exammanage-radio-group"
+      >
+        <mat-radio-button value="1">Active</mat-radio-button> &nbsp;
+        <mat-radio-button value="0">Inactive</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+   

@@ -1,0 +1,24 @@
+
+<div mat-dialog-title>
+    Campaign
+   <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+<div *ngIf="loading" class="overlay">
+    <div class="spinner__loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+
+<section mat-dialog-content>
+<app-add-edit-campaigns-form [isShowErrors]="isShowErrors" [campaignid]="campaignid">
+
+   </app-add-edit-campaigns-form>
+</section>
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+   <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+       Cancel
+   </button>
+   <button mat-raised-button class="btnnn-prime-fn" (click)="update()">
+       Save
+   </button>
+</div>

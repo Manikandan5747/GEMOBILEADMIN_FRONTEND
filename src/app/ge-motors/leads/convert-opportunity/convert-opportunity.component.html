@@ -1,0 +1,34 @@
+<div mat-dialog-title>
+    Convert Opportunity
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<section mat-dialog-content class="p-2">
+    <mat-dialog-content>
+        <mat-form-field class="col-md-12 readonly-input" appearance="fill">
+            <mat-label class="">Account Name </mat-label>
+            <input readonly matInput  [(ngModel)]="accountname" type="text"  />
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12 readonly-input" appearance="fill">
+            <mat-label class="">Contact Name </mat-label>
+            <input readonly matInput  [(ngModel)]="firstname" type="text"  />
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12" appearance="outline">
+            <mat-label class="">Opportunity Name </mat-label>
+            <input matInput  [(ngModel)]="opportunityname" type="text"  />
+          </mat-form-field>
+
+    </mat-dialog-content>
+</section>
+
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn"  (click)="submit()">
+        Convert
+    </button>
+</div>

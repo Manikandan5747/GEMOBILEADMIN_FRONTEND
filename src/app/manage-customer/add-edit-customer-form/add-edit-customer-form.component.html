@@ -1,0 +1,173 @@
+<div class=" row p-4">
+  <form [formGroup]="addEditForm">
+
+    <mat-form-field class="col-md-6  pt-2" appearance="outline">
+      <mat-label class="">Customer Type</mat-label>
+      <mat-select [disabled]="customertypes=='CORPORATE'" placeholder="customer types" formControlName="customertypes">
+        <mat-option value="INDIVIDUAL">Individual</mat-option>
+        <mat-option value="CORPORATE">Corporate</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="addEditForm.get('customertypes')?.value == 'CORPORATE'" class="pt-2 col-md-6 pl-5"
+      appearance="outline">
+      <mat-label class="">Username</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="username" type="text" />
+      <mat-error *ngIf="addEditForm.controls['username'].hasError('required') && isShowErrors">Username is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['username'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="addEditForm.get('customertypes')?.value == 'CORPORATE' && !userpassword"
+      class="pt-2 col-md-6 pl-5" appearance="outline">
+      <mat-label class="">Password</mat-label>
+      <input readonly matInput [errorStateMatcher]="matcher" formControlName="userpassword" type="text" />
+      <mat-error *ngIf="addEditForm.controls['userpassword'].hasError('required') && isShowErrors">Password is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['userpassword'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="addEditForm.get('customertypes')?.value == 'INDIVIDUAL'" class="pt-2 col-md-6 pl-5"
+      appearance="outline">
+      <mat-label class="">Customer name</mat-label>
+      <input matInput [readonly]="action" [errorStateMatcher]="matcher" formControlName="customername" type="text" />
+      <mat-error *ngIf="addEditForm.controls['customername'].hasError('required') && isShowErrors">Customer name is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['customername'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="pt-2 pl-5 col-md-6" appearance="outline">
+      <mat-label>Customer Code</mat-label>
+      <input matInput formControlName="customercode" type="text" />
+      <mat-error *ngIf="addEditForm.controls['customercode']?.hasError('pattern')">
+        Special characters are not allowed.
+      </mat-error>
+      <mat-error *ngIf="addEditForm.controls['customercode'].hasError('required')">Customer Code is required</mat-error>
+
+      <mat-error *ngIf="addEditForm.get('customercode')?.hasError('checkCustomerExists')">
+        Customer Code already exists Checking.
+      </mat-error>
+     
+      <mat-error *ngIf="addEditForm.controls['customercode']?.hasError('prefix')">
+        Customer Code must start with 'CST'.
+      </mat-error>
+      
+    </mat-form-field>
+
+    <!-- (ngModelChange)="checkCustomerCode()" -->
+    <mat-form-field class="pt-2 col-md-6 pl-5" appearance="outline">
+      <mat-label class="">Mobile number</mat-label>
+      <input matInput maxlength="12" formControlName="mobilenumber" type="text"  />
+      <mat-error *ngIf="addEditForm.controls['mobilenumber'].hasError('required') && isShowErrors">Mobile number is
+        required </mat-error>
+      <mat-error *ngIf="addEditForm.controls['mobilenumber'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+      <mat-error *ngIf="addEditForm.controls['mobilenumber'].errors?.['pattern']">
+        Mobile number must be 12 digits and start with 971
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="pt-2 col-md-6 pl-5" appearance="outline"
+      *ngIf="action == 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'">
+      <mat-label class="">Security Pin</mat-label>
+      <input matInput readonly formControlName="password" type="text" />
+    </mat-form-field>
+
+    <mat-form-field class="pt-2 col-md-6 pl-5" appearance="outline"
+      *ngIf="action == 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'">
+      <mat-label class="">DOB Day</mat-label>
+      <input matInput readonly formControlName="dobday" type="text" />
+    </mat-form-field>
+
+    <mat-form-field class="pt-2 col-md-6 pl-5" appearance="outline"
+      *ngIf="action == 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'">
+      <mat-label>DOB Month</mat-label>
+      <mat-select formControlName="dobmonth" disabled>
+        <mat-option value="1">January</mat-option>
+        <mat-option value="2">February</mat-option>
+        <mat-option value="3">March</mat-option>
+        <mat-option value="4">April</mat-option>
+        <mat-option value="5">May</mat-option>
+        <mat-option value="6">June</mat-option>
+        <mat-option value="7">July</mat-option>
+        <mat-option value="8">August</mat-option>
+        <mat-option value="9">September</mat-option>
+        <mat-option value="10">October</mat-option>
+        <mat-option value="11">November</mat-option>
+        <mat-option value="12">December</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+
+
+    <!-- <mat-form-field  class="pt-2 col-md-6 pl-5" appearance="outline" *ngIf="action == 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'">
+      <mat-label class="">DOB Month</mat-label>
+      <input matInput readonly formControlName="dobmonth" type="text" />
+    </mat-form-field>  -->
+
+    <mat-form-field class="pt-2 col-md-6 pl-5" appearance="outline"
+      *ngIf="action == 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'">
+      <mat-label class="">Nationality</mat-label>
+      <input matInput readonly formControlName="nationalityname" type="text" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-md-6 pl-5">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="emailid">
+      <mat-error *ngIf="addEditForm.controls['emailid'].hasError('required') && isShowErrors">Email is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['emailid']?.hasError('pattern')">
+        Invalid Email Address
+      </mat-error>
+      <!-- <mat-error *ngFor="let validation of validationMessages?.emailid">
+                <div *ngIf="addEditForm.get('emailid')?.hasError(validation.type)">
+                    {{validation.message}}
+                </div>
+            </mat-error> -->
+      <!-- <mat-error *ngIf="addEditForm.controls['emailid'].hasError('required') && isShowErrors" >Email is required</mat-error> -->
+      <!-- <mat-error *ngIf="addEditForm.controls.emailid.errors.pattern">
+              Email Invalid
+            </mat-error> -->
+    </mat-form-field>
+
+
+    <mat-form-field *ngIf="addEditForm.get('customertypes')?.value == 'INDIVIDUAL'" class="pt-2 pl-5"
+      appearance="outline" class="col-md-6 pl-5">
+      <mat-label class="">Platform</mat-label>
+      <input matInput readonly [value]="platform" type="text" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="action != 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'" class="pt-2 "
+      appearance="outline">
+      <mat-label class="">FCM Token</mat-label>
+      <input matInput formControlName="fcmtoken" type="text" />
+      <mat-error *ngIf="addEditForm.controls['fcmtoken'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <div class="col-md-12 pl-5">
+
+      <!-- (change)="radioChange($event)" -->
+      <mat-label class="pr-2 pt-5 text-center">Customer Status </mat-label>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-group aria-label="Is Active" formControlName="customerstatus" (change)="radioChange($event)"
+        class="inputField exammanage-radio-group" mat-form-field>
+        <mat-radio-button *ngIf="action == 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'" value='Registered'>Registered</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button *ngIf="action == 'action' && addEditForm.get('customertypes')?.value == 'INDIVIDUAL'" value='OnHold'>OnHold</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value='Approved'>Approved</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button *ngIf="action == 'action'" value='Cancel'>Reject</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+
+  </form>
+</div>

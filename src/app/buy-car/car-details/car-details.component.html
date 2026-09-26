@@ -1,0 +1,340 @@
+<div class="col-md-12">
+  <div class="page-title"> Showroom Cars </div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="col-md-12">
+    <div class="row">
+
+      <mat-form-field class="col-md-4  pr-2" appearance="outline">
+        <mat-label>Search Showroom Cars Detail</mat-label>
+        <input matInput [(ngModel)]="search" (keyup)="onSearchInput($event)" placeholder="" />
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-3  pr-2" appearance="outline">
+        <mat-select (selectionChange)="selectionFilterChange($event,'Sold')" [(ngModel)]="filterSold"
+          placeholder="Sold Status">
+          <mat-option value="None">All</mat-option>
+          <mat-option value="Sold">Sold</mat-option>
+          <mat-option value="Available">Available</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-3  pr-2" appearance="outline">
+        <mat-select (selectionChange)="selectionFilterChange($event,'Status')" [(ngModel)]="filterStatus"
+          placeholder="Status">
+          <mat-option value="None">All</mat-option>
+          <mat-option value="Open">Open</mat-option>
+          <mat-option value="InActive">In Active</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="col-md-2 pt-2">
+        <button mat-button class="btnnn-default-fn" (click)="clearSearch()"><mat-icon
+            class="large-icon">clear</mat-icon>Clear</button>
+      </div>
+
+      <div class="row">
+        <div class="col-md-10">
+
+        </div>
+
+        <div class="col-md-2" style="text-align: end" *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'">
+          <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Showroom Car"
+            (click)="addRecord()"> + </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <div class="mt-2 mat-table-container" id="test1" #test1>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+          No records found.
+        </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brandname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> brand </th>
+        <td mat-cell *matCellDef="let element"> {{element?.brandname}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="showroomname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> showroom name </th>
+        <td mat-cell *matCellDef="let element">
+          <a (click)="goToShowroom(element)" style="cursor: pointer;" class="shoname">
+            {{element?.showroomname}}
+          </a>
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="modelname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> model </th>
+        <td mat-cell *matCellDef="let element"> {{element?.modelname}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="viewcount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>view</th>
+        <td mat-cell *matCellDef="let element"> {{element?.viewcount}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="soldstatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> sold status</th>
+        <td mat-cell *matCellDef="let element">
+          <button style="cursor:none !important" mat-icon-button matTooltip="Available"
+            *ngIf="element.soldstatus == 'Available'">
+            <img class="img" style="width:100%" height="50" src="../../../assets/images/Available-icon.png">
+          </button>
+          <button style="cursor:none !important" mat-icon-button matTooltip="Sold" *ngIf="element.soldstatus == 'Sold'">
+            <img class="img" style="width:100%;" height="50" src="../../../assets/images/Sold-icon.png">
+          </button>
+        </td>
+      </ng-container>
+
+
+
+      <ng-container matColumnDef="carshowroomrefno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Car Ref No</th>
+        <td mat-cell *matCellDef="let element" class="car-ref-cell"
+          [class.highlight-text]="element?.holdingperiod > 70 && element.soldstatus === 'Available' && element.status === 'Open' && element?.carownertype =='GEMOTORS'"
+          [matTooltip]="
+      element?.soldstatus === 'Sold' 
+        ? 'Sold Car Holding Period: ' + element?.holdingperiod + ' days' 
+        : 'Car Holding Period: ' + element?.holdingperiod + ' days'
+    ">
+          <span class="status-dot" [ngClass]="{
+  'grey-dot': element?.soldstatus === 'Sold',
+  'green-dot': element?.soldstatus !== 'Sold' && element?.holdingperiod <= 60,
+  'orange-dot': element?.soldstatus !== 'Sold' && element?.holdingperiod > 60 && element?.holdingperiod <= 105,
+  'red-dot': element?.soldstatus !== 'Sold' && element?.holdingperiod > 105
+}"></span>
+          {{ element?.carshowroomrefno }}
+        </td>
+      </ng-container>
+
+
+
+
+      <ng-container matColumnDef="modelyear">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Year</th>
+        <td mat-cell *matCellDef="let element"> {{element?.modelyear}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="enginecapacity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> engine capacity</th>
+        <td mat-cell *matCellDef="let element"> {{element?.enginecapacity}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="mileage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> mileage</th>
+        <td mat-cell *matCellDef="let element"> {{element?.mileage}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cityname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> cityname</th>
+        <td mat-cell *matCellDef="let element"> {{element?.cityname == 'null'?null:element.cityname}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drivetype">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> drivetype</th>
+        <td mat-cell *matCellDef="let element"> {{element?.drivetype== 'null'?null:element.drivetype}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="chasisno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> chassis no</th>
+        <td mat-cell *matCellDef="let element"> {{element?.chasisno== 'null'?null:element.chasisno}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="carownertypecode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> owner type</th>
+        <td matTooltip="{{element?.carownertype}}" mat-cell class="center-align" *matCellDef="let element">
+          {{element?.carownertypecode== 'null'?null:element.carownertypecode}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="noofcylinder">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> cylinder</th>
+        <td mat-cell class="center-align" *matCellDef="let element"> {{element.noofcylinder ==
+          'null'?null:element.noofcylinder}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="noofseats">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> noofseats</th>
+        <td mat-cell *matCellDef="let element"> {{element?.noofseats == 'null'?null:element.noofseats}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+        <td mat-cell *matCellDef="let element"> {{element?.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created_by}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created_at }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="showmobileappdate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> show mobile date </th>
+        <td mat-cell *matCellDef="let element"> {{element?.showmobileappdate }} </td>
+      </ng-container>
+
+
+
+
+      <ng-container matColumnDef="solddate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sold Date </th>
+        <td mat-cell *matCellDef="let element"> {{element?.solddate }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="img">
+        <th class="center-black-text" mat-header-cell *matHeaderCellDef> Car Image </th>
+        <td mat-cell *matCellDef="let element">
+          <img style="cursor: pointer;width: 150px" *ngIf="element.carimgpath && element.carimgpath.length > 0"
+            target="_blank" [src]="element.carimgpath[0]" (click)="viewCarImg(element.carimgpath)" />
+          <div style="cursor:not-allowed !important;width: 100px !important"
+            *ngIf="element.carimgpath && element.carimgpath.length == 0" class="no-img"> <img
+              src="../../../assets/images/No-Image-Icon.png" class="img">
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="carvideopath">
+        <th class="center-black-text" mat-header-cell *matHeaderCellDef> Video </th>
+        <td mat-cell *matCellDef="let element">
+
+          <a *ngIf="element.carvideopath" [href]="element.carvideopath" target="_blank">
+            <img class="video_img" width="35" *ngIf="element.carvideopath" target="_blank"
+              src="../../../assets/images/video-icon.png" />
+          </a>
+          <div *ngIf="!element.carvideopath" style="cursor:not-allowed !important"> <img class="video_img"
+              src="../../../assets/images/no-video.jpg">
+          </div>
+        </td>
+
+      </ng-container>
+
+
+
+      <ng-container matColumnDef="modified_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+        <td mat-cell *matCellDef="let element"> {{element?.modified_by}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modified_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+        <td mat-cell *matCellDef="let element"> {{element?.modified_at }} </td>
+      </ng-container>
+
+      <ng-container [ngClass]="'w-75'" sticky matColumnDef="docuploadpath">
+        <th [ngClass]="'w-75'" mat-header-cell *matHeaderCellDef mat-sort-header> Report</th>
+        <td [ngClass]="'w-75'" mat-cell *matCellDef="let element">
+          <a style="font-size: 24px !important;"
+            [href]="'https://geapps.germanexperts.ae:7007/' + element?.docuploadpath" target="_blank"
+            matTooltip="Download Inspection Report"
+            *ngIf="element.docuploadpath != '-' && element.docuploadpath != 'null'">
+            <mat-icon class="edit-mat-icon">download</mat-icon>
+          </a>
+
+          <div *ngIf="element.docuploadpath =='-'">
+            -
+          </div>
+
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+        <th mat-header-cell *matHeaderCellDef class="center-black-text">
+          Action
+        </th>
+        <td mat-cell *matCellDef="let element">
+
+          <!-- Edit button or hidden placeholder -->
+          <button mat-icon-button matTooltip="Edit Showroom Car" (click)="editRecord(element)"
+            [style.visibility]="(userPrivilegeObj?.editaccess == '1' && element?.soldstatus === 'Available') ? 'visible' : 'hidden'">
+            <mat-icon class="large-icon">edit</mat-icon>
+          </button>
+
+          <!-- View button or hidden placeholder -->
+          <button mat-icon-button matTooltip="View Showroom Car" (click)="viewRecord(element)"
+            [style.visibility]="(userPrivilegeObj?.viewaccess == '1') ? 'visible' : 'hidden'">
+            <mat-icon class="large-icon">visibility</mat-icon>
+          </button>
+
+          <!-- Delete button or hidden placeholder -->
+          <button mat-icon-button matTooltip="Delete Showroom Car"
+            (click)="onDeleteStatusChange(element?.carshowroom_id)"
+            [style.visibility]="(userPrivilegeObj?.deleteaccess == '1') ? 'visible' : 'hidden'">
+            <mat-icon class="large-icon delete-mat-icon">delete</mat-icon>
+          </button>
+
+        </td>
+
+
+
+      </ng-container>
+
+      <ng-container matColumnDef="submenu" stickyEnd class="mat-col-levelDefault ">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+          Rel. Module
+        </th>
+        <td mat-cell *matCellDef="let element">
+
+          <button mat-icon-button [matMenuTriggerFor]="profile">
+            <mat-icon class="edit-mat-icon large-icon">more_vert</mat-icon>
+          </button>
+          <mat-menu #profile="matMenu" class="mymegamenu">
+
+            <button *ngIf="create_access_expense" mat-menu-item (click)="goToExpenseDetails(element)">
+              <mat-icon matBadgeSize="small" [matBadge]="element?.expense_active_count"
+                class="large-icon custom-badge">attach_money</mat-icon> Expense </button>
+
+            <button *ngIf="create_access_advance" mat-menu-item (click)="goToAdvanceDetails(element)">
+              <mat-icon matBadgeSize="small" [matBadge]="element?.advance_active_count"
+                class="large-icon custom-badge">payment</mat-icon> Advance Payment </button>
+
+            <button mat-menu-item (click)="goToConsignmentDetails(element)"
+              *ngIf="element?.carownertypeid == 2 && create_access_consignment">
+              <mat-icon matBadgeSize="small" [matBadge]="element?.consignment_active_count"
+                class="large-icon custom-badge">local_shipping</mat-icon> Consignment </button>
+
+            <button mat-menu-item (click)="downloadpdf(element)"
+              *ngIf="element?.carownertypeid == '1' && create_access_purchase">
+              <mat-icon class="large-icon ">assignment</mat-icon> Purchase Agreement</button>
+
+
+            <button mat-menu-item (click)="goToRequestInspectionReport(element)"  *ngIf="create_request_inspection_report && element.inspectionreporturl">
+              <mat-icon matBadgeSize="small" [matBadge]="element?.request_active_count" class="large-icon custom-badge">assignment</mat-icon> Inspection Report Request </button>
+
+          </mat-menu>
+        </td>
+
+
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+    </table>
+
+  </div>
+  <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" (page)="onPageChange($event)"
+    [length]="totalItemCount" showFirstLastButtons></mat-paginator>
+
+</div>

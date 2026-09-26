@@ -1,0 +1,94 @@
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import Swal from 'sweetalert2'
+import { CustomerService } from '../service/customer/customer.service';
+import { CookieService } from '../service/cookie.service';
+import { ToastrService } from 'ngx-toastr';
+
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent implements OnInit, AfterViewInit {
+
+  loginForm!: FormGroup;
+  submitted = false;
+  returnUrl!: string;
+  error = '';
+  loading = false;
+
+  constructor(public toastr: ToastrService,private formBuilder: FormBuilder, private cookieService: CookieService,
+    private route: ActivatedRoute, private router: Router,
+    private customerService: CustomerService) { }
+
+  ngOnInit() {
+    this.toastr.clear();
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      role: "MobileAdmin"
+    });
+
+    // reset login status
+    // this.authenticationService.logout();
+
+    // get return url from route parameters or default to '/'
+    // tslint:disable-next-line: no-string-literal
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+  }
+
+  ngAfterViewInit() {
+    document.body.classList.add('authentication-bg');
+    document.body.classList.add('authentication-bg-pattern');
+  }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.loginForm.controls; }
+
+  /**
+   * On submit form
+   */
+  onSubmit() {
+    debugger
+    this.submitted = true;
+    console.log("this.loginForm", this.loginForm.value)
+    // stop here if form is invalid
+
+
+    if (this.loginForm.value.username == '') {
+      Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, title: "Please Enter Username", icon: 'error', });
+      return
+    }
+
+
+    if (this.loginForm.value.password == '') {
+      Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, title: "Please Enter Password", icon: 'error', });
+      return
+    }
+
+    this.loading = true;
+    this.customerService.login(this.loginForm.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          console.log("data ", data);
+          if (data.length == 0) {
+            Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, title: "Invalid login Credentials", icon: 'error', });
+          } else {
+            this.cookieService.setCookie('login', "true", 1);
+            this.router.navigate([this.returnUrl]);
+          }
+
+        },
+        error => {
+          console.log("error ", error);
+          Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, title: error, icon: 'error', });
+          this.error = error;
+          this.loading = false;
+        });
+  }
+}

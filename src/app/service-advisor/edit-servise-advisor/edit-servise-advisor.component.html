@@ -1,0 +1,136 @@
+<div mat-dialog-title>
+    {{title}}
+    <button class="dialog-close-btn" (click)="dialogRef.close()">X</button>
+</div>
+
+<section mat-dialog-content class="p-4">
+    <form [formGroup]="addEditForm">
+
+        <div class="row">
+
+
+            <mat-form-field class="pt-2 col-md-6" appearance="outline">
+                <mat-label class="">CRM User Name</mat-label>
+                <input matInput formControlName="name" type="text" />
+                <mat-error *ngIf="addEditForm.controls['name'].hasError('required') && isShowErrors">
+                    CRM User Name is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['name'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="pt-2 col-md-6" appearance="outline">
+                <mat-label class="">CRM User Phone</mat-label>
+                <input matInput formControlName="phone" type="text" />
+                <mat-error *ngIf="addEditForm.controls['phone'].hasError('required') && isShowErrors">Corporate
+                    phone is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['phone'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+
+
+
+            <mat-form-field class="pt-2 col-md-6" appearance="outline">
+                <mat-label class="">CRM User Role</mat-label>
+                <input matInput formControlName="crmrole__name" type="text" />
+                <mat-error *ngIf="addEditForm.controls['crmrole__name'].hasError('required') && isShowErrors">Corporate
+                    CRM User Role is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['crmrole__name'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field class="pt-2 col-md-6" appearance="outline">
+                <mat-label class="">CRM User Email</mat-label>
+                <input matInput formControlName="email" type="text" />
+                <mat-error *ngIf="addEditForm.controls['email'].hasError('required') && isShowErrors">Corporate
+                    Email is required</mat-error>
+                <mat-error *ngIf="addEditForm.controls['email'].errors?.['whitespace']">
+                    White space not allowed
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="pt-2 col-md-6" appearance="outline">
+                <mat-label class="">Work Shift</mat-label>
+                <mat-select formControlName="workshift">
+                    <mat-option value="Morning">Morning</mat-option>
+                    <mat-option value="Evening">Evening</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field class="pt-2 col-md-6" appearance="outline">
+                <mat-label class="">Location</mat-label>
+                <mat-select formControlName="location__name">
+                    <mat-option value="Dubai">Dubai</mat-option>
+                    <mat-option value="Mussafah">Mussafah</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <div class="row m-0">
+                <div class="col-md-5 pt-3 pb-3 outline" style="width: 49% !important;">
+                    <mat-label class="p-2 pt-2 text-center">Status</mat-label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-group aria-label="Is Active" formControlName="status"
+                        class="inputField exammanage-radio-group" mat-form-field>
+                        <mat-radio-button value='1'>YES</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <mat-radio-button value='0'>NO</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col-md-5 pt-3 pb-3 outline" style="width: 49% !important;">
+                    <mat-label class="p-2 pt-2 text-center">Leave Status</mat-label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-group aria-label="Is Active" formControlName="leavestatus" (change)="onRadioChange($event)"
+                        class="exammanage-radio-group" >
+                        <mat-radio-button value='0'>Available</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <mat-radio-button value='1'>On Leave</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row m-0 pt-4">
+                <div class="col-md-5 pt-3 pb-3 outline" style="width: 49% !important;">
+                    <mat-label class="p-2 pt-2 text-center">Type </mat-label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-group aria-label="Is Active" formControlName="type"
+                        class="inputField exammanage-radio-group" >
+                        <mat-radio-button value='workshop'>Workshop</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <mat-radio-button value='bodyshop'>Bodyshop</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row m-0 pt-4" style="width: 50%;">
+                <label for="file-upload-trade" class="custom-file-upload">
+                    <mat-icon>cloud_upload</mat-icon> Image Upload
+                </label><br>
+                <input id="file-upload-trade" (change)="onFileChanged($event)"
+                    accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file"
+                    name="file[]" />
+                <div class="col-md-4 field p-2">
+                    <div class="avatar-preview" for="imageUpload">
+                        <a [href]="imageBase64" target="_blank">
+                            <img style="width: 152px;" [src]="imageBase64" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</section>
+
+
+
+<div mat-dialog-actions style="float: right;" class="pull-right pr-2">
+    <button mat-button class="btnnn-default-fn" (click)="dialogRef.close()">
+        Cancel
+    </button>
+    <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+        Save
+    </button>
+</div>

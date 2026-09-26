@@ -1,0 +1,79 @@
+<div class="col-md-12">
+  <div class="page-title">{{ title }}</div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <form [formGroup]="addEditForm">
+    <div class="row">
+      <div class="text-left mt-3 mb-3 ac-formgroup-title">
+        <span>Category Information</span>
+      </div>
+
+      <!-- Category Name -->
+      <!-- Category Name -->
+      <mat-form-field class="col-md-6" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Category Name</mat-label>
+        <input matInput formControlName="category_name" type="text" />
+
+        <!-- Required Field Error -->
+        <mat-error *ngIf="addEditForm.controls['category_name'].hasError('required')">
+          Category Name is required
+        </mat-error>
+
+        <!-- Custom Validator Error for invalid characters -->
+        <mat-error *ngIf="addEditForm.controls['category_name'].hasError('invalidValue')">
+          Only alphabets and spaces are allowed
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Price Range From -->
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Invoice Price Range From</mat-label>
+        <input matInput formControlName="invoice_pricerangefrom" type="number" />
+        <mat-error *ngIf="addEditForm.controls['invoice_pricerangefrom'].hasError('required')">
+          Price Range From is required
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['invoice_pricerangefrom'].hasError('min')">
+          Value must be greater than or equal to 0
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Price Range To -->
+      <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Invoice Price Range To</mat-label>
+        <input matInput formControlName="invoice_pricerangeto" type="number" />
+        <mat-error *ngIf="addEditForm.controls['invoice_pricerangeto'].hasError('required')">
+          Price Range To is required
+        </mat-error>
+        <mat-error *ngIf="addEditForm.controls['invoice_pricerangeto'].hasError('min')">
+          Value must be greater than or equal to 0
+        </mat-error>
+      </mat-form-field>
+
+     
+
+      <!-- Status -->
+      <mat-form-field class="col-md-6" appearance="{{ isEdit === 'VIEW' ? 'fill' : 'outline' }}">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="1">Active</mat-option>
+          <mat-option value="0">Inactive</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+     <!-- Group-level custom validation error -->
+     <mat-error *ngIf="addEditForm.hasError('priceRangeInvalid') && isShowErrors">
+      "Price Range From" must be strictly less than "Price Range To"
+    </mat-error>
+
+      <!-- Save / Cancel Buttons -->
+      <div style="float: right;padding-bottom: 5px;text-align: end;" class="pt-4">
+        <button mat-button class="btnnn-default-fn" [routerLink]="['/luckyDraw/listCategory']">Cancel</button>&nbsp;&nbsp;
+        <button *ngIf="isEdit != 'VIEW'" mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          {{ buttonlabel }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

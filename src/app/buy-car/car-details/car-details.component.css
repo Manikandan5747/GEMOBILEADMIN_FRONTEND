@@ -1,0 +1,71 @@
+.img {
+  width: 55px !important;
+  height: 100%;
+}
+.video_img{
+  width: 35px !important;
+  height: 100%;
+}
+
+.shoname:hover{
+  color: brown;
+}
+
+mat-icon{
+  cursor: pointer !important;
+}
+
+.large-icon {
+  font-size: 24px !important; /* Adjust the size as needed */
+}
+
+
+
+.highlight-text {
+  font-weight: bold;
+  color: red;
+  animation: flicker-animation 1.5s infinite;
+}
+
+@keyframes flicker-animation {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+.mat-column-viewcount  {
+  text-align: center !important;
+  }
+  
+
+  .custom-badge .mat-badge-content {
+    background-color: #ff5722; /* Change to your desired color */
+    color: white; /* Change text color, if needed */
+  }
+
+
+  .status-dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  .green-dot {
+    background-color: #4caf50; /* green */
+  }
+  
+  .orange-dot {
+    background-color: #ff9800; /* orange */
+  }
+  
+  .red-dot {
+    background-color: #f44336; /* red */
+  }
+
+  .grey-dot {
+  background-color: grey;
+}
+
+  

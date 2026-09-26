@@ -1,0 +1,160 @@
+<div class="col-md-12">
+    <div class="page-title"> Manage Cash Request </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="row">
+           
+  
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+              <mat-label>Search Cash Request Detail</mat-label>
+              <input matInput [(ngModel)]="search"  (keyup)="applyFilter($event)" placeholder="" />
+              <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear"
+              (click)="clearSearch()">
+              <mat-icon>close</mat-icon>
+          </button>
+       </mat-form-field>
+  
+            <div *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'" class="col-md-2" style="text-align: end"  >
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Cash Request"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+  
+    <div class="mat-table-container" id="test1" #test1>
+  
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="cashrequesrefno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>cash request ref no   </th>
+                <td mat-cell *matCellDef="let element"> {{element?.cashrequesrefno}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modeofpayment">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>mode of payment </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modeofpayment}} </td>
+            </ng-container>
+
+        
+
+            <ng-container matColumnDef="requestdate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>request date  </th>
+                <td mat-cell *matCellDef="let element"> {{element?.requestdate | date: DATE_FORMAT}} </td>
+            </ng-container>
+
+            
+            <ng-container matColumnDef="cashrequesttype">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>cash request type   </th>
+                <td mat-cell *matCellDef="let element"> {{element?.cashrequesttype}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>amount   </th>
+                <td mat-cell *matCellDef="let element" appPriceInput> {{element?.amount }} </td>
+            </ng-container>
+            
+            
+            <ng-container matColumnDef="paymentstatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> payment status   </th>
+                <td mat-cell *matCellDef="let element"> {{element?.paymentstatus}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="purchasedoc">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Purchase Document  </th>
+                    <td mat-cell *matCellDef="let element">
+                      <ng-container *ngIf="element.purchasedoc">
+                        <!-- PDF files -->
+                        <ng-container *ngIf="element.purchasedoc.endsWith('.pdf'); else otherFile">
+                          <a [href]="element.purchasedoc" target="_blank">
+                            <img class="img" src="assets/images/pdf_icon.png" alt="PDF Icon" />
+                          </a>
+                        </ng-container>
+                        
+                        <!-- Non-PDF files -->
+                        <ng-template #otherFile>
+                          <!-- DOC files -->
+                          <ng-container *ngIf="element.purchasedoc.endsWith('.doc'); else imageFile">
+                            <a [href]="element.purchasedoc" target="_blank">
+                              <img class="doc-icon" src="assets/images/doc_icon.jpg" alt="DOC Icon" />
+                            </a>
+                          </ng-container>
+                          
+                          <!-- Image files (jpg, jpeg, png, gif, jfif) -->
+                          <ng-template #imageFile>
+                            <ng-container *ngIf="element.purchasedoc.endsWith('.jpg') || element.purchasedoc.endsWith('.jpeg') || element.purchasedoc.endsWith('.png') || element.purchasedoc.endsWith('.gif') || element.purchasedoc.endsWith('.jfif'); else defaultFile">
+                              <a [href]="element.purchasedoc" target="_blank">
+                                <img class="img-file" [src]="element.purchasedoc" alt="Image File" />
+                              </a>
+                            </ng-container>
+                            
+                            <!-- Default icon for unsupported file types -->
+                            <ng-template #defaultFile>
+                              <a [href]="element.purchasedoc" target="_blank">
+                                <img class="default-icon"  src="assets/images/svg_icon.svg"  alt="File Icon" />
+                              </a>
+                            </ng-template>
+                          </ng-template>
+                        </ng-template>
+                      </ng-container>
+                    </td>
+                    </ng-container>
+                      
+                
+              
+
+            <ng-container matColumnDef="createdby" >
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="createdat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdat | date: DATE_FORMAT}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="modifiedby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="modifiedat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modifiedat | date: DATE_FORMAT }} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="actions" stickyEnd class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                
+                   <button matTooltip="Delete Cash Request" mat-icon-button (click)="deleteRecord(element)"
+           *ngIf="privilege?.delete_access || userPrivilegeObj?.deleteaccess">
+            <mat-icon class="large-icon delete-mat-icon">delete</mat-icon> </button>
+
+                  <button  mat-icon-button    matTooltip="View Cash Request" *ngIf="userPrivilegeObj && userPrivilegeObj?.viewaccess == '1'" (click)="viewRecord(element)">
+                  <mat-icon class="edit-mat-icon" >visibility</mat-icon>  </button>
+                
+                  <button *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'"  mat-icon-button   matTooltip="Edit Cash Request" (click)="editRecord(element)"  >
+                    <mat-icon class="edit-mat-icon" >edit</mat-icon> </button>
+
+              
+                               
+                </td>
+                </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+  
+    </div>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+  </div>

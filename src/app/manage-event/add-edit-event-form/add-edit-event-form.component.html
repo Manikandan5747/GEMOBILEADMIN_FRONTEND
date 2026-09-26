@@ -1,0 +1,52 @@
+<div class="col-md-12">
+    <form [formGroup]="addEditForm" class="p-3">
+
+
+  <!-- <mat-form-field class="col-md-12" appearance="outline">
+  <mat-label>Event Name</mat-label>
+  <mat-select [errorStateMatcher]="matcher" formControlName="main_event_id">
+  <!-- <mat-option *ngFor="let item of mainEventList" [value]="item.main_event_id">
+      {{ item.main_event_type }}
+  </mat-option> 
+
+  <mat-option *ngFor="let item of mainEventList" [value]="item.main_event_id">
+      {{ item.main_event_type }}
+  </mat-option> 
+    -->
+  <!-- </mat-select>
+  <mat-error *ngIf="addEditForm.controls['main_event_id'].hasError('required') && isShowErrors">
+    Event Name is required
+  </mat-error>
+</mat-form-field> -->
+
+
+      
+
+
+  
+      <mat-form-field class="col-md-12 " appearance="outline">
+        <mat-label class="">Event Name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="event_type" type="text" />
+        <mat-error *ngIf="addEditForm.controls['event_type'].hasError('required') && isShowErrors">Event Name is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12 " appearance="outline">
+        <mat-label class="">Event Detail</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="event_detail" type="text" />
+       
+      </mat-form-field>
+
+    
+  
+      <div class="outline pt-3 pb-3">
+        <mat-label class="p-2 col-md-12 text-center">Status </mat-label>&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Status" formControlName="event_status" class="inputField exammanage-radio-group">
+          <mat-radio-button value="1">Active</mat-radio-button> &nbsp;
+          <mat-radio-button value="0">Inactive</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <br>
+  
+    </form>
+  </div>

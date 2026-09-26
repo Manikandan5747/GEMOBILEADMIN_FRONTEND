@@ -1,0 +1,9 @@
+.no-data-cell {
+    text-align: center;
+    color: gray;
+  }
+  
+  .overdue-row {
+    color: red;
+    font-weight: bold;
+  }

@@ -1,0 +1,184 @@
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { CookieService } from "src/app/service/cookie.service";
+import Swal from 'sweetalert2'
+import { ActivatedRoute } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
+import { DateFormat, MatTableAttributes } from "src/app/common/ui.constant";
+import { BrandService } from "src/app/service/brand/brand.service";
+import { ExportToExcelService } from "src/app/service/exportExcel/export-to-excel.service";
+
+@Component({
+  selector: 'app-catalogue-brand-model',
+  templateUrl: './catalogue-brand-model.component.html',
+  styleUrls: ['./catalogue-brand-model.component.css']
+})
+export class CatalogueBrandModelComponent implements OnInit {
+  loading: boolean = false;
+  @ViewChild('test1', { static: false }) content!: ElementRef;
+  PAGE_SIZE = MatTableAttributes.PAGE_SIZE;
+  PAGINATION_RANGE = MatTableAttributes.PAGINATION_RANGE;
+  DATE_FORMAT = DateFormat.DATE_FORMAT;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  error = '';
+  brandList: any = [
+    { id: 'fiat', name: 'Fiat', modelsCount: 36 },
+    { id: 'mercedes', name: 'Mercedes', modelsCount: 47 },
+    { id: 'mazda', name: 'Mazda', modelsCount: 63 },
+    { id: 'audi', name: 'Audi', modelsCount: 39 },
+    { id: 'mini', name: 'Mini', modelsCount: 20 },
+    { id: 'jeep', name: 'Jeep', modelsCount: 9 },
+    { id: 'skoda', name: 'Skoda', modelsCount: 19 },
+    { id: 'dodge', name: 'Dodge', modelsCount: 37 },
+    { id: 'vw', name: 'Volkswagen', modelsCount: 86 },
+    { id: 'hyundai', name: 'Hyundai', modelsCount: 78 },
+    { id: 'toyota', name: 'Toyota', modelsCount: 143 },
+    { id: 'iveco', name: 'Iveco', modelsCount: 14 },
+    { id: 'bmw', name: 'BMW', modelsCount: 32 },
+    { id: 'honda', name: 'Honda', modelsCount: 43 },
+    { id: 'daf', name: 'Daf', modelsCount: 31 },
+    { id: 'kia', name: 'Kia', modelsCount: 44 },
+    { id: 'kia-korea', name: 'Kia Korea', modelsCount: 51 },
+    { id: 'chrysler', name: 'Chrysler', modelsCount: 30 },
+    { id: 'mitsubishi', name: 'Mitsubishi', modelsCount: 51 },
+    { id: 'hino-light', name: 'Hino Light', modelsCount: 2 },
+    { id: 'lexus', name: 'Lexus', modelsCount: 16 },
+    { id: 'porsche', name: 'Porsche', modelsCount: 23 },
+    { id: 'alfa-romeo', name: 'Alfa Romeo', modelsCount: 19 },
+    { id: 'saab', name: 'Saab', modelsCount: 5 },
+    { id: 'chery', name: 'Chery', modelsCount: 11 },
+    { id: 'smart', name: 'Smart', modelsCount: 8 },
+    { id: 'man', name: 'Man', modelsCount: 36 },
+    { id: 'suzuki', name: 'Suzuki', modelsCount: 31 },
+    { id: 'ford', name: 'Ford', modelsCount: 90 },
+    { id: 'jaguar', name: 'Jaguar', modelsCount: 13 },
+    { id: 'hyundai-korea', name: 'Hyundai Korea', modelsCount: 89 },
+    { id: 'citroen', name: 'Citroen', modelsCount: 27 },
+    { id: 'plymouth', name: 'Plymouth', modelsCount: 10 },
+    { id: 'scania', name: 'Scania', modelsCount: 232 },
+    { id: 'bmw-moto', name: 'BMW Moto', modelsCount: 94 },
+    { id: 'land-rover', name: 'Land Rover', modelsCount: 11 },
+    { id: 'renault', name: 'Renault', modelsCount: 43 },
+    { id: 'chevrolet', name: 'Chevrolet', modelsCount: 119 },
+    { id: 'volvo', name: 'Volvo', modelsCount: 30 },
+    { id: 'subaru', name: 'Subaru', modelsCount: 24 },
+    { id: 'dacia', name: 'Dacia', modelsCount: 3 },
+    { id: 'ssangyong', name: 'SsangYong', modelsCount: 9 },
+    { id: 'hino-heavy', name: 'Hino Heavy', modelsCount: 5 },
+    { id: 'renault-trucks', name: 'RenaultTrucks', modelsCount: 76 },
+    { id: 'vauxhall', name: 'Vauxhall', modelsCount: 33 },
+    { id: 'volvo-trucks', name: 'VolvoTrucks', modelsCount: 31 },
+    { id: 'seat', name: 'Seat', modelsCount: 15 },
+    { id: 'infiniti', name: 'Infiniti', modelsCount: 19 },
+    { id: 'isuzu', name: 'Isuzu', modelsCount: 5 },
+    { id: 'nissan', name: 'Nissan', modelsCount: 144 },
+    { id: 'rolls-royce', name: 'Rolls-Royce', modelsCount: 9 },
+    { id: 'opel', name: 'Opel', modelsCount: 34 },
+    { id: 'peugeot', name: 'Peugeot', modelsCount: 33 }
+  ]
+
+  modelList: any =[
+    {
+      id: 127,
+      name: 'Ist',
+      img: '//img.parts-catalogs.com/models/toyota/068.jpg'
+    },
+    {
+      id: 127,
+      name: 'Izoa',
+      img: '//img.parts-catalogs.com/models/toyota/Izoa.jpg'
+    },
+    {
+      id: 127,
+      name: 'JPN Taxi',
+      img: '//img.parts-catalogs.com/models/toyota/JPN-Taxi.jpg'
+    },
+  ]
+  dynamicTableData!: any[];
+  dataForExcel: any =[];
+  originalValuebrandList: any;
+  catalogueid:string="";
+  filteredList: any;
+  constructor(public toastr: ToastrService, private brandService: BrandService,private exportToExcelService: ExportToExcelService,
+    private route: ActivatedRoute, private cookieService: CookieService, public dialog: MatDialog) { }
+
+  public displayedColumns: string[] = ['id', 'name', ];
+  public displayedLabelColumns: string[] = ['id', 'name',];
+  dataSource!: MatTableDataSource<any>;
+
+  ngOnInit() {
+    this.toastr.clear();
+   this.getAllTableBrand();
+  }
+
+  getAllTableBrand() {
+    this.brandService.getBrand().pipe()
+      .subscribe((data: any) => {
+        console.log("getBrand ", data);
+        this.originalValuebrandList = data;
+        this.filteredList = this.originalValuebrandList.slice();
+      });
+  }
+
+  getAllBrand() {debugger
+    // this.loading = true;
+    // this.loadRecord();
+    this.brandService.findBrandsFromCatalogue().pipe()
+      .subscribe((data: any) => {
+        console.log("findBrandsFromCatalogue ", data);
+        this.brandList = data.data;
+        this.loadRecord();
+      }, error => {
+        this.error = error;
+      });
+  }
+
+  getBrandsbasedModelsFromCatalogue(){
+    // this.loadRecord();
+    
+     this.brandService.getBrandsbasedModelsFromCatalogue(this.catalogueid).pipe()
+      .subscribe((data: any) => {
+        console.log("getBrandsbasedModelsFromCatalogue ", data);
+        this.brandList = data.data;
+        this.loadRecord();
+      });
+  }
+
+  loadRecord() {
+    this.dynamicTableData = [];
+    this.brandList && this.brandList.forEach((element: any) => {
+      let row = {
+        id: element.id,
+        name: element.name,
+      }
+      this.dynamicTableData.push(row);
+    })
+    this.dataSource = new MatTableDataSource(this.dynamicTableData);
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
+    this.loading = false;
+  }
+
+  exportExcel() {
+    this.dataSource.filteredData.forEach((row: any) => {
+    this.dataForExcel.push(Object.values(row))
+  })
+  this.exportToExcelService.exportAsExcelFile(this.displayedLabelColumns, this.dataForExcel, "Report Excel","noHeader");
+  this.dataForExcel =[];
+}
+
+
+public isFiltered(item:any) { 
+  return this.filteredList.find((ele:any) => ele.brandid == item.brandid);
+}
+ 
+
+}
+
+

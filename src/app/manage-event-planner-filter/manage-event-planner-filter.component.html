@@ -1,0 +1,165 @@
+<div class="container-fluid px-4 py-3 manage-event-planner">
+
+<div class="spinner__loading" *ngIf="isLoading"> <mat-spinner></mat-spinner> </div>
+  <div class="page-title mb-4">View Event Planner & Query</div>
+
+  <div class="shadow-sm rounded-4 border-0 p-4 bg-light">
+
+    <div class="filter-form-section mb-4">
+      <div
+        class="section-divider d-flex justify-content-between align-items-center text-white px-3 py-2 rounded"
+        style="cursor: pointer; background-color: #F4D35F;"
+        (click)="plannerDetailsExpanded = !plannerDetailsExpanded"
+      >
+        <span class="fw-bold">Event Planner Details</span>
+        <mat-icon>{{ plannerDetailsExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      </div>
+
+      <div class="form-content p-3 border rounded mt-2" *ngIf="plannerDetailsExpanded">
+        <div class="row g-3">
+           <div class="col-md-6">
+            <label class="view-label"><b>Event Name:</b></label>
+            <div class="view-value">{{ eventPlanner?.event_name }}</div>
+          </div>
+          
+          <div class="col-md-6">
+            <label class="view-label"><b>Event Planner Name:</b></label>
+            <div class="view-value">{{ eventPlanner?.event_planner_title }}</div>
+          </div>
+
+         
+
+          <div class="col-md-6">
+            <label class="view-label"><b>Event Start Date:</b></label>
+            <div class="view-value">{{ eventPlanner?.event_start_date | date:'dd-MM-yyyy' }}</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="view-label"><b>Event End Date:</b></label>
+            <div class="view-value">{{ eventPlanner?.event_end_date | date:'dd-MM-yyyy' }}</div>
+          </div>
+            <div class="col-md-6">
+            <label class="view-label"><b>Event Expiry Day:</b></label>
+            <div class="view-value">{{ eventPlanner?.event_planner_expiry_days }}</div>
+          </div>
+
+           <div class="col-md-6">
+            <label class="view-label"><b>Calendar Day:</b></label>
+            <div class="view-value">{{ eventPlanner?.calendar_day }}</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="view-label"><b>Mode of Message:</b></label>
+            <div class="view-value">{{ eventPlanner?.mode_of_message?.join(', ') }}</div>
+          </div>
+
+           <div class="col-md-6">
+            <label class="view-label"><b>Template Name:</b></label>
+            <div class="view-value">{{ eventPlanner?.template_name }}</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="view-label"><b>Schedule Type:</b></label>
+            <div class="view-value">{{ eventPlanner?.schedule_type }}</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="view-label"><b>Yearly Frequency:</b></label>
+            <div class="view-value">
+              <mat-icon *ngIf="eventPlanner?.iseventyearly">check</mat-icon>
+            </div>
+          </div>
+          
+
+
+         
+
+         
+        
+
+          <div class="col-md-6">
+            <label class="view-label"><b>Status:</b></label>
+            <div class="view-value">{{ eventPlanner?.event_planner_status == 1 ? 'Active' : 'Inactive' }}</div>
+          </div>
+
+          <div class="col-md-6" *ngIf="eventPlanner?.imageBase64">
+            <label class="view-label">Uploaded Image:</label>
+            <div class="avatar-preview text-center mt-2">
+              <a [href]="eventPlanner?.imageBase64" target="_blank">
+                <img [src]="eventPlanner?.imageBase64" class="img-fluid rounded shadow-sm" style="max-width: 140px;" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: Event Planner Query -->
+    <div class="filter-form-section mb-4">
+      <div
+        class="section-divider d-flex justify-content-between align-items-center text-white px-3 py-2 rounded"
+        style="cursor: pointer; background-color: #F4D35F;"
+        (click)="filterDetailsExpanded = !filterDetailsExpanded"
+      >
+        <span class="fw-bold">Event Planner Query</span>
+        <mat-icon>{{ filterDetailsExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      </div>
+
+      <div class="form-content p-3 border rounded mt-2" *ngIf="filterDetailsExpanded">
+        <div class="row">
+          <div class="col-md-12">
+            <label class="view-label"><b>Event Query:</b></label>
+            <div class="view-value">{{ eventPlanner?.query_preview }}</div>
+          </div>
+        </div>
+
+        <!-- Commented filter conditions section -->
+        <!--
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label class="view-label">Parameter Description:</label>
+            <div class="view-value">{{ eventPlanner?.parameters[0]?.parameter_desc }}</div>
+          </div>
+          <div class="col-md-6">
+            <label class="view-label">Event Query Name:</label>
+            <div class="view-value">{{ eventPlanner?.parameters[0]?.query_name }}</div>
+          </div>
+        </div>
+        <div class="conditions-section mt-3">
+          <div class="table-responsive">
+            <table class="table table-bordered condition-table">
+              <thead class="table-light">
+                <tr>
+                  <th>Open Bracket</th>
+                  <th>Field</th>
+                  <th>Condition</th>
+                  <th>Value</th>
+                  <th>Close Bracket</th>
+                  <th>Conjunction</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let param of eventPlanner?.parameters">
+                  <td>{{ param.opening_bracket }}</td>
+                  <td>{{ param.parameter_text }}</td>
+                  <td>{{ param.parameter_condition }}</td>
+                  <td>{{ param.parameter_value }}</td>
+                  <td>{{ param.closing_bracket }}</td>
+                  <td>{{ param.parameter_conjunction }}</td>
+                </tr>
+                <tr *ngIf="!eventPlanner?.parameters?.length">
+                  <td colspan="6" class="text-center empty-state-text">No conditions available.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        -->
+      </div>
+    </div>
+
+    <div class="pt-3 text-end">
+      <button mat-raised-button color="primary" (click)="goBack()">Cancel</button>
+    </div>
+  </div>
+</div>

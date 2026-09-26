@@ -1,0 +1,40 @@
+<!-- <div class="triangle"></div> -->
+
+<div mat-dialog-title > Message
+  <span style="cursor: pointer" class="dialog-close-btn " 
+  (click)="seeAllNotification()" (click)="dialogRef.close()">See All</span>
+</div>
+
+<mat-card *ngIf="unreadMeg && unreadMeg.length == 0">
+  There are no new message
+</mat-card>
+
+  <ng-container  *ngFor="let msg of unreadMeg" >
+    
+    <div class="d-flex  custom-class" (click)="markAsRead(msg)" style="cursor: pointer !important">
+      <div class="col-md-2 d-flex align-items-center justify-content-center">
+          <div class="icon" style="width: 40px; height: 40px; border-radius: 50%; background-color: #3c4b64; color: #fff; font-size: 20px !important;  padding: 4px 9px; text-align: center;">
+              {{ msg.subject.charAt(0) }}
+          </div>
+      </div>
+  
+      <div class="col-md-10 pt-3 content" style="position: relative;" (click)="viewRecord(msg)">
+        <span style="position: absolute; top: 0; right: 10px; font-size: 12px;">
+            {{ getTimeDifference( msg.created_at ) }}
+        </span>
+        <span style="max-width: 270px; display: inline-block; overflow: hidden; text-overflow: ellipsis;">{{ msg.subject }}</span>
+        <div style="border-bottom: 1px solid #ddd; margin-top: 10px; width: 250px;"></div>
+        <div class="d-flex" style="align-items: center; justify-content: space-between; width: 335px;min-height: 56px;
+        transition: width 0.3s;">
+          <div class="d-flex align-items-center">
+              <img src="../../../assets/images/GE_logo.png" alt="image" style="width: 36px; height: 36px;" />
+              <span style="margin-left: 10px;">{{ msg.username }}</span>
+          </div>
+          <div class="hov" style="color: #f51111; ">
+            <mat-icon>security</mat-icon>
+          </div>
+      </div>
+        <!-- Add the remaining content here -->
+    </div>
+  </div>
+  </ng-container>

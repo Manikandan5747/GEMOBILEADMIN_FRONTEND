@@ -1,0 +1,120 @@
+<!-- <div class="pdf-loading ">
+    <img src="../../../../assets/assets/logo_animation.gif" alt="">
+    <p>Copyright <span class="pdf-year"></span> © <a href="https://germanexperts.ae/" target="_blank">German Experts</a> car maintenance LLC. All Rights Reserved</p>
+</div> -->
+
+
+
+<div style="display: flex;">
+    <div class="return-to-menu">
+        <a (click)="goback()"><span class="material-icons"> reply
+            </span> Return to back
+        </a>
+    </div>
+    <div class="download-btn-wrapper">
+        <button class="pdf-download-btn" (click)="generatePDF()">Download PDF</button>
+    </div>
+</div>
+
+
+<div class="pdf-box-wrapper">
+    <div class="pdf-main-wrapper" id="contentToConvert">
+
+        <div class="pdf-padding pdf-page receipt-wrapper">
+
+            <div class="test-drive-wrapper">
+
+                <div class="test-drive-header">
+                    <img class="test-drive-logo" src="../../../../assets/assets/ge motors.png" alt="">
+                    <p>Car Test Drive Form</p>
+                </div>
+
+                <div class="test-drive-customer-info">
+                    <p><strong>Customer Information</strong></p>
+                    <div class="t-d-grid" style="text-transform: capitalize;">
+                        <p>Name of Customer<span>:</span><span>{{headerlist?.salutation}}{{"
+                                "}}{{headerlist?.accountname}}</span></p>
+                        <p class="pdf-pt-05">Contact Information<span>:</span>{{headerlist?.mobile}}<span></span></p>
+                        <p *ngIf="headerlist?.leadtype == 'individual'" class="pdf-pt-05">ID
+                            Number<span>:</span><span>{{headerlist?.emiratesid}}</span></p>
+                    </div>
+                </div>
+
+                <div class="test-drive-vehicle-info pdf-pt-2">
+                    <p><strong>Vehicle Information</strong></p>
+                    <div class="t-d-grid-1">
+                        <p class="pdf-pt-05">Make<span>:</span><span>{{list?.brandname}}</span></p>
+                        <p class="pdf-pt-05">Model<span>:</span><span>{{list?.modelname}}</span></p>
+                        <p class="pdf-pt-05">Year<span>:</span><span>{{list?.modelyear}}</span></p>
+                        <p class="pdf-pt-05">VIN<span>:</span><span>{{list?.chasisno}}</span></p>
+                    </div>
+                </div>
+
+                <div class="test-drive-info t-d-grid pdf-pt-2">
+                    <p>Date of Test Drive<span>:</span><span>{{date | date: DATE_FORMAT}}</span></p>
+                    <p class="pdf-pt-05">Time of Test Drive<span>:</span><span>{{formatTime(time) }}</span></p>
+                </div>
+
+                <p class="test-drive-accompany-info pdf-pt-2">Employee Accompanying Customer on Test
+                    Drive<span>:</span><span>{{customer}}</span></p>
+
+                <p class="test-drive-terms pdf-pt-2">
+                    I, the undersigned, acknowledge that I have been informed of the test drive policy and procedures of
+                    the dealership, and that I have been given the opportunity to inspect the vehicle before taking it
+                    on a test drive. I understand that I am solely responsible for the vehicle while it is in my
+                    possession, and that I will be held liable for any damage caused to the vehicle while it is under my
+                    control. I also understand that I am required to have a valid driver's license and proof of
+                    insurance with me during the test drive.
+                </p>
+
+                <div class="test-drive-customer-sign t-d-grid pdf-pt-2">
+                    <p>Signature of Customer<span>:</span><span></span></p>
+                    <p class="pdf-pt-05">Date<span>:</span><span>{{currentDate | date: DATE_FORMAT}}</span></p>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+        <div class="footer-top-line" *ngIf="hidefooter"></div>
+
+        <div class="receipt-footer" *ngIf="hidefooter">
+            <div class="receipt-contact">
+                <div>
+                    <p><strong>Showroom Address:</strong></p>
+                    <p>10 Al Manara RoadAl Quoz 1, Dubai, UAE</p>
+                    <p></p>
+                </div>
+                <!-- <div class="line"></div> -->
+                <div>
+                    <p><strong>Registered Address:</strong></p>
+                    <p>Business Center 1 M Floor, The Meyden Hotel</p>
+                    <p></p>
+                    <p>Nad AlSheba, Dubai, UAE</p>
+                </div>
+                <!-- <div class="line"></div> -->
+                <div>
+                    <p><strong>P.O.Box:</strong>133599, UAE</p>
+                    <!-- <p><strong>T:</strong>800EXPERTS [3973787]</p>
+                    <p><strong>E:</strong>info@gemotor.ae</p> -->
+                    <p><span class="red-txt">www.gemotor.ae</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pdf-footer pdf-pt-1 pdf-page-break" *ngIf="hidefooter">
+            <!-- <div class="pdf-footer-line"></div> -->
+
+            <div class="pdf-upper-footer">
+                <p class="noc-pdf-footer-text">Feel free to contact us if you have any questions</p>
+                <img class="pdf-footer-experts-800" src="../../../../assets/assets/800 EXPERTS.png" alt="">
+                <img class="pdf-footer-email" src="../../../../assets/assets/Email.png" alt="">
+            </div>
+        </div>
+
+
+    </div>
+</div>

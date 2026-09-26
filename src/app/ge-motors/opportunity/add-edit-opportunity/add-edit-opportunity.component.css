@@ -1,0 +1,83 @@
+.mat-filter::after {
+  content: "\e8b6";
+  font-family: material icons;
+  vertical-align: bottom;
+  font-size: 20px;
+  padding-left: 5px;
+}
+
+.mat-option.hide {
+  display: none;
+}
+
+mat-label,mat-option {
+  text-transform: capitalize ; 
+}
+
+.car-col {
+  width: 450px !important;
+}
+
+.table-wrapper {
+  overflow: auto;
+}
+
+
+
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr {
+  height: 50px;
+}
+
+/* Table Header */
+th {
+  flex-direction: column;
+  justify-content: left;
+  background: #f4d35f;
+  text-align: center;
+  font-weight: bolder;
+  text-transform: uppercase !important;
+  font-size: 14px !important;
+}
+
+/* Table Data */
+td {
+  border-top: 1px solid lightgrey;
+  vertical-align: middle;
+  align-items: initial;
+  padding: 5px 6px !important;
+}
+
+/* Alternate Row Color */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover Effect */
+tr:hover {
+  background-color: #dddddd;
+}
+
+
+.mat-option {
+  padding: 10px;
+  /* Adjust padding as needed */
+}
+
+.mat-option img {
+  margin-right: 10px;
+  /* Adjust margin as needed */
+}
+
+.mat-option small {
+  margin-left: 10px;
+  /* Adjust margin as needed */
+  display: inline-block;
+  /* Ensures margin is applied */
+}

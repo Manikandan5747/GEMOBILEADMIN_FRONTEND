@@ -1,0 +1,220 @@
+<div class="">
+  <form [formGroup]="addEditForm " class="p-3 row">
+
+   <div  class="col-md-4">
+    <mat-form-field class="col-md-2" appearance="outline">
+      <mat-label class="">Salutation</mat-label>
+      <mat-select formControlName="salutation" >
+        <!-- <mat-option value="null">-</mat-option> -->
+        <mat-option value="Mrs">Mrs</mat-option>
+        <mat-option value="Mr">Mr</mat-option>
+        <mat-option value="Miss">Miss</mat-option>
+      </mat-select>
+      <mat-error
+        *ngIf="addEditForm.controls['salutation'].hasError('required') && isShowErrors">Required</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field class="col-md-10" appearance="outline">
+      <mat-label class="">First name</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="firstname" type="text" />
+      <mat-error *ngIf="addEditForm.controls['firstname'].hasError('required') && isShowErrors">First name is
+        required</mat-error>
+    </mat-form-field>
+   </div>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label class="">Last name</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="lastname"  type="text" />
+      <mat-error *ngIf="addEditForm.controls['lastname'].hasError('required') && isShowErrors">Last name is
+        required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="pt-2 col-md-4" appearance="outline">
+      <mat-label class="">Account </mat-label>
+      <mat-select formControlName="accountid" >
+        <mat-select-filter [array]="accountList" (filteredReturn)="accountFilterList=$event"
+          [displayMember]="'accountname'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of accountList" [value]="item.accountid" [class.hide]="!accountFiltered(item)">
+          {{ item.accountname }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['accountid'].hasError('required') && isShowErrors"> Account is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label class="">Emirates ID</mat-label>
+      <input matInput maxlength="15" [formControl]="addEditForm.controls['emiratesid']" type="text" />
+      <mat-error *ngIf="addEditForm.controls['emiratesid'].hasError('required') && isShowErrors">Emirates ID is required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['emiratesid'].hasError('pattern') && isShowErrors">Emirates ID must be 15 digits</mat-error>
+    </mat-form-field>
+    
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>Nationality</mat-label>
+      <mat-select formControlName="nationality">
+        <mat-select-filter [array]="nationalityList" (filteredReturn)="nationalityFilteredList=$event"
+          [displayMember]="'nationalityname'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of nationalityList" [value]="item.nationalityname"
+          [class.hide]="!nationalityFiltered(item)">
+          {{item.nationalityname}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['nationality'].hasError('required') && isShowErrors">Nationality is
+        required</mat-error>
+    </mat-form-field>
+
+ 
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Phone number</mat-label>
+      <input maxlength="12" matInput [errorStateMatcher]="matcher" formControlName="phonenumber" type="text" />
+      <mat-error *ngIf="addEditForm.controls['phonenumber'].hasError('required') && isShowErrors">Phone number is
+        required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['mobile'].hasError('invalidPhoneNumber')">
+          Please enter a valid Phone number
+        </mat-error>
+    </mat-form-field>
+
+    <!-- <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Mobile</mat-label>
+      <input matInput maxlength="13"  [errorStateMatcher]="matcher" formControlName="mobile" type="text" />
+      <mat-error *ngIf="addEditForm.controls['mobile'].hasError('required') && isShowErrors">Mobile is
+        required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['mobile'].hasError('invalidPhoneNumber')">
+          Please enter a valid Mobile number
+        </mat-error>
+    </mat-form-field> -->
+
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Mobile</mat-label> <span matPrefix>+971</span>
+      <input matInput maxlength="9" [errorStateMatcher]="matcher" formControlName="mobile" type="text" />
+      <!-- <mat-error *ngIf="addEditForm.controls['mobile'].hasError('required') && isShowErrors">Mobile is
+        required</mat-error> -->
+      <mat-error *ngIf="addEditForm.controls['mobile'].hasError('invalidPhoneNumber')">
+        Mobile is required and a valid mobile number must be entered.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput [formControl]="addEditForm.controls['email']" type="email" />
+      <mat-error *ngIf="addEditForm.controls['email'].hasError('required') && isShowErrors">Email is required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['email'].hasError('email') && isShowErrors">Invalid email</mat-error>
+    </mat-form-field>
+    
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Address</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="address" type="text" />
+      <mat-error *ngIf="addEditForm.controls['address'].hasError('required') && isShowErrors">Address is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Mailing Street</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="mailingstreet" type="text" />
+      <mat-error *ngIf="addEditForm.controls['mailingstreet'].hasError('required') && isShowErrors">Mailing Street is
+        required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>Country</mat-label>
+      <mat-select formControlName="countryid"   (selectionChange)="countryFilterChange($event)">
+        <mat-select-filter [array]="countryList"   (filteredReturn)="countryDetailsList=$event"
+          [displayMember]="'countryname'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of countryList" [value]="item.countryid" [class.hide]="!countryFiltered(item)">
+          {{item.countryname}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="stateid" (selectionChange)="stateFilterChange($event)">
+        <mat-select-filter [array]="stateList"   (filteredReturn)="stateDetailsList=$event"
+          [displayMember]="'statename'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of stateList" [value]="item.stateid" [class.hide]="!stateFiltered(item)">
+          {{item.statename}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+      <mat-label>City</mat-label>
+      <mat-select formControlName="cityid" >
+        <mat-select-filter [array]="CarCityList"   (filteredReturn)="cityDetailsList=$event"
+          [displayMember]="'cityname'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of CarCityList" [value]="item.cityid" [class.hide]="!cityFiltered(item)">
+          {{item.cityname}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Pincode</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="pincode" type="text" />
+      <mat-error *ngIf="addEditForm.controls['pincode'].hasError('required') && isShowErrors">Pincode is
+        required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4 " appearance="outline">
+      <mat-label class="">Description</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="description" type="text" />
+      <mat-error *ngIf="addEditForm.controls['description'].hasError('required') && isShowErrors">Description is
+        required</mat-error>
+    </mat-form-field>
+  
+    <div class="col-md-4 field">
+      <label for="file-upload" class="custom-file-upload">
+        <mat-icon>cloud_upload</mat-icon> Front Emirates Id Attachment
+      </label><br>
+      <input id="file-upload" (change)="onFileChanged($event)"
+        accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+      <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['emiratesdoc'].value">
+        <div class="avatar-preview" for="imageUpload">
+          <a *ngIf="isPDF(addEditForm.controls['emiratesdoc'].value.name ? addEditForm.controls['emiratesdoc'].value.name : addEditForm.controls['emiratesdoc'].value)"
+            [href]="addEditForm.controls['emiratesdoc'].value" target="_blank">
+            <img style="width: 52px;"
+              src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="isIMG(addEditForm.controls['emiratesdoc'].value.name ? addEditForm.controls['emiratesdoc'].value.name : addEditForm.controls['emiratesdoc'].value)"
+            [href]="addEditForm.controls['emiratesdoc'].value" target="_blank">
+            <img style="width: 52px;" [src]="imageSrc ? imageSrc : addEditForm.controls['emiratesdoc'].value" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 field" >
+      <label for="file-upload1" class="custom-file-upload">
+         <mat-icon>cloud_upload</mat-icon> Back Emirates Id Attachment
+      </label><br>
+      <input id="file-upload1" (change)="onFileChangedBackEmirates($event)"
+        accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+      <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['backemiratesdoc'].value">
+        <div class="avatar-preview" for="imageUpload">
+          <a *ngIf="isPDF(addEditForm.controls['backemiratesdoc'].value.name ? addEditForm.controls['backemiratesdoc'].value.name : addEditForm.controls['backemiratesdoc'].value)"
+            [href]="addEditForm.controls['backemiratesdoc'].value" target="_blank">
+            <img style="width: 52px;"
+              src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="isIMG(addEditForm.controls['backemiratesdoc'].value.name ? addEditForm.controls['backemiratesdoc'].value.name : addEditForm.controls['backemiratesdoc'].value)"
+            [href]="addEditForm.controls['backemiratesdoc'].value" target="_blank">
+            <img style="width: 52px;" [src]="imageSrc1 ? imageSrc1 : addEditForm.controls['backemiratesdoc'].value" />
+          </a>
+        </div>
+      </div>
+    </div>
+    
+  </form>
+</div>

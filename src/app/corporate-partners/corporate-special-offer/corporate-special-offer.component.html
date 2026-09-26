@@ -1,0 +1,101 @@
+<div class="col-md-12">
+    <div class="page-title">Corporate Special Offer </div>
+
+    <div class="col-md-12 row">
+        <div class="row" style="padding-left: 21px !important">
+
+            <mat-form-field class="col-md-10 p-0 pr-2" appearance="outline">
+                <mat-label>Search Corporate Special Offer Detail</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="" />
+            </mat-form-field>
+            <div class="col-md-2" style="text-align: end">
+                <button style="cursor: pointer;" mat-mini-fab color="primary"
+                    *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'" matTooltip="Create Corporate Special Offer"
+                    (click)="addRecord()"> + </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="test1" #test1>
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="corporatespecialofferdesc">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> corporatespecialofferdesc </th>
+                <td mat-cell *matCellDef="let element"> {{element?.corporatespecialofferdesc}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="corporatepartnername">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Corporate partner name </th>
+                <td mat-cell *matCellDef="let element"> {{element?.corporatepartnername}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="corporatepromocode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>corporate promo code </th>
+                <td mat-cell *matCellDef="let element"> {{element?.corporatepromocode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="offerexpirydate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>offer expiry date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.offerexpirydate}} </td>
+            </ng-container>
+
+            
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <td mat-cell *matCellDef="let element"> {{element?.status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_by" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_by}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_by}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_at }} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions" stickyEnd class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button *ngIf="userPrivilegeObj && userPrivilegeObj?.deleteaccess == '1'" mat-icon-button
+                    matTooltip="Edit" (click)="editRecord(element)">
+                    <mat-icon class="delete-mat-icon">edit</mat-icon>
+                </button>
+                    <button *ngIf="userPrivilegeObj && userPrivilegeObj?.deleteaccess == '1'" mat-icon-button
+                        matTooltip="Delete" (click)="deleteRecord(element)">
+                        <mat-icon class="delete-mat-icon">delete</mat-icon>
+                    </button>
+
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,13 @@
+::ng-deep .p-element canvas {
+    height: 400px !important;
+  }
+  .chart-container {
+    height: 400px; /* Limit the height */
+    max-width: 100%; /* Limit the width */
+    overflow: hidden; /* Hide overflow */
+}
+
+.row .col-5 {
+  flex: 0 0 20%;
+  max-width: 20%;
+}

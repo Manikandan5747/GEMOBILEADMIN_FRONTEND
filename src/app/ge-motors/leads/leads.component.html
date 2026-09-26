@@ -1,0 +1,183 @@
+<div class="col-md-12">
+    <div class="page-title"> Manage Leads </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+
+
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Leads Detail</mat-label>
+                <input matInput [(ngModel)]="search" (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <div *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'" class="col-md-2"
+                style="text-align: end">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Lead"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="accountname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Company </th>
+                <td mat-cell *matCellDef="let element"> {{element?.accountname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="firstname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>first name </th>
+                <td mat-cell *matCellDef="let element"> {{element?.firstname}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="lastname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>last name </th>
+                <td mat-cell *matCellDef="let element"> {{element?.lastname}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Campaign </th>
+                <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="leadtype">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Account Category Type </th>
+                <td mat-cell *matCellDef="let element"> {{element?.leadtype}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="brandname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> brand </th>
+                <td mat-cell *matCellDef="let element"> {{element?.brandname}} </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="conversionstatus">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> conversion status   </th>
+                    <td mat-cell *matCellDef="let element"> {{element?.conversionstatus}} </td>
+                    </ng-container> -->
+            <ng-container matColumnDef="conversionstatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Conversion Status </th>
+                <td mat-cell *matCellDef="let element">
+                    <!-- Use ngIf to conditionally render icons -->
+                    <ng-container *ngIf="element?.conversionstatus === 0">
+                        <mat-icon color="warn">clear</mat-icon> <!-- Cross icon for conversionstatus 0 -->
+                    </ng-container>
+                    <ng-container *ngIf="element?.conversionstatus === 1">
+                        <mat-icon color="primary">done</mat-icon> <!-- Tick mark for conversionstatus 1 -->
+                    </ng-container>
+                </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="modelname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> model </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modelname}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <td mat-cell *matCellDef="let element"> {{element?.status == 1 ? "Active" : "InActive"}} </td>
+            </ng-container>
+            <ng-container matColumnDef="createdby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdat | date: DATE_FORMAT}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modifiedat | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef class="center-black-text">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element" class="">
+
+                    <!-- Edit Lead -->
+                    <button mat-icon-button matTooltip="Edit Lead" (click)="editRecord(element)"
+                        [style.visibility]="(userPrivilegeObj?.editaccess == '1' && element?.conversionstatus === 0) ? 'visible' : 'hidden'">
+                        <mat-icon class="edit-mat-icon">edit</mat-icon>
+                    </button>
+
+                    <!-- View Lead -->
+                    <button mat-icon-button matTooltip="View Lead" (click)="viewRecord(element)"
+                        [style.visibility]="(userPrivilegeObj?.viewaccess == '1') ? 'visible' : 'hidden'">
+                        <mat-icon class="edit-mat-icon">visibility</mat-icon>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Delete Lead" *ngIf="userPrivilegeObj && userPrivilegeObj?.deleteaccess == '1'"
+                        (click)="onDeleteStatusChange(element?.leadsid)">
+                        <mat-icon class="delete-mat-icon large-icon">delete</mat-icon>
+                    </button>
+
+                    <!-- Convert Opportunity -->
+                    <button mat-icon-button matTooltip="Convert Opportunity" (click)="convertOpportunity(element)"
+                        [style.visibility]="(userPrivilegeObj?.createaccess == '1' && element?.conversionstatus === 0) ? 'visible' : 'hidden'">
+                        <mat-icon class="edit-mat-icon">autorenew</mat-icon>
+                    </button>
+
+
+
+
+                </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="submenu" stickyEnd class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Re. Module
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button [matMenuTriggerFor]="profile">
+                        <mat-icon class="edit-mat-icon large-icon">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #profile="matMenu" class="mymegamenu" >
+                        <button  mat-menu-item (click)="gotoactivity(element)" *ngIf="privilege?.create_access || privilege?.edit_access">
+                            <mat-icon class="large-icon">local_activity</mat-icon> Activity
+                        </button>
+                    </mat-menu>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+    <tr *ngIf="totalItemCount == '0'">
+        <td class="no-data-cell">
+            No Records Found.
+        </td>
+    </tr>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" (page)="onPageChange($event)"
+        [length]="totalItemCount" showFirstLastButtons></mat-paginator>
+</div>

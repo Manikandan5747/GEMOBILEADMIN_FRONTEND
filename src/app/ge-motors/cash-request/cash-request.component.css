@@ -1,0 +1,23 @@
+.brandlogopath {
+    width: 25%;
+    height: 80%;
+    cursor: pointer;
+  }
+  
+  img{
+    width: 12%;
+  }
+  .mat-row{
+    text-transform: capitalize;
+}
+  
+  .mat-column-tc_pdf_url {
+    text-align: center;
+  }
+
+  .font-weight-bold {
+    font-weight: bold !important;
+  }
+  .mat-column-amount{
+    text-align: center;
+  }

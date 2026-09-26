@@ -1,0 +1,103 @@
+<div class="col-md-12">
+    <div class="page-title"> Manage Template </div>
+
+    <div class="col-md-12 row">
+        <div class="row" style="padding-left: 10px !important">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Template Detail</mat-label>
+                <input matInput [(ngModel)]="search" (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+                <div class="col-md-2" style="text-align: end">
+          <button  style="cursor: pointer;" mat-mini-fab color="primary"   matTooltip="Create Event" (click)="addRecord()"> + </button>
+        </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="template_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Template Name</th>
+                <td mat-cell *matCellDef="let element"> {{element?.template_name}} </td>
+            </ng-container>
+<ng-container matColumnDef="template_text">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header> Template Text </th>
+  <td mat-cell *matCellDef="let element">
+    <span
+      matTooltip="{{ element?.template_text }}"
+      matTooltipPosition="above"
+      style="display: inline-block; max-width: 500px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;"
+    >
+      {{element?.template_text }}
+    </span>
+  </td>
+</ng-container>
+
+  <ng-container matColumnDef="sleekflow_template_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Whatsapp Template Name</th>
+                <td mat-cell *matCellDef="let element"> {{element?.sleekflow_template_name}} </td>
+            </ng-container>
+  <!-- <ng-container matColumnDef="company_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Company Name</th>
+                <td mat-cell *matCellDef="let element"> {{element?.company_name}} </td>
+            </ng-container> -->
+
+           <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                <td mat-cell *matCellDef="let element"> {{ element.status == 1 ? 'Active' : 'Inactive'}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="created_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by</th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT }} </td>
+
+            </ng-container>
+
+            
+            <ng-container matColumnDef="modified_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by</th>
+                <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+            </ng-container>
+
+              <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_at | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+             <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                  Action
+              </th>
+              <!-- <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button matTooltip="Edit"  (click)="editRecord(element)"  *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'"> 
+                      <mat-icon class="edit-mat-icon">edit</mat-icon>
+                  </button>
+              </td> -->
+          </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

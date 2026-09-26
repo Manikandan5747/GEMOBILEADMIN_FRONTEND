@@ -1,0 +1,25 @@
+
+<!-- <div style=" padding: 5px !important;"> -->
+
+    <div class="mat-dialog-title" mat-dialog-title >
+        {{PageTitel}}
+        <button class="dialog-close-btn"   (click)="dialogRef.close()">X</button>
+    </div>
+    
+    <section mat-dialog-content>
+
+        <app-add-edit-webversion-form [isShowErrors]="isShowErrors">
+
+        </app-add-edit-webversion-form>
+
+    </section>
+
+    <div mat-dialog-actions style="float: right;margin-bottom: 10px;padding-right: 10px;" class="pull-right ">
+        <button mat-button class="btnnn-default-fn" style="background-color:grey;" (click)="dialogRef.close()">
+            Cancel
+        </button> &nbsp;
+        <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+            Save
+        </button>
+    </div>
+    <!-- </div> -->

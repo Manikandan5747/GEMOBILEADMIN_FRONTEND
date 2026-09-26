@@ -1,0 +1,220 @@
+<div class="col-md-12">
+  <div class="page-title"> Manage user privilege </div>
+  <div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="col-md-12 pt-2">
+    <div class="row">
+      <mat-form-field class="col-md-4" appearance="outline">
+        <mat-select (selectionChange)="roleChange($event)" [placeholder]="this.rolename? this.rolename:'Select Role'">
+          <mat-option *ngFor="let ele of userRoleList" [value]="ele">
+            {{ele.rolename}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="col-md-6"></p>
+      <mat-form-field class="col-md-2 pr-2" appearance="outline">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" [(ngModel)]="search" placeholder="" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-tab-group #tabGroup (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab label="USER PRIVILEGES">
+      <div class="mat-table-container" id="test1" #test1
+        *ngIf="dataSource && dataSource.data && dataSource.data.length > 0">
+
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="modulename">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> module name </th>
+            <td mat-cell *matCellDef="let element">  {{element?.privilegekey}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="full">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="isAllFullAccessSelected($event)">
+                Full</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (change)="SelectHorizontalFullAccess($event,row)" (click)="$event.stopPropagation()"
+                [value]="row.full" [(ngModel)]="row.full">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- Read Checkbox Column -->
+          <ng-container matColumnDef="read">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="SelectAllRead($event)"
+                [checked]="isAllReadSelected()" [indeterminate]="!isAllReadSelected()">
+                View</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (change)="checkAllActive($event,row)" (click)="$event.stopPropagation()" [value]="row.read"
+                [(ngModel)]="row.read">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- delete Checkbox Column -->
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="SelectAllDelete($event)"
+                [checked]="isAllDeleteSelected()" [indeterminate]="!isAllDeleteSelected()">
+                delete</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (change)="checkAllActive($event,row)" (click)="$event.stopPropagation()"
+                [value]="row.delete" [(ngModel)]="row.delete">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+
+          <!-- Write Checkbox Column -->
+          <ng-container matColumnDef="write">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="SelectAllWrite($event)"
+                [checked]="isAllWriteSelected()" [indeterminate]="!isAllWriteSelected()">
+                create</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (change)="checkAllActive($event,row)" (click)="$event.stopPropagation()" [value]="row.write"
+                [(ngModel)]="row.write">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+
+          <!-- Modify Checkbox Column -->
+          <ng-container matColumnDef="modify">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="SelectAllModify($event)"
+                [checked]="isAllModifySelected()" [indeterminate]="!isAllModifySelected()">
+                Edit</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (change)="checkAllActive($event,row)" (click)="$event.stopPropagation()"
+                [value]="row.modify" [(ngModel)]="row.modify">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+
+          <!-- printaccess Checkbox Column -->
+          <ng-container matColumnDef="printaccess">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="SelectAllPrint($event)"
+                [checked]="isAllPrintSelected()" [indeterminate]="!isAllPrintSelected()">
+                print</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (change)="checkAllActive($event,row)" (click)="$event.stopPropagation()"
+                [value]="row.printaccess" [(ngModel)]="row.printaccess">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+              Related Module
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <button *ngIf="element.isparent == '1'" mat-icon-button matTooltip="Related Module"
+                (click)="relatedModule(element)">
+
+                <mat-icon class="delete-mat-icon">view_week</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="miscRights" sticky class="mat-col-levelDefault">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+              Misc Rights
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="element.isparent == '1' && element?.ismisc">
+                <button mat-icon-button matTooltip="Miscellaneous Rules" (click)="miscRights(element)">
+                  <mat-icon class="delete-mat-icon">dialpad</mat-icon>
+                </button>
+                ({{ element?.miscellaneous_privileges_count }}/{{ element?.app_miscellaneousmappingtb_count }})
+              </ng-container>
+            </td>
+          </ng-container>
+
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+      </div>
+
+      <div mat-dialog-actions style="float: right;" class="pull-right pr-2 pt-3"
+        *ngIf="dataSource && dataSource.data && dataSource.data.length > 0">
+        <button mat-button class="btnnn-default-fn">
+          Cancel
+        </button>
+        <button mat-raised-button class="btnnn-prime-fn" (click)="save()">
+          Save
+        </button>
+      </div>
+
+    </mat-tab>
+
+    <mat-tab label="REPORT PRIVILEGES">
+      <div class="mat-table-container" *ngIf="dataSource1.data && dataSource1.data.length > 0">
+        <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8" matSort>
+
+          <!-- Module Name Column -->
+          <ng-container matColumnDef="modulename">
+            <th mat-header-cell *matHeaderCellDef>Module Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.modulename }}</td>
+          </ng-container>
+
+          <!-- View Access Column -->
+          <ng-container matColumnDef="read">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox [(ngModel)]="allViewSelected" (change)="toggleAllAccess('view', $event)">View</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox [(ngModel)]="row.read" (change)="checkIfAllSelected('read')"></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- Print Access Column -->
+          <ng-container matColumnDef="printaccess">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox [(ngModel)]="allPrintSelected"
+                (change)="toggleAllAccess('print', $event)">Export</mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox [(ngModel)]="row.printaccess" (change)="checkIfAllSelected('printaccess')"></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- Table Headers & Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+        </table>
+
+
+      </div>
+      <div mat-dialog-actions style="float: right;" class="pull-right pr-2 pt-3"
+        *ngIf="dataSource && dataSource.data && dataSource.data.length > 0">
+        <button mat-button class="btnnn-default-fn">
+          Cancel
+        </button>
+        <button mat-raised-button class="btnnn-prime-fn" (click)="reportsave()">
+          Save
+        </button>
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

@@ -1,0 +1,84 @@
+<div class="col-md-12">
+    <div class="page-title">  Gift Draw Category </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search Category</mat-label>
+                <input matInput [(ngModel)]="search" (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <div *ngIf="userPrivilegeObj?.createaccess == '1'" class="col-md-2" style="text-align: end">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Category" (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="categoryTable" #categoryTable>
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+            <ng-container matColumnDef="category_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Category Name</th>
+                <td mat-cell *matCellDef="let element"> {{element?.category_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="invoice_pricerangefrom">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Price Range From</th>
+                <td mat-cell *matCellDef="let element">  {{ element?.invoice_pricerangefrom | currency:'AED ':'symbol':'1.2-2' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="invoice_pricerangeto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Price Range To</th>
+                <td mat-cell *matCellDef="let element"> {{element?.invoice_pricerangeto  | currency:'AED ':'symbol':'1.2-2'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let element"> {{element?.status == 1 ? "Active" : "Inactive"}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdbyname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created At</th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at | date: DATE_FORMAT}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Modified By</th>
+                <td mat-cell *matCellDef="let element"> {{element?.updatedbyname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Modified At</th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_at | date: DATE_FORMAT}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">Action</th>
+                <td mat-cell *matCellDef="let element">
+                      <button mat-icon-button  matTooltip="View Category" *ngIf="userPrivilegeObj?.viewaccess == '1'" (click)="viewRecord(element)">
+                            <mat-icon class="edit-mat-icon">visibility</mat-icon> 
+                        </button>
+                        <button mat-icon-button matTooltip="Edit Category" *ngIf="userPrivilegeObj?.editaccess == '1'" (click)="editRecord(element)">
+                            <mat-icon class="edit-mat-icon">edit</mat-icon> 
+                        </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" (page)="onPageChange($event)"
+        [length]="totalItemCount" showFirstLastButtons></mat-paginator>
+</div>

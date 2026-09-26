@@ -1,0 +1,31 @@
+@import '../../../../style.scss';
+
+.pdf-description p,span {
+    margin: 0 !important;
+}
+
+.return-to-menu>a {
+  color: #007bff;
+}
+
+.return-to-menu {
+  margin-bottom: 5px !important;
+}
+
+
+.value-space {
+    margin-left: 8px !important; 
+}
+
+.receipt-title-container {
+    align-items: start !important;
+}
+
+.receipt-title{
+  text-align: center !important;
+}
+
+.page-sub-title-pdf {
+  font-size: 20px !important;
+}
+

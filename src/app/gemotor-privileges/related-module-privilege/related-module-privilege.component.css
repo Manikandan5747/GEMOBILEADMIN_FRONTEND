@@ -1,0 +1,13 @@
+  /* .mat-column-modulename,
+  .mat-column-create_access,
+  .mat-column-edit_access,
+  .mat-column-delete_access,
+  .mat-column-view_access,
+   .mat-column-print_access {
+      text-align: center;
+  } */
+
+  th.mat-header-cell {
+    text-align 
+: left !important;
+}

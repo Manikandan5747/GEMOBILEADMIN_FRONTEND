@@ -1,0 +1,114 @@
+<div class="col-md-12 row p-4">
+  <form [formGroup]="addEditForm">
+
+    <mat-form-field class="pt-2" appearance="outline">
+      <mat-label class="">Brand name</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="brandname" type="text" />
+      <mat-error *ngIf="addEditForm.controls['brandname'].hasError('required') && isShowErrors">Brand name is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['brandname'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="pt-2" appearance="outline">
+      <mat-label class="">Brand Code</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="brandcode" type="text" />
+      <mat-error *ngIf="addEditForm.controls['brandcode'].hasError('required') && isShowErrors">Brand Code is
+        required</mat-error>
+      <mat-error *ngIf="addEditForm.controls['brandcode'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label class="pr-2 pt-5 text-center">Status </mat-label>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <mat-radio-group aria-label="Is Active" formControlName="status" class="inputField exammanage-radio-group"
+      mat-form-field>
+      <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-button value='0'>In Active</mat-radio-button>
+    </mat-radio-group>
+
+    <!-- <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Remark</mat-label>
+        <textarea matInput  formControlName="remark" type="text" >
+      </textarea>
+      </mat-form-field> -->
+
+    <div class="pt-2 col-md-6">
+      <h1>Brand Logo Upload
+        <small>with preview</small>
+      </h1>
+      <div class="avatar-upload">
+        <div class="avatar-edit">
+          <!-- <mat-icon class="edit-mat-icon avatar-edit">edit</mat-icon> -->
+          <input (change)="onFileChanged($event)" type='file' id="imageUpload" accept=".png, .jpg, .jpeg, .svg" />
+          <label for="imageUpload"></label>
+        </div>
+        <div class="avatar-preview" for="imageUpload">
+          <img id="imagePreview" height="200" src={{imageBase64}}>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADDED NEW FILEDS  -->
+
+    <!-- <mat-form-field class="pt-2" appearance="outline">
+        <mat-label>Company Name</mat-label>
+        <mat-select formControlName="company">
+          <mat-option value="1">GERMAN EXPERTS</mat-option>
+          <mat-option value="2">EXPERT CARS</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['company'].hasError('required') && isShowErrors">
+          Company name is required
+        </mat-error>
+      </mat-form-field> -->
+
+    <mat-form-field class="pt-2" appearance="outline">
+      <mat-select formControlName="company" placeholder="Select Company" (selectionChange)="cmpChange($event.value)">
+        <mat-option *ngFor="let ele of companyList" [value]="ele.cmp_id.toString()">
+          {{ ele.cmp_name }}
+        </mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="addEditForm.controls['company'].hasError('required') && isShowErrors">
+        Company name is required
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="pt-2" appearance="outline">
+      <mat-label class="">Asset Brand name</mat-label>
+      <input matInput [errorStateMatcher]="matcher" formControlName="assetbrandname" type="text" />
+      <mat-error *ngIf="addEditForm.controls['assetbrandname'].errors?.['whitespace']">
+        White space not allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label class="pr-2 pt-5 text-center">CRM Status</mat-label>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <mat-radio-group aria-label="Is Active" formControlName="assetstatus" class="inputField exammanage-radio-group"
+      mat-form-field>
+      <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-button value='0'>In Active</mat-radio-button>
+    </mat-radio-group>
+
+    <div class="pt-2 col-md-6">
+      <h1>Asset Image
+        <small>with preview</small>
+      </h1>
+      <div class="avatar-upload">
+        <div class="avatar-edit">
+          <!-- <mat-icon class="edit-mat-icon avatar-edit">edit</mat-icon> -->
+          <input (change)="onFileChanged($event)" type='file' id="assetimageUpload" accept=".png, .jpg, .jpeg, .svg" />
+          <label for="assetimageUpload"></label>
+        </div>
+        <div class="avatar-preview" for="assetimageUpload">
+          <img id="assetimagePreview" height="200" src={{assetImageBase64}}>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+</div>

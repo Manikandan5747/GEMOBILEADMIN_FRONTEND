@@ -1,0 +1,157 @@
+<div class="col-md-12">
+  <form [formGroup]="addEditForm" class="p-3">
+
+    <!-- Event Template Name -->
+ <mat-form-field class="col-md-12" appearance="outline">
+      <mat-label>Template Name</mat-label>
+      <input
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="template_name"
+        type="text"
+        (focus)="onFocusTemplateName()"
+        [readonly]="!canTypeTemplateName"
+        placeholder="Enter Notification Title..."
+      />
+
+      <button
+        mat-icon-button
+        matSuffix
+        color="primary"
+        (click)="showTemplateNameInfo()"
+        aria-label="Template Name Info"
+        style="width: 32px; height: 32px;"
+      >
+        <mat-icon>info</mat-icon>
+      </button>
+
+      <mat-error *ngIf="addEditForm.controls['template_name'].hasError('required') && isShowErrors">
+        Template Name is required
+      </mat-error>
+    </mat-form-field>
+
+
+<mat-form-field class="col-md-12" appearance="outline" *ngIf="showWhatsAppTemplateField">
+      <mat-label>Whatsapp Template Name</mat-label>
+      <input
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="sleekflow_template_name"
+        type="text"
+        (focus)="onFocussleekflowTemplateName()"
+        [readonly]="!canTypeTemplateName"
+        placeholder="Enter Whatsapp Template Name..."
+      />
+
+      <button
+        mat-icon-button
+        matSuffix
+        color="primary"
+        (click)="showsleekflowTemplateNameInfo()"
+        aria-label="Template Name Info"
+        style="width: 32px; height: 32px;"
+      >
+        <mat-icon>info</mat-icon>
+      </button>
+
+     
+    </mat-form-field>
+
+
+    <!-- Event Template Text -->
+<mat-form-field appearance="outline" class="col-md-12">
+  <mat-label>Message Template</mat-label>
+
+  <textarea
+    matInput
+    formControlName="template_text"
+    (focus)="onFocusMessage()"
+    rows="6"
+    maxlength="1000"
+    placeholder="Enter Notification Content..."
+  ></textarea>
+
+ 
+ 
+ <button
+    mat-icon-button
+    matSuffix
+    color="primary"
+    (click)="showTemplateGuide()"
+    style="width: 32px; height: 32px;"
+    aria-label="Template Info"
+  >
+    <mat-icon style="font-size: 20px;">info</mat-icon>
+  </button>
+  <mat-error *ngIf="addEditForm.get('template_text')?.hasError('missingName')">
+  Template must include <strong>@CustomerName</strong> placeholder.
+</mat-error>
+
+<mat-error *ngIf="addEditForm.get('template_text')?.hasError('missingCompany')">
+  Template must include <strong>@Company</strong> placeholder.
+</mat-error>
+
+<mat-error *ngIf="addEditForm.get('template_text')?.hasError('missingBoth')">
+  Template must include <strong>@CustomerName</strong> and <strong>@Company</strong> placeholders.
+</mat-error>
+
+
+  <mat-hint align="end">
+    {{ addEditForm.controls['template_text'].value?.length || 0 }}/1000
+  </mat-hint>
+</mat-form-field>
+
+
+    <!-- Event Company Name
+    <mat-form-field class="col-md-12" appearance="outline">
+      <mat-label>Company Name</mat-label>
+      <mat-select [errorStateMatcher]="matcher" formControlName="company_id">
+        <mat-option *ngFor="let item of EventCompanyList" [value]="item.company_id">
+          {{ item.company_name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['company_id'].hasError('required') && isShowErrors">
+        Company Name is required
+      </mat-error>
+    </mat-form-field> -->
+
+   <!-- Status -->
+    <div class="outline pt-3 pb-3 mt-3">
+      <mat-label class="p-2 col-md-12 text-center">Status</mat-label>
+      <mat-radio-group
+        aria-label="Status"
+        formControlName="status"
+        class="inputField exammanage-radio-group"
+      >
+        <mat-radio-button value="1">Active</mat-radio-button> &nbsp;
+        <mat-radio-button value="0">Inactive</mat-radio-button>
+      </mat-radio-group>
+    </div>
+<ng-template #templateGuideDialog>
+  <h2 mat-dialog-title>📋 How to Create Event Message Template</h2>
+
+  <mat-dialog-content>
+    <ul>
+      <li><strong>@CustomerName</strong> – Customer name</li>
+      <li><strong>@Nationality</strong> – Country (Optional)</li>
+      <li><strong>@Company</strong> – Company name</li>
+    </ul>
+
+    <p>
+      <strong>Example:</strong><br>
+      🎉 Happy National Day, @CustomerName! Celebrate this Special Day With Us and Enjoy a 400 AED Gift Voucher from @Company. 🎁
+    </p>
+
+    <small>
+      💡 Placeholders automatically insert real values when event sends.
+    </small>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close color="primary">OK</button>
+  </mat-dialog-actions>
+</ng-template>
+
+
+  </form>
+</div>

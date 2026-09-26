@@ -1,0 +1,103 @@
+<div class="col-md-12 row p-2">
+  <form [formGroup]="addEditForm">
+    <div class="row">
+
+    <mat-form-field class="col-md-6 pt-2 readonly-input" appearance="fill">
+      <mat-label class="">Expense Ref No</mat-label>
+      <input readonly matInput [errorStateMatcher]="matcher" formControlName="expenserefno" type="text" />
+    </mat-form-field>
+
+     <mat-form-field class="col-md-6 pt-2 " appearance="outline">
+        <mat-label>Showroom Cars</mat-label>
+        <mat-select formControlName="carshowroom_id"
+        [disabled]="this.addEditForm.get('isrelated_module')?.value">
+          <mat-select-filter [array]="cartotalList" [displayMember]="'carshowroomrefno'"></mat-select-filter>
+          <mat-option *ngFor="let item of cartotalList" [value]="item.carshowroom_id"
+            [class.hide]="!isShowroomCarFiltered(item)">
+            {{ item.carshowroomrefno?.trim() || 'N/A' }} -
+            {{ item.chasisno?.trim() || 'No Chassis' }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <mat-form-field class="col-md-6 pt-2" appearance="outline">
+      <mat-label class="">Expense Date </mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="expensedate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="addEditForm.controls['expensedate'].hasError('required') && isShowErrors">Expense Date is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6 pt-2" appearance="outline">
+      <mat-label class="">Expense Type </mat-label>
+      <mat-select formControlName="expensetypeid">
+        <mat-select-filter [array]="expenseList" (filteredReturn)="filteredExpenseList=$event"
+          [displayMember]="'expensetype'">
+        </mat-select-filter>
+        <mat-option *ngFor="let item of expenseList" [value]="item.expensetypeid" 
+          [class.hide]="!isExpenseFiltered(item)">
+          <small >{{ item.expensetype }}</small>
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addEditForm.controls['expensetypeid'].hasError('required') && isShowErrors">Expense Type is
+        required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-6 pt-2" appearance="outline">
+      <mat-label class="">Expense Value </mat-label>
+      <input matInput type="number" formControlName="expensevalue">
+      <mat-error *ngIf="addEditForm.controls['expensevalue'].hasError('required') && isShowErrors">Expense Value is
+        required</mat-error>
+        <mat-error
+        *ngIf="addEditForm.controls['expensevalue'].hasError('min') && isShowErrors">
+        Expense Amount should not be 0
+      </mat-error>
+    </mat-form-field>
+
+    <div class="col-md-6 pt-2" *ngIf="role_id == 1">
+      <mat-label class="pr-2 pt-5 text-center">Status </mat-label>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-group aria-label="Is Active" formControlName="status" class="inputField exammanage-radio-group"
+        mat-form-field>
+        <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value='0'>In Active</mat-radio-button>
+      </mat-radio-group>
+    </div>
+ 
+
+    <br>
+    <div class="col-md-4 field">
+      <label for="file-upload" class="custom-file-upload">
+        <mat-icon>cloud_upload</mat-icon> Expense Document Attachement
+      </label><br>
+      <input id="file-upload" (change)="onFileChanged($event)"
+        accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+      <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['expensedoc'].value">
+        <div class="avatar-preview" for="imageUpload">
+          <a *ngIf="isPDF(addEditForm.controls['expensedoc'].value.name ? addEditForm.controls['expensedoc'].value.name : addEditForm.controls['expensedoc'].value)"
+            [href]="addEditForm.controls['expensedoc'].value" target="_blank">
+            <img style="width: 52px;"
+              src="assets/images/pdf_icon.png" />
+          </a>
+          <a *ngIf="isIMG(addEditForm.controls['expensedoc'].value.name ? addEditForm.controls['expensedoc'].value.name : addEditForm.controls['expensedoc'].value)"
+            [href]="addEditForm.controls['expensedoc'].value" target="_blank">
+            <img style="width: 52px;" [src]="imageSrc ? imageSrc : addEditForm.controls['expensedoc'].value" />
+          </a>
+        </div>
+      </div>
+      </div>
+
+
+      <mat-form-field class="pt-2 col-md-12" appearance="outline">
+        <mat-label class="">Remark</mat-label>
+        <textarea matInput formControlName="remark" type="text">
+              </textarea>
+        <mat-error *ngIf="addEditForm.controls['remark'].hasError('required') && isShowErrors">Remark is
+          required</mat-error>
+      </mat-form-field>
+</div>
+
+  </form>
+</div>

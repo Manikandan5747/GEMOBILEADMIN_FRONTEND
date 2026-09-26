@@ -1,0 +1,108 @@
+<div class="col-md-12">
+    <div class="page-title">Gift Draw Inventory</div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <mat-form-field class="col-md-10 pr-2" appearance="outline">
+                <mat-label>Search</mat-label>
+                <input matInput [(ngModel)]="search" (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <div *ngIf="userPrivilegeObj?.createaccess == '1'" class="col-md-2" style="text-align: end">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Category" (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="categoryTable" #categoryTable>
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+            <ng-container matColumnDef="gift_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Gift Name</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.gift_name }} </td>
+            </ng-container>
+            <ng-container matColumnDef="category_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Category Name</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.category_name }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.qty }} </td>
+            </ng-container>
+            <ng-container matColumnDef="win_qty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Win Quantity</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.win_qty }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="category_type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Category Type</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.category_type }} </td>
+            </ng-container>
+
+           
+              
+            <ng-container matColumnDef="gift_image">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Gift</th>
+                <td mat-cell *matCellDef="let element">
+                  <ng-container *ngIf="element?.gift_image; else noImage">
+                    <a [href]="element.gift_image" target="_blank">
+                      <img [src]="element.gift_image" alt="Gift Image" width="50" height="50" />
+                    </a>
+                   
+                  </ng-container>
+                  <ng-template #noImage></ng-template>
+                </td>
+              </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.status == 1 ? "Active" : "Inactive" }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdbyname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.createdbyname }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created At</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.created_at | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedby">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Modified By</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.updatedbyname }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Modified At</th>
+                <td mat-cell *matCellDef="let element"> {{ element?.modified_at | date: DATE_FORMAT }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">Action</th>
+                <td mat-cell *matCellDef="let element">
+                   
+                        <button mat-icon-button matTooltip=" View Inventory" *ngIf="userPrivilegeObj?.viewaccess == '1'" (click)="viewRecord(element)">
+                            <mat-icon class="edit-mat-icon">visibility</mat-icon>
+                        </button>
+                        <button mat-icon-button  matTooltip=" Edit Inventory" *ngIf="userPrivilegeObj?.editaccess == '1'" (click)="editRecord(element)">
+                            <mat-icon class="edit-mat-icon">edit</mat-icon>
+                        </button>
+                    
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" (page)="onPageChange($event)" [length]="totalItemCount" showFirstLastButtons></mat-paginator>
+</div>

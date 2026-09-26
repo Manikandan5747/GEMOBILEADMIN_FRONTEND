@@ -1,0 +1,206 @@
+<div class="spinner__loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  
+  <div class="row" *ngIf="CarCountList">
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #22202082;" (click)="onHeaderSelectCar('Total Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Total Car </b></h6>
+          <div>
+            <mat-card-title>{{CarCountList && CarCountList[0].value}}</mat-card-title>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #fa5738;" (click)="onHeaderSelectCar('Approved Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Approved Car</b></h6>
+          <div>
+            <mat-card-title>{{CarCountList && CarCountList[1].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelectCar('Pending Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Pending/Cancel Car </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{CarCountList && CarCountList[2].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #edf4f8;" (click)="onHeaderSelectCar('Sold Car')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Sold Car </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{CarCountList && CarCountList[3].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #22202082;" (click)="onHeaderSelectCar('Active Showroom')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Active Showroom </b></h6>
+          <div>
+            <mat-card-title>{{secondCarCountList && secondCarCountList[0].value}}</mat-card-title>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #fa5738;" (click)="onHeaderSelectCar('Active PortalUser')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Active PortalUser</b></h6>
+          <div>
+            <mat-card-title>{{secondCarCountList && secondCarCountList[1].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #f4d35f;" (click)="onHeaderSelectCar('Pending PortalUser')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Pending PortalUser </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{secondCarCountList && secondCarCountList[2].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div class="col-xl-3 pt-2" style="cursor: pointer !important;">
+      <div class="card" style="background-color: #edf4f8;" (click)="onHeaderSelectCar('Cancel PortalUser')">
+        <div class="card-body pt-2">
+          <h6 class="" style="font-size: 18px !important;"><b>Cancel PortalUser </b></h6>
+          <div>
+            <mat-card-title style="color:#86888a;">{{secondCarCountList && secondCarCountList[3].value}}</mat-card-title>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 pt-2" style="text-align: end;cursor: pointer !important;padding-right: 10px;">
+    <mat-icon matTooltip="See different chart" style="cursor: pointer !important;" [matMenuTriggerFor]="userMenu"
+      class="pl-4 edit-mat-icon">dashboard</mat-icon>
+  </div>
+  
+  <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
+    <a mat-menu-item (click)="pieChart()">
+      Pie Chart
+    </a>
+    <a mat-menu-item (click)="barChart()">
+      Bar Chart
+    </a>
+    <a mat-menu-item (click)="gauge()">
+      Gauge Chart
+    </a>
+  </mat-menu>
+  
+  
+  
+  <div class="row pt-4 p-2">
+    
+  
+  
+    <div class="col-md-6 p-1 ">
+      <div class="row">
+  
+        <div class="col-6 pl-2" *ngIf="viewBarChart">
+          <div class="page-title"> Car Availability Status </div>
+          <mat-card-content>
+            <ngx-charts-bar-vertical (select)="onHeaderSelectCar($event)" *ngIf="CarCountList && CarCountList.length > 0"
+              [view]="[600, 400]" [results]="CarCountList" [gradient]="gradient" [xAxis]="showXAxis"
+              [showGridLines]="false" [barPadding]="barPadding" [legend]="legend" [showDataLabel]="showDataLabel"
+              [xAxisLabel]="xAxisLabel" [scheme]="colorScheme" [yAxisLabel]="yAxisLabel" >
+            </ngx-charts-bar-vertical>
+          </mat-card-content>
+        </div>
+  
+        <div class="col-6" *ngIf="viewPieChart">
+          <div class="page-title"> Car Availability Status </div>
+          <mat-card-content>
+            <ngx-charts-pie-chart (select)="onHeaderSelectCar($event)" *ngIf="CarCountList && CarCountList.length > 0"
+              [view]="[580, 400]" [results]="CarCountList" [gradient]="gradient" [legend]="legend" [labels]="showLabels"
+              [doughnut]="isDoughnut" [scheme]="colorScheme"  (activate)="onActivate($event)"
+              >
+            </ngx-charts-pie-chart>
+          </mat-card-content>
+        </div>
+   
+        <div class="col-6" *ngIf="viewgGuge">
+          <div class="page-title"> Car Availability Status </div>
+          <mat-card-content>
+            <ngx-charts-gauge (select)="onHeaderSelectCar($event)" *ngIf="CarCountList && CarCountList.length > 0"
+              [legend]="legend" [view]="[600, 400]" [scheme]="colorScheme" [results]="CarCountList" [legend]="legend"
+              [units]="'GE'" [min]="0" [max]="2000"  (activate)="onActivate($event)"
+              >
+            </ngx-charts-gauge>
+          </mat-card-content>
+        </div>
+  
+      </div>
+    </div>
+  
+  
+    <div class="col-md-6 p-1 ">
+      <div class="row">
+  
+        <div class="col-6 pl-2" *ngIf="viewBarChart">
+          <div class="page-title"> Car Availability Status </div>
+          <mat-card-content>
+            <ngx-charts-bar-vertical (select)="onHeaderSelectCar($event)" *ngIf="UserCountList && UserCountList.length > 0"
+              [view]="[600, 400]" [results]="UserCountList" [gradient]="gradient" [xAxis]="showXAxis"
+              [showGridLines]="false" [barPadding]="barPadding" [legend]="legend" [showDataLabel]="showDataLabel"
+              [xAxisLabel]="xAxisLabel" [scheme]="colorScheme" [yAxisLabel]="yAxisLabel" >
+            </ngx-charts-bar-vertical>
+          </mat-card-content>
+        </div>
+  
+        <div class="col-6" *ngIf="viewPieChart">
+          <div class="page-title"> Car Availability Status </div>
+          <mat-card-content>
+            <ngx-charts-pie-chart (select)="onHeaderSelectCar($event)" *ngIf="UserCountList && UserCountList.length > 0"
+              [view]="[580, 400]" [results]="UserCountList" [gradient]="gradient" [legend]="legend" [labels]="showLabels"
+              [doughnut]="isDoughnut" [scheme]="colorScheme"  (activate)="onActivate($event)"
+              >
+            </ngx-charts-pie-chart>
+          </mat-card-content>
+        </div>
+   
+        <div class="col-6" *ngIf="viewgGuge">
+          <div class="page-title"> Car Availability Status </div>
+          <mat-card-content>
+            <ngx-charts-gauge (select)="onHeaderSelectCar($event)" *ngIf="UserCountList && UserCountList.length > 0"
+              [legend]="legend" [view]="[600, 400]" [scheme]="colorScheme" [results]="UserCountList" [legend]="legend"
+              [units]="'GE'" [min]="0" [max]="2000"  (activate)="onActivate($event)"
+              >
+            </ngx-charts-gauge>
+          </mat-card-content>
+        </div>
+  
+      </div>
+    </div>
+   
+   
+  
+  </div>

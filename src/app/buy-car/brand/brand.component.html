@@ -1,0 +1,112 @@
+<div class="col-md-12">
+    <div class="page-title"> Brand </div>
+    <div class="spinner__loading" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+           
+            <mat-form-field class="col-md-8 pr-2" appearance="outline">
+                <mat-label>Search Brand Detail</mat-label>
+                <input matInput [(ngModel)]="search"  (keyup)="applyFilter($event)" placeholder="" />
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear"
+                (click)="clearSearch()">
+                <mat-icon>close</mat-icon>
+            </button>
+         </mat-form-field>
+
+            <div class="col-md-2" style="text-align:end ;">
+                <img width="45" matTooltip="Import Brand" [routerLink]="['/brand/import-brand']" style="cursor:pointer ;" src="../../../assets/images/pdf.jpg" class="button-icon" alt="PDF icon" mat-responsive />  
+            </div>
+            
+           
+            <div class="col-md-2" style="text-align: end"  *ngIf="userPrivilegeObj && userPrivilegeObj?.createaccess == '1'">
+                <button style="cursor: pointer;" mat-mini-fab color="primary" matTooltip="Create Brand"
+                    (click)="addRecord()"> + </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mat-table-container" id="test1" #test1>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                    No records found.
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="brandname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Brand Name </th>
+                <td mat-cell *matCellDef="let element"> {{element?.brandname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="brandcode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Brand Code</th>
+                <td mat-cell *matCellDef="let element"> {{element?.brandcode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <td mat-cell *matCellDef="let element"> {{element?.status}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="brandlogopath">
+                <th mat-header-cell *matHeaderCellDef> Image </th>
+                <td mat-cell *matCellDef="let element">
+                  <a [href]="element.brandlogopath" target="_blank">
+                   <img class="brandlogopath" target="_blank" [src]="element.brandlogopath" /> 
+                  </a>
+                  </td>
+              </ng-container>
+
+            <ng-container matColumnDef="created_by" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_by}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> created at </th>
+                <td mat-cell *matCellDef="let element"> {{element?.created_at }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="brandid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> brand id </th>
+                <td mat-cell *matCellDef="let element"> {{element?.brandid}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified by </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_by}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> modified Date </th>
+                <td mat-cell *matCellDef="let element"> {{element?.modified_at }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" sticky class="mat-col-levelDefault ">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button  *ngIf="userPrivilegeObj && userPrivilegeObj?.editaccess == '1'" mat-icon-button matTooltip="Edit"  (click)="editRecord(element)">
+                        <mat-icon class="edit-mat-icon">edit</mat-icon>
+                    </button>
+
+                    <button mat-icon-button *ngIf="userPrivilegeObj && userPrivilegeObj?.deleteaccess == '1'"
+                        (click)="onDeleteStatusChange(element?.brandid)">
+                        <mat-icon class="delete-mat-icon large-icon">delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+    <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

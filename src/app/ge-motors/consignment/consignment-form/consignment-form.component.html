@@ -1,0 +1,210 @@
+<div class="col-md-12 row p-2">
+  <form [formGroup]="addEditForm">
+    <div class="row">
+
+      <mat-form-field class="col-md-6 pt-2 readonly-input" appearance="fill">
+        <mat-label class="">Consignment Ref No</mat-label>
+        <input readonly matInput [errorStateMatcher]="matcher" formControlName="consignmentrefno" type="text" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2 readonly-input" appearance="fill">
+        <mat-label class="">Signature Status</mat-label>
+        <input readonly matInput type="text" [value]="signature_status" />
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-6 pt-2 " appearance="outline">
+        <mat-label>Showroom Cars</mat-label>
+        <mat-select formControlName="carshowroom_id"
+        [disabled]="this.addEditForm.get('isrelated_module')?.value">
+          <mat-select-filter [array]="cartotalList" [displayMember]="'carshowroomrefno'"></mat-select-filter>
+          <mat-option *ngFor="let item of cartotalList" [value]="item.carshowroom_id"
+            [class.hide]="!isShowroomCarFiltered(item)">
+            {{ item.carshowroomrefno?.trim() || 'N/A' }} -
+            {{ item.chasisno?.trim() || 'No Chassis' }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="pt-2 col-md-6" appearance="outline">
+        <mat-label class="">Account </mat-label>
+        <mat-select formControlName="accountid" (selectionChange)="onAccountOptionSelected($event.value)">
+          <mat-select-filter [array]="accountList" (filteredReturn)="accountFilteredList=$event"
+            [displayMember]="'accountname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of accountList" [value]="item.accountid" [class.hide]="!accountidFiltered(item)">
+            {{ item.accountname }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['accountid'].hasError('required') && isShowErrors"> Account is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2 col-md-6" appearance="outline">
+        <mat-label class="">Contact </mat-label>
+        <mat-select formControlName="contactid">
+          <mat-select-filter [array]="contactList" (filteredReturn)="contactFilterList=$event"
+            [displayMember]="'firstname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of contactList" [value]="item.contactid" [class.hide]="!isContactFiltered(item)">
+            <span>{{ item.firstname }}</span>
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['contactid'].hasError('required') && isShowErrors">Contact is
+          required</mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Consignment Start Date </mat-label>
+        <input (click)="picker.open()" readonly [min]="minFromDate" matInput [matDatepicker]="picker"
+          formControlName="consignmentstartdate" (dateChange)="setEndDateMinValue()">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['consignmentstartdate'].hasError('required') && isShowErrors">Start Date
+          is
+          required</mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Consignment End Date </mat-label>
+        <input matInput (click)="picker1.open()" readonly [matDatepicker]="picker1" formControlName="consignmentenddate"
+          [min]="minEndDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['consignmentenddate'].hasError('required') && isShowErrors">End Date is
+          required</mat-error>
+      </mat-form-field> -->
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Consignment Expiry Date </mat-label>
+        <input matInput (click)="picker2.open()" [matDatepicker]="picker2" [min]="minEndDate"
+          formControlName="consignmentexpirydate" disabled>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="addEditForm.controls['consignmentexpirydate'].hasError('required') && isShowErrors">Expiry is
+          required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Consignment Amount </mat-label>
+        <input matInput type="number" formControlName="consignmentamount">
+        <mat-error *ngIf="addEditForm.controls['consignmentamount'].hasError('required') && isShowErrors">Consignment
+          Amount is required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['consignmentamount'].hasError('min') && isShowErrors">
+          Consignment Amount should not be 0
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Duration Of the Agreement (Months)</mat-label>
+        <input matInput type="number" formControlName="durationagreement">
+        <mat-error *ngIf="addEditForm.controls['durationagreement'].hasError('required') && isShowErrors">
+          Duration Of the Agreement is required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Commision Percentage</mat-label>
+        <input matInput type="number" formControlName="commissionpercentage">
+        <mat-error *ngIf="addEditForm.controls['commissionpercentage'].hasError('required') && isShowErrors">Commision
+          Percentage is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Commision Payment </mat-label>
+        <input matInput type="number" formControlName="commissionpayment">
+        <mat-error *ngIf="addEditForm.controls['commissionpayment'].hasError('required') && isShowErrors">
+          Commision Payment is required</mat-error>
+      </mat-form-field>
+
+
+      <!-- <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Showroom Free of Charge - Month </mat-label>
+        <input matInput type="number" formControlName="showroomfreeofcharge">
+        <mat-error *ngIf="addEditForm.controls['showroomfreeofcharge'].hasError('required') && isShowErrors">
+          Showroom Free of Charge - Month is required</mat-error>
+      </mat-form-field> -->
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label>Showroom Free of Charge (Months)</mat-label>
+        <mat-select formControlName="showroomfreeofcharge">
+          <mat-option value="1">1</mat-option>
+          <mat-option value="2">2</mat-option>
+          <mat-option value="3">3</mat-option>
+          <mat-option value="4">4</mat-option>
+          <mat-option value="5">5</mat-option>
+          <mat-option value="6">6</mat-option>
+          <mat-option value="7">7</mat-option>
+          <mat-option value="8">8</mat-option>
+          <mat-option value="9">9</mat-option>
+          <mat-option value="10">10</mat-option>
+          <mat-option value="11">11</mat-option>
+          <mat-option value="12">12</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['showroomfreeofcharge'].hasError('required') && isShowErrors">
+          Showroom Free of Charge - Month is required
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Showroom Charge Per Month </mat-label>
+        <input matInput type="number" formControlName="showroomchargepermonth">
+        <mat-error *ngIf="addEditForm.controls['showroomchargepermonth'].hasError('required') && isShowErrors">
+          Showroom Charge Per Month is required</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-6 pt-2" appearance="outline">
+        <mat-label class="">Liable Amount before Contract End </mat-label>
+        <input matInput type="number" formControlName="liableamount">
+        <mat-error *ngIf="addEditForm.controls['liableamount'].hasError('required') && isShowErrors">
+          Liable Amount before Contract End is required</mat-error>
+      </mat-form-field>
+
+
+      <div class="col-md-6 pt-4" *ngIf="allowStatusFieldActive == 'true' || allowStatusFieldActive">
+        <mat-label class="pr-2 pt-5 text-center">Status </mat-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-group aria-label="Is Active" formControlName="status" class="inputField exammanage-radio-group"
+          (change)="onStatusChange($event)" mat-form-field>
+          <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button value='0'>In Active</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+
+      <br>
+      <div class="col-md-4 field">
+        <label for="file-upload" class="custom-file-upload">
+          <mat-icon>cloud_upload</mat-icon> Consignment Contract Copy Attachement
+        </label><br>
+        <input id="file-upload" (change)="onFileChanged($event)"
+          accept="application/pdf,image/jpeg,image/jpg,image/png,image/gif,image/jfif" type="file" name="file[]" />
+        <div class="col-md-4 field p-2" *ngIf="addEditForm.controls['consignmentdoc'].value">
+          <div class="avatar-preview" for="imageUpload">
+            <a *ngIf="isPDF(addEditForm.controls['consignmentdoc'].value.name ? addEditForm.controls['consignmentdoc'].value.name : addEditForm.controls['consignmentdoc'].value)"
+              [href]="addEditForm.controls['consignmentdoc'].value" target="_blank">
+              <img style="width: 52px;"
+                src="assets/images/pdf_icon.png" />
+            </a>
+            <a *ngIf="isIMG(addEditForm.controls['consignmentdoc'].value.name ? addEditForm.controls['consignmentdoc'].value.name : addEditForm.controls['consignmentdoc'].value)"
+              [href]="addEditForm.controls['consignmentdoc'].value" target="_blank">
+              <img style="width: 52px;" [src]="imageSrc ? imageSrc : addEditForm.controls['consignmentdoc'].value" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>

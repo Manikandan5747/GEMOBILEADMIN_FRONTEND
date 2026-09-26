@@ -1,0 +1,76 @@
+<div class="col-md-12">
+  <div class="page-title"> Special Offer Utilized by the Customer</div>
+  <div class="spinner__loading" *ngIf="loading"> <mat-spinner></mat-spinner> </div>
+
+  <div class="row">
+    <mat-form-field class="col-md-8 pr-2" appearance="outline">
+      <mat-label>Search Special Offer Detail</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="" />
+    </mat-form-field>
+
+    <div class="col-md-4 pt-3 mb-2 p-0">
+      <button class="btnnn-secondary-fn" (click)="exportPdf()">
+        <img width="30" src="../../../assets/images/pdf.jpg" class="button-icon" alt="PDF icon" mat-responsive /> Export
+        to PDF
+      </button>&nbsp;
+      <button class="btnnn-secondary-fn" (click)="exportExcel()">
+        <img width="30" src="../../../assets/images/excel.png" class="button-icon" alt="Excel icon" mat-responsive />
+        Export to Excel
+      </button>
+    </div>
+  </div>
+
+
+  <div class="mat-table-container" id="test1" #test1>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+          No records found.
+        </mat-footer-cell>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="qr_codeid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> qr code id </th>
+        <td mat-cell *matCellDef="let element"> {{element?.qr_codeid}} </td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="specialoffer_title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>special offer title</th>
+        <td mat-cell *matCellDef="let element"> {{element?.specialoffer_title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="unique_code">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer code </th>
+        <td mat-cell *matCellDef="let element"> {{ element?.unique_code }} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="customername">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>customer name </th>
+        <td mat-cell *matCellDef="let element"> {{element?.customername}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="showroomname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>External Company </th>
+        <td mat-cell *matCellDef="let element"> {{element?.showroomname }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+        <td mat-cell *matCellDef="let element"> {{ element.status }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Utilized at </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created_at }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+    </table>
+
+  </div>
+
+  <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="PAGINATION_RANGE" showFirstLastButtons></mat-paginator>
+</div>

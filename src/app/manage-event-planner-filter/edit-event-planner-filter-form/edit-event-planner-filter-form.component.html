@@ -1,0 +1,140 @@
+<div class="container-fluid px-4 py-3 manage-event-planner" *ngIf="eventPlannerForm">
+
+  <div class="page-title mb-4">Edit Event Planner & Filter Details</div>
+
+  <form [formGroup]="eventPlannerForm">
+
+    <!-- Event Planner Details -->
+    <div class="shadow-sm rounded-4 border-0 p-4 bg-light mb-4">
+      <div class="section-divider d-flex justify-content-between align-items-center text-white px-3 py-2 rounded"
+           style="cursor: pointer; background-color: #F4D35F;"
+           (click)="plannerDetailsExpanded = !plannerDetailsExpanded">
+        <span class="fw-bold">Event Planner Details</span>
+        <mat-icon>{{ plannerDetailsExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      </div>
+
+      <div class="form-content p-3 border rounded mt-2" *ngIf="plannerDetailsExpanded">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>Event Planner Name:</label>
+            <input class="form-control" formControlName="event_planner_title">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Event Name:</label>
+            <input class="form-control" formControlName="event_name">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>Template Name:</label>
+            <input class="form-control" formControlName="template_name">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Calendar Day:</label>
+            <input class="form-control" formControlName="calendar_day">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>Country Name:</label>
+            <input class="form-control" formControlName="country_name">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Event Expiry Day:</label>
+            <input class="form-control" formControlName="event_planner_expiry_days" type="number">
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <label>Mode of Message (comma-separated):</label>
+            <input class="form-control" formControlName="mode_of_message">
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label>Schedule Type:</label>
+            <input class="form-control" formControlName="schedule_type">
+          </div>
+          <div class="col-md-6">
+            <label>Status:</label>
+            <select class="form-control" formControlName="event_planner_status">
+              <option [value]="1">Active</option>
+              <option [value]="0">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mt-4" *ngIf="eventPlannerForm.get('imageBase64')?.value">
+          <div class="col-md-6">
+            <label>Uploaded Image:</label>
+            <div class="avatar-preview text-center mt-2">
+              <a [href]="eventPlannerForm.get('imageBase64')?.value" target="_blank">
+                <img [src]="eventPlannerForm.get('imageBase64')?.value" class="img-fluid rounded shadow-sm" style="max-width: 140px;">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Planner Filter Details -->
+    <div class="shadow-sm rounded-4 border-0 p-4 bg-light mb-4">
+      <div class="section-divider d-flex justify-content-between align-items-center text-white px-3 py-2 rounded"
+           style="cursor: pointer; background-color: #F4D35F;"
+           (click)="filterDetailsExpanded = !filterDetailsExpanded">
+        <span class="fw-bold">Event Planner Filter Details</span>
+        <mat-icon>{{ filterDetailsExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      </div>
+
+      <div class="form-content p-3 border rounded mt-2" *ngIf="filterDetailsExpanded">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Parameter Description</th>
+                <th>Event Query Name</th>
+                <th>Opening Bracket</th>
+                <th>Field</th>
+                <th>Condition</th>
+                <th>Value</th>
+                <th>Closing Bracket</th>
+                <th>Conjunction</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="parameters">
+              <tr *ngFor="let param of parameters.controls; let i = index" [formGroupName]="i">
+                <td><input class="form-control" formControlName="parameter_desc"></td>
+                <td><input class="form-control" formControlName="query_name"></td>
+                <td><input class="form-control" formControlName="opening_bracket"></td>
+                <td><input class="form-control" formControlName="parameter_text"></td>
+                <td><input class="form-control" formControlName="parameter_condition"></td>
+                <td><input class="form-control" formControlName="parameter_value"></td>
+                <td><input class="form-control" formControlName="closing_bracket"></td>
+                <td><input class="form-control" formControlName="parameter_conjunction"></td>
+                <td>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeParameter(i)">Remove</button>
+                </td>
+              </tr>
+              <tr *ngIf="parameters.length === 0">
+                <td colspan="9" class="text-center">No conditions available.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-sm" (click)="addParameter()">Add Parameter</button>
+      </div>
+    </div>
+
+    <div class="pt-3 text-end">
+      <button type="button" class="btn btn-secondary me-2" (click)="goBack()">Cancel</button>
+      <button type="button" class="btn btn-success" (click)="updateEventPlanner()">Update</button>
+    </div>
+
+  </form>
+</div>

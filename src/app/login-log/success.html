@@ -1,0 +1,17 @@
+<!-- success.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Success</title>
+</head>
+<body>
+  <h1>Payment Successful!</h1>
+
+  <script>
+    // Notify parent window that payment is successful
+    window.onload = function () {
+      window.parent.postMessage('paymentSuccess', '*');  // or use exact origin for security
+    };
+  </script>
+</body>
+</html>

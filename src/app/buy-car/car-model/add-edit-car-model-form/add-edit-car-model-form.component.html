@@ -1,0 +1,84 @@
+<div class="col-md-12 row p-4">
+
+    <form [formGroup]="addEditForm">
+  
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Model name</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="modelname" type="text" />
+        <mat-error *ngIf="addEditForm.controls['modelname'].hasError('required') && isShowErrors">Model name is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['modelname'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Model Code</mat-label>
+        <input matInput [errorStateMatcher]="matcher" formControlName="modelcode" type="text" />
+        <mat-error *ngIf="addEditForm.controls['modelcode'].hasError('required') && isShowErrors">Model Code is
+          required</mat-error>
+        <mat-error *ngIf="addEditForm.controls['modelcode'].errors?.['whitespace']">
+          White space not allowed
+        </mat-error>
+      </mat-form-field>
+
+          <mat-form-field class="col-md-12" appearance="outline">
+        <mat-label>Brand Name</mat-label>
+        <mat-select formControlName="brandid"  [disabled]="alreadyMapped =='true'">
+          <mat-select-filter [array]="brandList" (filteredReturn)="filteredList=$event" [displayMember]="'brandname'">
+          </mat-select-filter>
+          <mat-option *ngFor="let item of brandList" [value]="item.brandid" [class.hide]="!isBrandFiltered(item)">
+            {{item.brandname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['brandid'].hasError('required') && isShowErrors">Brand Name is
+          Required</mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="pt-2" appearance="outline">
+        <mat-label>Brand Name</mat-label>
+        <mat-select formControlName="brandid"  >
+            <mat-option >
+      <input
+        matInput
+        type="text"
+        placeholder="Search brand name"
+        [(ngModel)]="searchBrand"
+        [ngModelOptions]="{standalone: true}"
+        (keyup)="filterBrands()"
+        (click)="$event.stopPropagation()"
+        autocomplete="off"
+        class="search-input">
+    </mat-option>
+
+    <mat-option *ngFor="let item of filteredBrandList"
+                [value]="item.brandid">
+      {{ item.brandname }}
+    </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditForm.controls['brandid'].hasError('required') && isShowErrors" >Brand Name is required</mat-error>
+      </mat-form-field> -->
+
+
+
+
+
+
+
+      <mat-label  class="pr-2 pt-5 text-center">Status </mat-label>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-radio-group  aria-label="Is Active" formControlName="status"
+      (change)="onStatusChange($event)"
+        class="inputField exammanage-radio-group" mat-form-field>
+        <mat-radio-button value='1'>Active</mat-radio-button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value='0'>In Active</mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Remark</mat-label>
+        <textarea matInput  formControlName="remark" type="text" >
+      </textarea>
+      </mat-form-field>
+  
+    </form>
+  </div>

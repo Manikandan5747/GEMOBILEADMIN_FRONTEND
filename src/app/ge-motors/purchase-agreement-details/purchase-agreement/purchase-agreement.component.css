@@ -1,0 +1,78 @@
+/* ? cover page */
+@import '../../../../style.scss';
+
+.return-to-menu>a {
+    color: #007bff;
+}
+
+.return-to-menu {
+    margin-bottom: 5px !important;
+}
+
+
+.pdf-cover-page {
+    background-image: url('../../../../assets/assets/bg-g-2.jpg');
+}
+
+
+
+/* ? page one */
+
+.date-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: 500;
+
+    padding: 5px 10px;
+    color: white;
+    background-color: #3F3F3F;
+}
+
+.cd-rows {
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cd-each-row div {
+    display: grid;
+    grid-template-columns: 130px 10px 200px;
+    grid-template-rows: unset;
+    gap: 5px;
+}
+
+.sc-p {
+    /* text-align: end; */
+    background-color: #ffd126;
+    color: #3F3F3F;
+}
+
+/* ? terms */
+
+.terms {
+    padding: 0 1.5rem;
+}
+
+/* ? sign */
+
+.signature-container {
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.signature-container div {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.sign-line {
+    height: 1px;
+    width: 150px;
+    background-color: black;
+}
